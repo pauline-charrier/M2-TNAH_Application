@@ -50,7 +50,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Maisons(db.Model):
-    __tablename__ = "Maisons"
+    __tablename__ = "maisons"
     id = db.Column(db.String(500), primary_key=True)
     denomination = db.Column(db.String(45)) 
     code_postal = db.Column(db.String(5))
@@ -64,16 +64,20 @@ class Maisons(db.Model):
     museeFrance = db.Column(db.Boolean)
     monumentsInscrits = db.Column(db.Boolean)
     monumentsClassees = db.Column(db.Boolean)
-    type = db.Column(db.Enum(domaine)) 
+    type = db.Column(db.Enum(domaine))
+    idWikidata = db.relationship('Personnes',  backref='personnes',  lazy=True) 
 
 class Personnes(db.Model):
-    __tablename__ = "Personnes"
+    __tablename__ = "personnes"
     nomIllustre = db.Column(db.String(45))
     ddn = db.Column(db.DateTime) #on ne garde que l'année
     ddm = db.Column(db.DateTime) #idem
     genre = db.Column(db.Enum(genre)) 
     wikipedia = db.Column(db.String(300))
-    idWikidata = db.Column(db.String(20))
+    idWikidata = db.Column(
+        db.String(20),  
+        db.ForeignKey('maisons.idWikidata')
+    )
 
 class Domaine(Enum):
     TYPE1 = 'Littérature et idées'
@@ -81,7 +85,6 @@ class Domaine(Enum):
     TYPE3 = 'Arts et architecture'
     TYPE4 = 'Histoire et politique'
     TYPE5 = 'Musique, théâtre et cinéma'
-
 
 class Genre(Enum):
     TYPE1 = 'masc'
@@ -91,22 +94,18 @@ class Genre(Enum):
 
 # 4. Liste des principales routes envisagées et description de leur fonction
 
-- une route "all" pour afficher l'intégralité du catalogue des maisons. Rajout de lien vers les routes "instance". 
-- une route "instance" avec un paramètre (dénomination de la maison) pour afficher l'intégralité des informations concernant l'instance, avec les informations sur la personne, dans un template travaillé.
-- une route "map" qui mène à une carte de la répartition des entités sur le territoire français **(est-il possible d'appliquer des filtres ?)**
+- une route "all" pour afficher l'intégralité du catalogue des maisons, avec un formulaire de recherche => filtres : régions, département, type, genre, date, multilabels, nom de l'illustre sauf si c'est pas trop compliqué. Rajout de liens vers les routes "instance" dans les résultats. Un bouton corbeille pour gérer la suppression. Un outil stylo qui ramène vers un forlumaire de modification. 
+- une route "instance" avec un paramètre (identifiant de la maison) pour afficher l'intégralité des informations concernant l'instance, avec les informations sur la personne, dans un template travaillé. API pour lien vers wikidata. 
+- une route "map" qui mène à une carte de la répartition des entités sur le territoire français + appliquer des filtres (régions, département, type, genre, date, multilabels, nom de l'illustre sauf si c'est trop compliqué).
 
 *Exemple :*
 
 ![](https://lh7-us.googleusercontent.com/GzUGyTkDCvZBgVq7AucL2jAp0diDTxK_wVrR3cfwCOPvunEmafqMh1b04gMnPSD2gKtVSYKPvVEPexLAYfoEMP4MpM1kaQf9_xZtPnJPpmWQ6s0sq_OAFYUCtId9fWryOggTlx1U6jmC-jR2kNK15Rg)
 
-- une route "add" qui offre un formulaire pour rajouter des enregistrements 
-- une route "region" ou "département" qui permet d'afficher maisons selon les régions / département. 
-- Une route "label" qui permet l'affichage des maisons en fonction de leurs autres labels.
-- Une route "date" qui permet l'affichage des maisons en fonction de la période à laquelle a vécu l'illustre (granularité : par siècle). 
-- Une route "genre" qui permet l'affichage des maisons en fonction du genre de l'illustre.
-- Une route "domaine" qui permet l'affichage des maisons en fonction du domaine dans lequel la personne s'est illustrée ('Littérature et idées', 'Sciences et industrie', 'Arts et architecture', 'Histoire et politique', 'Musique, théâtre et cinéma').
-- Une route "request" qui offre un formulaire permettant d'appliquer plusieurs filtre. 
-- route "graphique" qui affiche deux ou trois visualisations (choisir les plus réussies).
+- une route "add/maison" qui offre un formulaire pour rajouter des enregistrements.
+- une route "add/personne" qui offre un formulaire pour rajouter une personne.
+- une route "update" lier la personne à la maison.
+- Deux routes de graphique : répartition des maisons en fonction des dates des illustres + top 10 des maisons (fréquentation ++). 
 
 # 5. 2-3 étapes pour le développement, et la charge estimée (en heures ou en personne) pour les gros blocs de développement
 
