@@ -60,12 +60,13 @@ class Maisons(db.Model):
     commune = db.Column(db.String(45))
     code_INSEE = db.Column(db.String(5))
     pays = db.Column(db.String(45))
-    #coordonnees = db.Column(db.ARRAY(db.DECIMAL(9, 6)))
+    date_label = db.Colum(db.DateTime)
     latitude = db.Colums(db.Float)
     longitude = db.Column(db.Float)
     museeFrance = db.Column(db.Boolean)
     monumentsInscrits = db.Column(db.Boolean)
     monumentsClassees = db.Column(db.Boolean)
+    nombreSPR = db.Column(db.Int)
     type = db.Column(db.Enum(domaine))
     idWikidata = db.relationship('Personnes',  backref='personnes',  lazy=True) 
 
@@ -74,7 +75,8 @@ class Personnes(db.Model):
     nomIllustre = db.Column(db.String(45))
     ddn = db.Column(db.DateTime) #on ne garde que l'année
     ddm = db.Column(db.DateTime) #idem
-    genre = db.Column(db.Enum(genre)) 
+    genre = db.Column(db.Enum(genre))
+    image = db.Column(db.String(300))
     wikipedia = db.Column(db.String(300))
     idWikidata = db.Column(
         db.String(20),  
