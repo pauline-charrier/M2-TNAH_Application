@@ -3,38 +3,39 @@
 {% block body %}
 
 <div class="container">
-    <h1>Liste exhaustive de l'ensemble des pays contenus dans le Factbook</h1>
+    <h1>Liste exhaustive de l'ensemble des Maisons des Illustres</h1>
     <br>
     <div class="row">
         <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
                 {%if donnees.prev_num %}
                 <a class="list-group-item list-group-item-action" id="list-list-prev" 
-                     href="{{ url_for('pays', page=donnees.prev_num) }}" class="btn btn-outline-dark 
+                     href="{{ url_for('maisons', page=donnees.prev_num) }}" class="btn btn-outline-dark 
                     {% if donnees.page == 1 %}disabled{% endif %}">
                         &laquo;
                 </a>
                 {% endif %}
 
-                {% for pays in donnees.items %}
-                {% if (donnees.items).index(pays) == 0 %}
-                <a class="list-group-item list-group-item-action active" id="list-{{pays.id}}-list" data-toggle="list"
-                    href="#list-{{pays.id}}" role="tab" aria-controls="{{pays.id}}">{{pays.name}}</a>
+                {% for maisons in donnees.items %}
+                {% if (donnees.items).index(maisons) == 0 %}
+                <a class="list-group-item list-group-item-action active" id="list-{{maisons.id}}-list" data-toggle="list"
+                    href="#list-{{maisons.id}}" role="tab" aria-controls="{{maisons.id}}">{{pays.name}}</a>
                 {% else %}
-                <a class="list-group-item list-group-item-action" id="list-{{pays.id}}-list" data-toggle="list"
-                    href="#list-{{pays.id}}" role="tab" aria-controls="{{pays.id}}">{{pays.name}}</a>
+                <a class="list-group-item list-group-item-action" id="list-{{maisons.id}}-list" data-toggle="list"
+                    href="#list-{{maisons.id}}" role="tab" aria-controls="{{maisons.id}}">{{pays.name}}</a>
                 {% endif %}
                 {% endfor %}
 
                 {%if donnees.next_num %}
                 <a class="list-group-item list-group-item-action" id="list-list-next" 
-                    href="{{ url_for('pays', page=donnees.next_num) }}" class="btn btn-outline-dark 
+                    href="{{ url_for('maisons', page=donnees.next_num) }}" class="btn btn-outline-dark 
                         {% if donnees.page == donnees.pages %}disabled{% endif %}">
                     &raquo;
                 </a>
                 {% endif %}
             </div>
         </div>
+        <!--
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
                 {% for pays in donnees.items %}
@@ -56,25 +57,25 @@
 
                 {% endfor %}
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 <br>
 <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-5">
-        <a href="{{ url_for('pays', page=donnees.prev_num) }}" class="btn btn-outline-dark 
+        <a href="{{ url_for('maisons', page=donnees.prev_num) }}" class="btn btn-outline-dark 
                {% if donnees.page == 1 %}disabled{% endif %}">
             &laquo;
         </a>
         {% for page_num in donnees.iter_pages() %}
         {% if page_num %}
         {% if donnees.page == page_num %}
-        <a href="{{ url_for('pays', page=page_num) }}" class="btn btn-dark">
+        <a href="{{ url_for('maisons', page=page_num) }}" class="btn btn-dark">
             {{ page_num }}
         </a>
         {% else %}
-        <a href="{{ url_for('pays', page=page_num) }}" class="btn btn-outline-dark">
+        <a href="{{ url_for('maisons', page=page_num) }}" class="btn btn-outline-dark">
             {{ page_num }}
         </a>
         {% endif %}
@@ -82,7 +83,7 @@
         ...
         {% endif %}
         {% endfor %}
-        <a href="{{ url_for('pays', page=donnees.next_num) }}" class="btn btn-outline-dark 
+        <a href="{{ url_for('maisons', page=donnees.next_num) }}" class="btn btn-outline-dark 
                {% if donnees.page == donnees.pages %}disabled{% endif %}">
             &raquo;
         </a>

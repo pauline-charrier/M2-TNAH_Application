@@ -6,13 +6,16 @@ from ..models.formulaires import Recherche
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
 @app.route("/")
-@app.route("/pays")
-@app.route("/pays/<int:page>")
-def pays(page=1):
-    return render_template("pages/pays.html", 
-        sous_titre="Pays", 
-        donnees= Country.query.order_by(Country.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"]))
+@app.route("/maisons")
+@app.route("/maisons/<int:page>")
+def maisons(page=1):
+    return render_template("pages/liste.html", 
+        sous_titre="Liste des maisons", 
+        donnees= Maisons.query.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"]))
 
+
+
+'''
 @app.route("/pays/<string:nom_pays>")
 def un_pays(nom_pays):
     return render_template("pages/un_pays.html", 
@@ -164,3 +167,4 @@ def recherche(page=1):
             sous_titre= "Recherche" , 
             donnees=donnees,
             form=form)
+'''

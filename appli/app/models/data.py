@@ -2,40 +2,6 @@ from ..app import app, db
 from ..utils.transformations import nettoyage_string_to_int
 from enum import Enum
 
-class Maisons(db.Model):
-    __tablename__ = "maisons"
-    id = db.Column(db.String(500), primary_key=True)
-    denomination = db.Column(db.String(45)) 
-    code_postal = db.Column(db.String(5))
-    dpmt = db.Column(db.String(45))
-    region = db.Column(db.String(45))
-    adresse = db.Column(db.String(45))
-    commune = db.Column(db.String(45))
-    code_INSEE = db.Column(db.String(5))
-    pays = db.Column(db.String(45))
-    date_label = db.Colum(db.DateTime)
-    latitude = db.Colums(db.Float)
-    longitude = db.Column(db.Float)
-    museeFrance = db.Column(db.Boolean)
-    monumentsInscrits = db.Column(db.Boolean)
-    monumentsClassees = db.Column(db.Boolean)
-    nombreSPR = db.Column(db.Int)
-    type = db.Column(db.Enum(Domaine))
-    idWikidata = db.relationship('Personnes',  backref='personnes',  lazy=True) 
-
-class Personnes(db.Model):
-    __tablename__ = "personnes"
-    nomIllustre = db.Column(db.String(45))
-    ddn = db.Column(db.DateTime) #on ne garde que l'année
-    ddm = db.Column(db.DateTime) #idem
-    genre = db.Column(db.Enum(Genre))
-    image = db.Column(db.String(300))
-    wikipedia = db.Column(db.String(300))
-    idWikidata = db.Column(
-        db.String(20),  
-        db.ForeignKey('maisons.idWikidata')
-    )
-
 class Domaine(Enum):
     TYPE1 = 'Littérature et idées'
     TYPE2 = 'Sciences et industrie'
@@ -47,6 +13,41 @@ class Genre(Enum):
     TYPE1 = 'masc'
     TYPE2 = 'fem'
     TYPE3 = 'couple/famille'
+
+class Maisons(db.Model):
+    __tablename__ = "maisons"
+    id = db.Column(db.String(500), primary_key=True)
+    denomination = db.Column(db.String(45)) 
+    code_postal = db.Column(db.String(5))
+    dpmt = db.Column(db.String(45))
+    region = db.Column(db.String(45))
+    adresse = db.Column(db.String(45))
+    commune = db.Column(db.String(45))
+    code_INSEE = db.Column(db.String(5))
+    pays = db.Column(db.String(45))
+    date_label = db.Column(db.Integer)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    museeFrance = db.Column(db.Boolean)
+    monumentsInscrits = db.Column(db.Boolean)
+    monumentsClassees = db.Column(db.Boolean)
+    nombreSPR = db.Column(db.Integer)
+    type = db.Column(db.Enum(Domaine))
+    idWikidata = db.Column(db.String(20), unique=True, index=True)
+    #idWikidata = db.relationship('Personnes',  backref='personnes',  lazy=True) 
+
+class Personnes(db.Model):
+    __tablename__ = "personnes"
+    nomIllustre = db.Column(db.String(45), primary_key=True)
+    ddn = db.Column(db.Integer) #on ne garde que l'année
+    ddm = db.Column(db.Integer) #idem
+    genre = db.Column(db.Enum(Genre))
+    image = db.Column(db.String(300))
+    wikipedia = db.Column(db.String(300))
+    idWikidata = db.Column(
+        db.String(20),  
+        db.ForeignKey('maisons.idWikidata')
+    )
 
 '''
 
