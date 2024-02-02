@@ -13,14 +13,31 @@ def maisons(page=1):
         sous_titre="Liste des maisons", 
         donnees= Maisons.query.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"]))
 
+@app.route("/maisons/<string:nom_maisons>")
+def info_maisons(nom_maisons):
+    donnees= Maisons.query.filter(Maisons.denomination == nom_maisons).first()
+    if donnees:
+        personnes_associees = Personnes.query.filter(Personnes.idWikidata == Maisons.idWikidata)
+
+        print(personnes_associees)
+        return render_template("pages/info_maisons.html", 
+            sous_titre=nom_maisons, 
+            donnees=donnees,
+            personnes_associees=personnes_associees)
+
+    else:
+        return "probleme"
 
 
 '''
-@app.route("/pays/<string:nom_pays>")
-def un_pays(nom_pays):
-    return render_template("pages/un_pays.html", 
-        sous_titre=nom_pays, 
-        donnees= Country.query.filter(Country.name == nom_pays).first())
+
+@app.route("/maisons/<string:nom_maisons>")
+def info_maisons(nom_maisons):
+    return render_template("pages/info_maisons.html", 
+        sous_titre=nom_maisons, 
+        donnees= Maisons.query.filter(Maisons.denomination == nom_maisons).first())
+
+
 
 @app.route("/continents")
 @app.route("/continents/<int:page>")

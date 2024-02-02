@@ -38,15 +38,16 @@ class Maisons(db.Model):
 
 class Personnes(db.Model):
     __tablename__ = "personnes"
-    nomIllustre = db.Column(db.String(45), primary_key=True)
+    nomIllustre = db.Column(db.String(45))
     ddn = db.Column(db.Integer) #on ne garde que l'année
     ddm = db.Column(db.Integer) #idem
     genre = db.Column(db.Enum(Genre))
     image = db.Column(db.String(300))
-    wikipedia = db.Column(db.String(300))
+    article = db.Column(db.String(300))
     idWikidata = db.Column(
         db.String(20),  
-        db.ForeignKey('maisons.idWikidata')
+        db.ForeignKey('maisons.idWikidata'),
+        primary_key=True
     )
 
 '''

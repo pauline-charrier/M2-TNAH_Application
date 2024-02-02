@@ -4,17 +4,15 @@
 <head>
     <title>Maisons des Illustres | {{sous_titre}}</title>
     {% include "partials/metadata.html" %}
+    {% include "partials/css.html" %}
     {% include "partials/js.html" %}
     {% block js %}{%endblock%}
     {% block css %}{%endblock%}
-    <style>
-      .bandeau {height = 200px;
-      }
-    </style>
+
 </head>
 
 <body>
-    <div class="container-fluid bandeau"></div>
+    <div class="container-fluid">
 
 <nav class="navbar navbar-expand-lg  fixed-top navbar-light" style="background-color: #e3f2fd;"">
     <a class="navbar-brand" href="">Factbook App</a>
@@ -25,18 +23,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-        <a class="nav-link" href="">Continents</a>
+        <a class="nav-link" href="">Personnes</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="">Maisons</a>
         </li>
         <li class="nav-item active">
-        <a class="nav-link" href="">Ressources</a>
+        <a class="nav-link" href="">Carte</a>
         </li>
         <div align="right">inclure le formulaire de recherche rapide</div>
       </ul>
     </div>
   </nav>
+</div>
 
     {% block body%}{%endblock%}
 
