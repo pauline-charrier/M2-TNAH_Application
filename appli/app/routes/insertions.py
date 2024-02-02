@@ -1,12 +1,15 @@
 from ..app import app, db
 from flask import render_template, request
-from ..models.data import Maisons, Personnes
+from ..models.data import Maisons, Personnes, Domaine
 from ..models.formulaires import InsertionMaison
 from ..utils.transformations import  clean_arg
 
 @app.route("/insertions/maisons", methods=['GET', 'POST'])
 def insertion_maisons():
-    form = InsertionMaison() 
+    form = InsertionMaison()
+    form.idWikidata.choices = [('','')] + [(maisons.idWikidata, maisons.idWikidata) for maisons in Maisons.query.all()]
+    form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
+
 
     if form.validate_on_submit():
         id =  clean_arg(request.form.get("id", None))

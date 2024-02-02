@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, BooleanField
+from . import data
 
 class InsertionPersonne(FlaskForm):
     idWikidata =  StringField("id_illustre", validators=[]) 
@@ -27,5 +28,5 @@ class InsertionMaison(FlaskForm):
     monumentsInscrits =  BooleanField("monuments_inscrits", validators=[])
     monumentsClasses =  BooleanField("monuments_classes", validators=[])
     nombreSPR =  StringField("nombre_SPR", validators=[])
-    type =  SelectField("type", validators=[])
-    idWikidata =  StringField("id_wikidata", validators=[])
+    type =  SelectField("type", choices=[], validators = [])
+    idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
