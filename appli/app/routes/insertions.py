@@ -1,12 +1,12 @@
 from ..app import app, db
 from flask import render_template, request
 from ..models.data import Maisons, Personnes
-from ..models.formulaires import InsertionPays
+from ..models.formulaires import InsertionMaisons
 from ..utils.transformations import  clean_arg
 
-@app.route("/insertions/pays", methods=['GET', 'POST'])
-def insertion_pays():
-    form = InsertionPays() 
+@app.route("/insertions/maisons", methods=['GET', 'POST'])
+def insertion_maisons():
+    form = InsertionMaisons() 
 
     if form.validate_on_submit():
         nom_pays =  clean_arg(request.form.get("nom_pays", None))

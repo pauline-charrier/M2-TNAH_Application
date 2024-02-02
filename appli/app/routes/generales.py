@@ -1,7 +1,7 @@
 from ..app import app, db
 from flask import render_template, request
 from sqlalchemy import or_
-from ..models.data import Maisons, Personnes
+from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import Recherche
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
@@ -16,18 +16,14 @@ def maisons(page=1):
 @app.route("/maisons/<string:nom_maisons>")
 def info_maisons(nom_maisons):
     donnees= Maisons.query.filter(Maisons.denomination == nom_maisons).first()
-    if donnees:
-        personnes_associees = Personnes.query.filter(Personnes.idWikidata == Maisons.idWikidata)
+    print(donnees.idWikidata)
+    personne = Personnes.query.filter(Personnes.idWikidata == str(donnees.idWikidata)).first()
+    print(personne)
 
-        print(personnes_associees)
-        return render_template("pages/info_maisons.html", 
-            sous_titre=nom_maisons, 
-            donnees=donnees,
-            personnes_associees=personnes_associees)
-
-    else:
-        return "probleme"
-
+    return render_template("pages/info_maisons.html", 
+        sous_titre=nom_maisons, 
+        donnees=donnees,
+        personne=personne)
 
 '''
 

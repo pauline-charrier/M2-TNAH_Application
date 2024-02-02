@@ -3,8 +3,11 @@
 
 {% block body %}
 
+<section class="padding-lg">
 <div class="container">
-    <h1>Liste exhaustive de l'ensemble des Maisons des Illustres</h1>
+    <div class="row heading heading-icon">
+    <h2>Liste exhaustive de l'ensemble des Maisons des Illustres</h2>
+    </div>
     <br>
     <div class="row">
         <div class="col-4">
@@ -17,15 +20,17 @@
                 </a>
                 {% endif %}
 
-<ul>
+<ul class="row">
     {% for maisons in donnees.items %}
-        <li>
+        <li class="col-12 col-md-6 col-lg-3">
+            <div class="cnt-block equal-hight" style="height: 349px;">
             <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
                id="list-{{maisons.denomination}}-list" data-toggle="list"
                href="#list-{{maisons.denomination}}" role="tab"
                aria-controls="{{maisons.denomination}}">
                {{maisons.denomination}}
             </a>
+        </div>
         </li>
     {% endfor %}
 </ul>
@@ -40,6 +45,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
+</section>
 
 {%endblock%}

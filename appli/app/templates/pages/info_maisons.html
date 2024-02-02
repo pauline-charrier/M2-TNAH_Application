@@ -1,42 +1,21 @@
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Présentation du Personnage</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+{% extends "partials/conteneur.html" %}
 
-        #personnage {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+{% block body %}
 
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .info {
-            margin-bottom: 15px;
-        }
-    </style>
-</head>
-<body>
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Présentation de la maison {{ donnees.denomination }}</h1>
 
     {%if donnees%}
 
 <div id="maison">
-    <h1>Présentation de la maison {{donnees.denomination}}</h1>
 
     <div class="info">
         <label>Nom :</label>
         <span>{{donnees.denomination}}</span>
     </div>
-
+  
     <div class="info">
         <label>adresse : </label>
         <span>{{donnees.adresse}} {{donnees.code_postal}} {{donnees.commune}} {{donnees.region}} {{donnees.pays}}</span>
@@ -44,7 +23,7 @@
 
     <div class="info">
         <label>Domaine de virtuosité dans lequel l'illustre laissa une trace indélébile :</label>
-        <span>{{donnees.type}}</span>
+        <span>{{donnees.type.value}}</span>
     </div>
 
 {%if donnees.museeFrance == 1%}
@@ -53,24 +32,40 @@
     </div>
 {%endif%}
 
-
-    <div class="info">
-        <label>Identifiant Wikidata :</label>
-        <span>{{donnees.idWikidata}}</span>
-    </div>
-
-    {%if personnes_associees%}
-
+{%if personne%}
     <div class="info">
         <label>Nom de la personne :</label>
-        <span>{{personnes_associees.nomIllustre}}</span>
+        <span>{{personne.nomIllustre}}</span>
     </div>
 
-    {% endif %}
+    <div class="info">
+        <label>Genre de la personne :</label>
+        <span>{{personne.genre.value}}</span>
+    </div>
 
+    <div class="info">
+        <label>Date de naissance :</label>
+        <span>{{personne.ddn}}</span>
+    </div>
+
+    <div class="info">
+        <label>Date de mort :</label>
+        <span>{{personne.ddm}}</span>
+    </div>
+
+    <div class="info">
+        <a href="{{personne.article}}">Consultez sa page wikipedia</a>
+    </div>
+
+    <div class="info">
+        <img src="{{personne.image}}" alt="image de l'illustre">
+    </div>
+
+</div>
+</div>
+{%endif%}
 
 </div>
 {% endif %}
 
-</body>
-</html>
+{%endblock%}

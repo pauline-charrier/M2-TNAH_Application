@@ -30,24 +30,26 @@ class Maisons(db.Model):
     longitude = db.Column(db.Float)
     museeFrance = db.Column(db.Boolean)
     monumentsInscrits = db.Column(db.Boolean)
-    monumentsClassees = db.Column(db.Boolean)
+    monumentsClasses = db.Column(db.Boolean)
     nombreSPR = db.Column(db.Integer)
     type = db.Column(db.Enum(Domaine))
-    idWikidata = db.Column(db.String(20), unique=True, index=True)
-    #idWikidata = db.relationship('Personnes',  backref='personnes',  lazy=True) 
+    idWikidata = db.Column(
+        db.String(20),  
+        db.ForeignKey('personnes.idWikidata')) 
 
 class Personnes(db.Model):
     __tablename__ = "personnes"
+    idWikidata = db.Column(db.String(20), primary_key=True)
     nomIllustre = db.Column(db.String(45))
     ddn = db.Column(db.Integer) #on ne garde que l'année
     ddm = db.Column(db.Integer) #idem
     genre = db.Column(db.Enum(Genre))
     image = db.Column(db.String(300))
     article = db.Column(db.String(300))
-    idWikidata = db.Column(
-        db.String(20),  
-        db.ForeignKey('maisons.idWikidata'),
-        primary_key=True
+    maison = db.relationship(
+        "Maisons",
+        backref = "maisons", 
+        lazy = "dynamic"
     )
 
 '''
