@@ -1,4 +1,7 @@
 
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
 
 <div class="container">
     <h1>Liste exhaustive de l'ensemble des Maisons des Illustres</h1>
@@ -14,11 +17,6 @@
                 </a>
                 {% endif %}
 
-                
-Pour afficher tous les éléments de la liste comme le premier tout en maintenant la pagination, vous pouvez simplement déplacer la création de la liste et de l'élément de liste à l'extérieur de la condition if. Voici comment vous pouvez ajuster votre code :
-
-html
-Copy code
 <ul>
     {% for maisons in donnees.items %}
         <li>
@@ -43,3 +41,5 @@ Copy code
         </div>
     </div>
 </div>
+
+{%endblock%}

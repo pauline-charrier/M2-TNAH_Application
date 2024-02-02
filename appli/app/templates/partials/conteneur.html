@@ -2,21 +2,22 @@
 <html lang="en">
 
 <head>
-    <title>Factbook | {{sous_titre}}</title>
-    {% include "partials/css.html" %}
+    <title>Maisons des Illustres | {{sous_titre}}</title>
     {% include "partials/metadata.html" %}
     {% include "partials/js.html" %}
     {% block js %}{%endblock%}
     {% block css %}{%endblock%}
+    <style>
+      .bandeau {height = 200px;
+      }
+    </style>
 </head>
 
 <body>
-    <div class="bg-image" style="
-    background-image: url('https://www.cia.gov/the-world-factbook/static/778a257ec6e116fbb7aac018c170b3eb/47498/wfb-feature-world.jpg');
-    height: 450px; width:100%;overflow:hidden;margin-top: -200px;"></div>
+    <div class="container-fluid bandeau"></div>
 
 <nav class="navbar navbar-expand-lg  fixed-top navbar-light" style="background-color: #e3f2fd;"">
-    <a class="navbar-brand" href="{{ url_for('pays') }}">Factbook App</a>
+    <a class="navbar-brand" href="">Factbook App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -24,15 +25,15 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <!--<a class="nav-link" href="{{ url_for('continents') }}">Continents</a>-->
+        <a class="nav-link" href="">Continents</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('maisons') }}">Maisons</a>
+          <a class="nav-link" href="">Maisons</a>
         </li>
         <li class="nav-item active">
-          <!--<a class="nav-link" href="{{ url_for('ressources') }}">Ressources</a>-->
+        <a class="nav-link" href="">Ressources</a>
         </li>
-        <div align="right">{% include "partials/formulaires/recherche_rapide.html" %}</div>
+        <div align="right">inclure le formulaire de recherche rapide</div>
       </ul>
     </div>
   </nav>
