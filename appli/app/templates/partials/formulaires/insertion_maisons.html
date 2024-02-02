@@ -1,35 +1,88 @@
-<form action="{{url_for('insertion_pays')}}" method="post" name="insertion_pays">
+<form action="{{url_for('insertion_maisons')}}" method="post" name="insertion_maisons">
 
     <div class="form-group">
-        <label for="nom_pays">Nom du pays </label>
-        <small id="nom_pays" class="form-text text-muted">Entrer le nom du pays</small>
+        <label for="denomination">Dénomination du bâtiment : </label>
+        <small id="denomination" class="form-text text-muted">Entrer la dénomination du bâtiment</small>
     </div>
 
     <div class="form-group">
-        <label for="code_pays">Code du pays </label>
-        <small id="code_pays" class="form-text text-muted">Entrer le code du pays</small>
+        <label for="id">Identifiant Mérimée : </label>
+        <small id="code_pays" class="form-text text-muted">Entrer l'identifiant Mérimée</small>
     </div>
 
     <div class="form-group">
-        <label for="type">Type du pays</label>
-        <small id="type" class="form-text text-muted">Sélectionner le 
-            type du pays</small>
+        <label for="adresse">Adresse : </label>
+        <small id="adresse" class="form-text text-muted">Entrer l'adresse pour le visiteurs : </small>
     </div>
 
     <div class="form-group">
-        <label for="introduction">Description</label>
-        <small id="introduction" class="form-text text-muted">Description du pays</small>
+        <label for="code_postal">Enter le code Postal : </label>
+        <small id="code_postal" class="form-text text-muted">Code Postal</small>
     </div>
 
     <div class="form-group">
-        <label for="ressources">Ressources possédées</label>
-        <small id="ressources" class="form-text text-muted">Sélectionner une ou plusieurs ressources possédées par le pays</small>
+        <label for="commune">Dans quelle commune : </label>
+        <small id="ressources" class="form-text text-muted">Entrer le nom de la commune</small>
     </div>
 
     <div class="form-group">
-        <label for="continent">Continent d'appartenance</label>
-        <small id="continent" class="form-text text-muted">Sélectionner un 
-            continent</small>
+        <label for="code_INSEE">Enter le code INSEE de la commune : </label>
+        <small id="code_INSEE" class="form-text text-muted">Code INSEE</small>
+    </div>
+
+    <div class="form-group">
+        <label for="dpmt">Dans quel département : </label>
+        <small id="dpmt" class="form-text text-muted">Entrer le nom du département</small>
+    </div>
+
+    <div class="form-group">
+        <label for="region">Région d'appartenance : </label>
+        <small id="region" class="form-text text-muted">Entrer le nom de la région</small>
+    </div>
+
+    <div class="form-group">
+        <label for="latitude">Latitude : </label>
+        <small id="latitude" class="form-text text-muted">Entrer le nom de la région</small>
+    </div>
+
+    <div class="form-group">
+        <label for="longitude">Longitude : </label>
+        <small id="longitude" class="form-text text-muted">Entrer le nom de la région</small>
+    </div>
+
+    <div class="form-group">
+        <label for="date_label">Date de labellisation : </label>
+        <small id="date_label" class="form-text text-muted">Entrer la latitude</small>
+    </div>
+
+    <div class="form-group">
+        <label for="type">Domaine de génie : </label>
+        <small id="type" class="form-text text-muted">Sélectionner le domaine : </small>
+    </div>
+
+    <div class="form-group">
+        <label for="musee_france">Le bâtiment est-il aussi Musée de France ? </label>
+        <small id="musee_france" class="form-text text-muted"></small>
+    </div>
+
+    <div class="form-group">
+        <label for="monuments_inscrit">Le bâtiment est-il aussi Monument National Inscrit ? </label>
+        <small id="monuments_inscrit" class="form-text text-muted"></small>
+    </div>
+
+    <div class="form-group">
+        <label for="monuments_classes">Le bâtiment est-il aussi Monument National Classé ? </label>
+        <small id="monuments_classes" class="form-text text-muted"></small>
+    </div>
+
+    <div class="form-group">
+        <label for="nombre_SPR">Nombre de Sites Patrimoniaux Remarquables dans la commune : </label>
+        <small id="nombre_SPR" class="form-text text-muted">Entrer le nombre</small>
+    </div>
+
+    <div class="form-group">
+        <label for="id_wikidata">Identifiant de la personne associée : </label>
+        <small id="id_wikidata" class="form-text text-muted">Entrer l'identifiant de la personne associée : </small>
     </div>
 
     <p><input type="submit" value="Insérer"></p>
