@@ -25,10 +25,9 @@
         <li>
             <div>
             <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
-               id="list-{{maisons.denomination}}-list" data-toggle="list"
-               href="#list-{{maisons.denomination}}" role="tab"
+               href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
                aria-controls="{{maisons.denomination}}">
-               <a href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}">{{maisons.denomination}} </a>
+               {{maisons.denomination}}
             </a>
         </div>
         </li>
