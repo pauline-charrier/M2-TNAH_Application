@@ -1,7 +1,7 @@
 from ..app import app, db
 from flask import render_template, request
-from ..models.data import Maisons, Personnes, Domaine
-from ..models.formulaires import InsertionMaison
+from ..models.data import Maisons, Personnes, Domaine, Genre
+from ..models.formulaires import InsertionMaison, InsertionPersonne
 from ..utils.transformations import  clean_arg
 
 @app.route("/insertions/maisons", methods=['GET', 'POST'])
@@ -55,4 +55,33 @@ def insertion_maisons():
     
     return render_template("pages/insertion_maisons.html", 
             sous_titre= "Insertion maisons" , 
+            form=form)
+
+@app.route("/insertions/personnes", methods=['GET', 'POST'])
+def insertion_personnes():
+    form = InsertionPersonne()
+    form.type.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
+
+    if form.validate_on_submit():
+        idWikidata =  clean_arg(request.form.get("id_illustre", None))
+        nomIllustre =  clean_arg(request.form.get("nom_illustre", None))
+        ddn =  clean_arg(request.form.get("ddn", None))
+        ddm=  clean_arg(request.form.get("ddm", None))
+        genre =  clean_arg(request.form.getlist("genre", None))
+        image =  clean_arg(request.form.get("image", None))
+        article =  clean_arg(request.form.get("article", None))
+
+        nouvelle_personne = Personnes(idWikidata=idWikidata, 
+            nomIllustre=nomIllustre,
+            ddn=ddn,
+            ddm=ddm,
+            genre=genre,
+            image=image,
+            article=article)
+        
+        db.session.add(nouvelle_personne)
+        db.session.commit()
+
+    return render_template("pages/insertion_personnes.html", 
+            sous_titre= "Insertion personne", 
             form=form)

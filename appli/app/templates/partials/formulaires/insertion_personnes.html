@@ -1,0 +1,93 @@
+<form action="{{url_for('insertion_personnes')}}" method="post" name="insertion_maisons">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="id_wikidata">Entrer l'identifiant Wikidata de la personne : </label>
+        {{ form.idWikidata(class_="form-control", placeholder_="Entrer l'identifiant Wikidata de la personne") }}
+    </div>
+
+    <div class="form-group">
+        <label for="nom_Illustre">Entrer le nom et prénom de la personne Illustre : </label>
+        {{ form.nomIllustre(class_="form-control", placeholder_="Entrer le nom et prénom de la personne") }}
+    </div>
+
+    <div class="form-group">
+        <label for="adresse">Adresse : </label>
+        {{ form.adresse(class_="form-control", placeholder_="Entrer l'adresse'") }}
+    </div>
+
+    <div class="form-group">
+        <label for="code_postal">Enter le code Postal : </label>
+        {{ form.code_postal(class_="form-control", placeholder_="Entrer le code postal") }}
+    </div>
+
+    <div class="form-group">
+        <label for="commune">Dans quelle commune : </label>
+        {{ form.commune(class_="form-control", placeholder_="Entrer le nom de la commune") }}
+    </div>
+
+    <div class="form-group">
+        <label for="code_INSEE">Enter le code INSEE de la commune : </label>
+        {{ form.code_INSEE(class_="form-control", placeholder_="Entrer le code INSEE de la commune") }}
+    </div>
+
+    <div class="form-group">
+        <label for="dpmt">Dans quel département : </label>
+        {{ form.dpmt(class_="form-control", placeholder_="Entrer le département d'appartenance") }}
+    </div>
+
+    <div class="form-group">
+        <label for="region">Région d'appartenance : </label>
+        {{ form.region(class_="form-control", placeholder_="Entrer la région d'appartenance") }}
+    </div>
+
+    <div class="form-group">
+        <label for="latitude">Latitude : </label>
+        {{ form.latitude(class_="form-control", placeholder_="Entrer la latitude") }}
+    </div>
+
+    <div class="form-group">
+        <label for="longitude">Longitude : </label>
+        {{ form.longitude(class_="form-control", placeholder_="Entrer la longitude") }}
+    </div>
+
+    <div class="form-group">
+        <label for="date_label">Date de labellisation : </label>
+        {{ form.date_label(class_="form-control", placeholder_="Entrer la date de labellisation") }}
+    </div>
+
+    <div class="form-group">
+        <label for="type">Domaine de génie : </label>
+        <small id="type" class="form-text text-muted">Sélectionner le domaine : </small>
+        {{ form.type(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <p>Cocher les labels additionnels : </p>
+        <label for="musee_france">Le bâtiment est aussi Musée de France </label>
+        {{ form.museeFrance() }}
+    </div>
+
+    <div class="form-group">
+        <label for="monuments_inscrit">Le bâtiment est aussi Monument National Inscrit </label>
+        {{ form.monumentsInscrits() }}
+    </div>
+
+    <div class="form-group">
+        <label for="monuments_classes">Le bâtiment est aussi Monument National Classé </label>
+        {{ form.monumentsClasses() }}
+    </div>
+
+    <div class="form-group">
+        <label for="nombre_SPR">Nombre de Sites Patrimoniaux Remarquables dans la commune : </label>
+        {{ form.nombreSPR(class_="form-control", placeholder_= "Entrer la nombre de Sites Patrimoniaux Remaquables dans la commune") }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_wikidata">Identifiant de la personne associée : </label>
+        {{ form.idWikidata(class_="form-control") }}
+        <small id="id_wikidata" class="form-text text-muted">Entrer l'identifiant de la personne associée : </small>
+    </div>
+
+    <p><input type="submit" value="Insérer"></p>
+</form>
