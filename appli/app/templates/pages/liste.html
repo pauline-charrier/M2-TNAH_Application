@@ -28,7 +28,7 @@
                id="list-{{maisons.denomination}}-list" data-toggle="list"
                href="#list-{{maisons.denomination}}" role="tab"
                aria-controls="{{maisons.denomination}}">
-               {{maisons.denomination}}
+               <a href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}">{{maisons.denomination}} </a>
             </a>
         </div>
         </li>

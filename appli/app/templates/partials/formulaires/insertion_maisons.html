@@ -3,87 +3,89 @@
 
     <div class="form-group">
         <label for="denomination">Dénomination du bâtiment : </label>
-        <input type="text" id="code_resource" name="code_resource">
-        <small id="denomination" class="form-text text-muted">Entrer la dénomination du bâtiment</small></input>
+        {{ form.denomination(class_="form-control", placeholder_="Entrer la dénomination du bâtiment") }}
     </div>
 
     <div class="form-group">
         <label for="id">Identifiant Mérimée : </label>
-        <small id="code_pays" class="form-text text-muted">Entrer l'identifiant Mérimée</small>
+        {{ form.id(class_="form-control", placeholder_="Entrer l'identifiant Mérimée") }}
     </div>
 
     <div class="form-group">
         <label for="adresse">Adresse : </label>
-        <small id="adresse" class="form-text text-muted">Entrer l'adresse pour le visiteurs : </small>
+        {{ form.adresse(class_="form-control", placeholder_="Entrer l'adresse'") }}
     </div>
 
     <div class="form-group">
         <label for="code_postal">Enter le code Postal : </label>
-        <small id="code_postal" class="form-text text-muted">Code Postal</small>
+        {{ form.code_postal(class_="form-control", placeholder_="Entrer le code postal") }}
     </div>
 
     <div class="form-group">
         <label for="commune">Dans quelle commune : </label>
-        <small id="ressources" class="form-text text-muted">Entrer le nom de la commune</small>
+        {{ form.commune(class_="form-control", placeholder_="Entrer le nom de la commune") }}
     </div>
 
     <div class="form-group">
         <label for="code_INSEE">Enter le code INSEE de la commune : </label>
-        <small id="code_INSEE" class="form-text text-muted">Code INSEE</small>
+        {{ form.code_INSEE(class_="form-control", placeholder_="Entrer le code INSEE de la commune") }}
     </div>
 
     <div class="form-group">
         <label for="dpmt">Dans quel département : </label>
-        <small id="dpmt" class="form-text text-muted">Entrer le nom du département</small>
+        {{ form.dpmt(class_="form-control", placeholder_="Entrer le département d'appartenance") }}
     </div>
 
     <div class="form-group">
         <label for="region">Région d'appartenance : </label>
-        <small id="region" class="form-text text-muted">Entrer le nom de la région</small>
+        {{ form.region(class_="form-control", placeholder_="Entrer la région d'appartenance") }}
     </div>
 
     <div class="form-group">
         <label for="latitude">Latitude : </label>
-        <small id="latitude" class="form-text text-muted">Entrer le nom de la région</small>
+        {{ form.latitude(class_="form-control", placeholder_="Entrer la latitude") }}
     </div>
 
     <div class="form-group">
         <label for="longitude">Longitude : </label>
-        <small id="longitude" class="form-text text-muted">Entrer le nom de la région</small>
+        {{ form.longitude(class_="form-control", placeholder_="Entrer la longitude") }}
     </div>
 
     <div class="form-group">
         <label for="date_label">Date de labellisation : </label>
-        <small id="date_label" class="form-text text-muted">Entrer la latitude</small>
+        {{ form.date_label(class_="form-control", placeholder_="Entrer la date de labellisation") }}
     </div>
 
     <div class="form-group">
         <label for="type">Domaine de génie : </label>
         <small id="type" class="form-text text-muted">Sélectionner le domaine : </small>
+        {{ form.type(class_="form-control") }}
     </div>
 
     <div class="form-group">
-        <label for="musee_france">Le bâtiment est-il aussi Musée de France ? </label>
-        <small id="musee_france" class="form-text text-muted"></small>
+        <p>Cocher les labels additionnels : </p>
+        <label for="musee_france">Le bâtiment est aussi Musée de France </label>
+        {{ form.museeFrance() }}
     </div>
 
     <div class="form-group">
-        <label for="monuments_inscrit">Le bâtiment est-il aussi Monument National Inscrit ? </label>
-        <small id="monuments_inscrit" class="form-text text-muted"></small>
+        <label for="monuments_inscrit">Le bâtiment est aussi Monument National Inscrit </label>
+        {{ form.monumentsInscrits() }}
     </div>
 
     <div class="form-group">
-        <label for="monuments_classes">Le bâtiment est-il aussi Monument National Classé ? </label>
-        <small id="monuments_classes" class="form-text text-muted"></small>
+        <label for="monuments_classes">Le bâtiment est aussi Monument National Classé </label>
+        {{ form.monumentsClasses() }}
     </div>
 
     <div class="form-group">
         <label for="nombre_SPR">Nombre de Sites Patrimoniaux Remarquables dans la commune : </label>
-        <small id="nombre_SPR" class="form-text text-muted">Entrer le nombre</small>
+        {{ form.nombreSPR(class_="form-control", placeholder_= "Entrer la nombre de Sites Patrimoniaux Remaquables dans la commune") }}
     </div>
 
     <div class="form-group">
         <label for="id_wikidata">Identifiant de la personne associée : </label>
+        {{ form.idWikidata(class_="form-control") }}
         <small id="id_wikidata" class="form-text text-muted">Entrer l'identifiant de la personne associée : </small>
     </div>
 
