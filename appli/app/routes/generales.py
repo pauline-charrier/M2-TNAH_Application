@@ -4,13 +4,18 @@ from sqlalchemy import or_
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
-@app.route("/")
-@app.route("/maisons")
-@app.route("/maisons/<int:page>")
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/maisons", methods=['GET', 'POST'])
+@app.route("/maisons/<int:page>", methods=['GET', 'POST'])
 def maisons(page=1):
+
+    donnees = Maisons.query.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+
     return render_template("pages/liste.html", 
         sous_titre="Liste des maisons", 
-        donnees= Maisons.query.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"]))
+        donnees=donnees)
+
+
 
 @app.route("/maisons/<string:nom_maisons>")
 def info_maisons(nom_maisons):

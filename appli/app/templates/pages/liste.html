@@ -6,7 +6,7 @@
 <section class="padding-lg">
 <div class="container">
     <div class="row heading heading-icon">
-    <h2>Liste exhaustive de l'ensemble des Maisons des Illustres</h2>
+    <h2>Catalogue des Maisons des Illustres</h2>
     </div>
     <br>
     <div class="row">
@@ -29,6 +29,17 @@
                aria-controls="{{maisons.denomination}}">
                {{maisons.denomination}}
             </a>
+        
+
+<div class="btn-group btn-group-sm">
+    <form action="{{ url_for('sup_maison') }}" method=post class=del-component>
+        <button class="btn btn-danger">
+            <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>delete</input>
+        </button>                            
+    </form>
+</div>
+
+
         </div>
         </li>
     {% endfor %}

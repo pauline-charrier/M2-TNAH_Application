@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, BooleanField, IntegerField
-from . import data
+
 
 class InsertionPersonne(FlaskForm):
     idWikidata =  StringField("id_illustre", validators=[]) 
@@ -18,7 +18,7 @@ class InsertionMaison(FlaskForm):
     adresse =  StringField("adresse", validators=[])
     commune =  StringField("commune", validators=[])
     dpmt =  StringField("dpmt", validators=[])
-    region =  StringField("region", validators=[])
+    region =  SelectField("region", choices=[], validators=[])
     code_INSEE =  StringField("code_INSEE", validators=[])
     pays =  StringField("pays", validators=[])
     date_label =  StringField("date_label", validators=[])
@@ -30,3 +30,11 @@ class InsertionMaison(FlaskForm):
     nombreSPR =  IntegerField("nombre_SPR", validators=[])
     type =  SelectField("type", choices=[], validators = [])
     idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
+
+'''
+class Recherche(FlaskForm):
+    type = 
+    region = 
+    genre = 
+    periode = 
+    '''

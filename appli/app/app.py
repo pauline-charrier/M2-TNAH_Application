@@ -12,3 +12,4 @@ db = SQLAlchemy(app)
 
 from .routes import generales
 from .routes import insertions
+from .routes import suppression
