@@ -98,7 +98,7 @@ class Genre(Enum):
 
 # 4. Liste des principales routes envisagées et description de leur fonction
 
-- une route "all" pour afficher l'intégralité du catalogue des maisons, avec un formulaire de recherche => filtres : régions, département, type, genre, date, multilabels, nom de l'illustre sauf si c'est pas trop compliqué. Rajout de liens vers les routes "instance" dans les résultats. Un bouton corbeille pour gérer la suppression. Un outil stylo qui ramène vers un forlumaire de modification. 
+- une route "all" pour afficher l'intégralité du catalogue des maisons, avec un formulaire de recherche => filtres : régions, département, type, genre, date, multilabels, nom de l'illustre. Rajout de liens vers les routes "instance" dans les résultats. Un bouton corbeille pour gérer la suppression. Un outil stylo qui ramène vers un forlumaire de modification. 
 - une route "instance" avec un paramètre (identifiant de la maison) pour afficher l'intégralité des informations concernant l'instance, avec les informations sur la personne, dans un template travaillé. API pour lien vers wikidata. 
 - une route "map" qui mène à une carte de la répartition des entités sur le territoire français + appliquer des filtres (régions, département, type, genre, date, multilabels, nom de l'illustre sauf si c'est trop compliqué).
 
