@@ -2,21 +2,21 @@ from ..app import app, db
 from flask import render_template, request, flash
 from sqlalchemy import distinct
 from ..models.data import Maisons, Personnes, Domaine, Genre
-from ..models.formulaires import InsertionMaison, InsertionPersonne
+from ..models.formulaires import InsertionMaison, InsertionPersonne, UpdateMaisons
 from ..utils.transformations import  clean_arg
 
-@app.route("/insertions/maisons", methods=['GET', 'POST'])
-def insertion_maisons():
+@app.route("/update/maisons/<string:nom_maisons>", methods=['GET', 'POST'])
+def update_maisons(nom_maisons):
     distinct_regions = Maisons.get_distinct_regions()
-    form = InsertionMaison()
-    form.idWikidata.choices = [('','')] + [(personne.idWikidata, personne.idWikidata) for personne in Personnes.query.all()]
+    form = UpdateMaisons()
+    form.idWikidata.choices = [('','')] + [(maisons.idWikidata, maisons.idWikidata) for maisons in Maisons.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
+    donnees= Maisons.query.filter(Maisons.denomination == nom_maisons).first()
 
     try:
         if form.validate_on_submit():
             id =  clean_arg(request.form.get("id", None))
-            denomination =  clean_arg(request.form.get("denomination", None))
             adresse =  clean_arg(request.form.get("adresse", None))
             commune =  clean_arg(request.form.get("commune", None))
             code_postal =  clean_arg(request.form.getlist("code_postal", None))
@@ -35,7 +35,7 @@ def insertion_maisons():
             idWikidata = clean_arg(request.form.get("id_wikidata", None))
 
         nouvelle_maison = Maisons(id=id, 
-            denomination=denomination,
+            denomination=nom_maisons,
             adresse=adresse,
             commune=commune,
             code_postal=code_postal,
@@ -56,48 +56,13 @@ def insertion_maisons():
         db.session.add(nouvelle_maison)
         db.session.commit()
 
-        flash("L'insertion du pays "+ denomination + " s'est correctement déroulée", 'info')
+        flash("La mise à jour de la maison "+ nom_maisons + " s'est correctement déroulée", 'info')
     
     except Exception as e :
         print(e)
         db.session.rollback()
 
-    return render_template("pages/insertion_maisons.html", 
-            sous_titre= "Insertion maisons" , 
-            form=form)
-
-@app.route("/insertions/personnes", methods=['GET', 'POST'])
-def insertion_personnes():
-    form = InsertionPersonne()
-    form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
-
-    try:
-        if form.validate_on_submit():
-            idWikidata =  clean_arg(request.form.get("id_illustre", None))
-            nomIllustre =  clean_arg(request.form.get("nom_illustre", None))
-            ddn =  clean_arg(request.form.get("ddn", None))
-            ddm=  clean_arg(request.form.get("ddm", None))
-            genre =  clean_arg(request.form.getlist("genre", None))
-            image =  clean_arg(request.form.get("image", None))
-            article =  clean_arg(request.form.get("article", None))
-
-            nouvelle_personne = Personnes(idWikidata=idWikidata, 
-                nomIllustre=nomIllustre,
-                ddn=ddn,
-                ddm=ddm,
-                genre=genre,
-                image=image,
-                article=article)
-            
-            db.session.add(nouvelle_personne)
-            db.session.commit()
-
-            flash("L'insertion du pays "+ nomIllustre + " s'est correctement déroulée", 'info')
-
-    except Exception as e :
-        print(e)
-        db.session.rollback()
-
-    return render_template("pages/insertion_personnes.html", 
-            sous_titre= "Insertion personne", 
-            form=form)
+    return render_template("pages/update_maisons.html", 
+            sous_titre= "Update maisons", 
+            form=form, 
+            donnees=donnees)

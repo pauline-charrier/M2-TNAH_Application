@@ -31,10 +31,30 @@ class InsertionMaison(FlaskForm):
     type =  SelectField("type", choices=[], validators = [])
     idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
 
-'''
-class Recherche(FlaskForm):
-    type = 
-    region = 
-    genre = 
-    periode = 
-    '''
+class UpdateMaisons(FlaskForm):
+    id =  StringField("id", validators=[]) 
+    denomination =  StringField("denomination", validators=[])
+    code_postal =  StringField("code_postal", validators=[])
+    adresse =  StringField("adresse", validators=[])
+    commune =  StringField("commune", validators=[])
+    dpmt =  StringField("dpmt", validators=[])
+    region =  SelectField("region", choices=[], validators=[])
+    code_INSEE =  StringField("code_INSEE", validators=[])
+    pays =  StringField("pays", validators=[])
+    date_label =  StringField("date_label", validators=[])
+    latitude =  StringField("latitude", validators=[])
+    longitude =  StringField("longitude", validators=[])
+    museeFrance =  BooleanField("musee_france", validators=[])
+    monumentsInscrits =  BooleanField("monuments_inscrits", validators=[])
+    monumentsClasses =  BooleanField("monuments_classes", validators=[])
+    nombreSPR =  IntegerField("nombre_SPR", validators=[])
+    type =  SelectField("type", choices=[], validators = [])
+    idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
+
+
+#class Recherche(FlaskForm):
+#    type = 
+#    region = 
+#    genre = 
+#    periode = 
+

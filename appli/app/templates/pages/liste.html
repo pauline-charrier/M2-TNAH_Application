@@ -34,7 +34,15 @@
 <div class="btn-group btn-group-sm">
     <form action="{{ url_for('sup_maison') }}" method=post class=del-component>
         <button class="btn btn-danger">
-            <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>delete</input>
+            <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>poubelle</input>
+        </button>                            
+    </form>
+</div>
+
+<div class="btn-group btn-group-sm">
+    <form action="{{ url_for('sup_maison') }}" method=post class=del-component>
+        <button class="btn btn-info">
+            <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>stylo</input>
         </button>                            
     </form>
 </div>
