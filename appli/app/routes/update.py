@@ -1,18 +1,19 @@
 from ..app import app, db
-from flask import render_template, request, flash
+from flask import render_template, request, flash, redirect, url_for
 from sqlalchemy import distinct
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import InsertionMaison, InsertionPersonne, UpdateMaisons
 from ..utils.transformations import  clean_arg
 
-@app.route("/update/maisons/<string:nom_maisons>", methods=['GET', 'POST'])
-def update_maisons(nom_maisons):
+@app.route("/update/maisons/<string:nom_maison>", methods=['GET', 'POST'])
+def update_maisons(nom_maison):
     distinct_regions = Maisons.get_distinct_regions()
-    form = UpdateMaisons()
-    form.idWikidata.choices = [('','')] + [(maisons.idWikidata, maisons.idWikidata) for maisons in Maisons.query.all()]
+    donnees= Maisons.query.filter(Maisons.denomination == nom_maison).first()
+    form = UpdateMaisons(obj=donnees)
+    form.idWikidata.choices = [('','')] + [(personnes.idWikidata, personnes.idWikidata) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
-    donnees= Maisons.query.filter(Maisons.denomination == nom_maisons).first()
+
 
     try:
         if form.validate_on_submit():
@@ -34,33 +35,39 @@ def update_maisons(nom_maisons):
             nombreSPR =  clean_arg(request.form.get("nombre_SPR", None))
             idWikidata = clean_arg(request.form.get("id_wikidata", None))
 
-        nouvelle_maison = Maisons(id=id, 
-            denomination=nom_maisons,
-            adresse=adresse,
-            commune=commune,
-            code_postal=code_postal,
-            code_INSEE=code_INSEE,
-            dpmt=dpmt,
-            region=region,
-            pays=pays,
-            latitude=latitude,
-            longitude=longitude,
-            date_label=date_label,
-            type = type,
-            museeFrance=museeFrance,
-            monumentsClasses=monumentsClasses,
-            monumentsInscrits=monumentsInscrits,
-            nombreSPR=nombreSPR, 
-            idWikidata=idWikidata)
+        # Récupérer l'objet Maison à mettre à jour
+            maison_a_mettre_a_jour = Maisons.query.filter(Maisons.denomination == nom_maison).first()
 
-        db.session.add(nouvelle_maison)
-        db.session.commit()
+            # Vérifier si l'objet existe
+            if maison_a_mettre_a_jour:
+                # Mettre à jour les propriétés de l'objet avec les nouvelles valeurs
+                maison_a_mettre_a_jour.id = id
+                maison_a_mettre_a_jour.adresse = adresse
+                maison_a_mettre_a_jour.commune = commune
+                maison_a_mettre_a_jour.code_postal = code_postal
+                maison_a_mettre_a_jour.code_INSEE = code_INSEE
+                maison_a_mettre_a_jour.dpmt = dpmt
+                maison_a_mettre_a_jour.region = region
+                maison_a_mettre_a_jour.pays = pays
+                maison_a_mettre_a_jour.latitude = latitude
+                maison_a_mettre_a_jour.longitude = longitude
+                maison_a_mettre_a_jour.date_label = date_label
+                maison_a_mettre_a_jour.type = type
+                maison_a_mettre_a_jour.museeFrance = museeFrance
+                maison_a_mettre_a_jour.monumentsInscrits = monumentsInscrits
+                maison_a_mettre_a_jour.monumentsClasses = monumentsClasses
+                maison_a_mettre_a_jour.nombreSPR = nombreSPR
+                maison_a_mettre_a_jour.idWikidata = idWikidata
 
-        flash("La mise à jour de la maison "+ nom_maisons + " s'est correctement déroulée", 'info')
-    
-    except Exception as e :
-        print(e)
-        db.session.rollback()
+                # Effectuez l'opération de mise à jour
+                db.session.commit()
+
+                # Redirigez vers une page de confirmation ou une autre page appropriée
+                return redirect(url_for('info_maisons', nom_maisons=nom_maison))
+            else:
+                print("Aucun information sur cette maison.")
+    except Exception as e:
+        print(f"Une erreur s'est produite : {str(e)}")
 
     return render_template("pages/update_maisons.html", 
             sous_titre= "Update maisons", 
