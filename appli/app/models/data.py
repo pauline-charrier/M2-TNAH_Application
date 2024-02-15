@@ -56,6 +56,30 @@ class Personnes(db.Model):
         lazy = "dynamic"
     )
 
+    def siecles_vie(self):
+        annee_naissance = self.ddn
+        annee_mort = self.ddm
+        #duree_vie = annee_mort-annee_naissance
+        siecle_naissance = self.ddn // 100
+        siecle_mort = self.ddm // 100
+
+        max(siecle_naissance*100, siecle_mort*100)-annee_naissance
+        max(siecle_naissance*100, siecle_mort*100)-annee_mort
+
+
+        # Vérifiez si les dates de naissance et de mort sont disponibles
+        if self.ddn is None:
+            return None  # Si la date de naissance est manquante, on ne peut pas calculer le siècle
+
+        # siècle de naissance
+        siecle_naissance = self.ddn // 100
+
+        if self.ddm is not None:
+            # siècle de mort
+            siecle_mort = self.ddm // 100
+
+            return siecle_naissance, siecle_mort
+
 '''
 
     def __repr__(self):

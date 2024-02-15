@@ -1,20 +1,41 @@
-<form action="{{url_for('recherche')}}"  name="recherche">
+<form action="{{url_for('recherche')}}" method="post" name="recherche">
+    {{ form.hidden_tag() }}
 
     <div class="form-group">
-        <label for="nom_pays">Nom du pays recherché </label>
-        <small id="nom_pays" class="form-text text-muted">Entrer tout ou partie du nom d'un
-            pays</small>
+        <label for="genre">Choisir le genre ou la catégorie : </label>
+        {{ form.genre(class_="form-control") }}
     </div>
 
     <div class="form-group">
-        <label for="ressources">Ressource possédées</label>
-        <small id="ressources" class="form-text text-muted">Sélectionner une ressource possédée dans le pays</small>
+        <label for="periode">Choisir la période : </label>
+        {{ form.periode(class_="form-control") }}
     </div>
 
     <div class="form-group">
-        <label for="continents">Continent d'appartenance</label>
-        <small id="continents" class="form-text text-muted">Sélectionner un 
-            continent</small>
+        <label for="region">Région d'appartenance : </label>
+        {{ form.region(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="type">Domaine de génie : </label>
+        <small id="type" class="form-text text-muted">Sélectionner le domaine : </small>
+        {{ form.type(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <p>Cocher les labels additionnels : </p>
+        <label for="musee_france">Le bâtiment est aussi Musée de France </label>
+        {{ form.museeFrance() }}
+    </div>
+
+    <div class="form-group">
+        <label for="monuments_inscrit">Le bâtiment est aussi Monument National Inscrit </label>
+        {{ form.monumentsInscrits() }}
+    </div>
+
+    <div class="form-group">
+        <label for="monuments_classes">Le bâtiment est aussi Monument National Classé </label>
+        {{ form.monumentsClasses() }}
     </div>
 
     <p><input type="submit" value="Rechercher"></p>
