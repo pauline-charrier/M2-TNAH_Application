@@ -17,7 +17,7 @@ def recherche(page=1):
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
-    form.periode.choices = [('','')] + [(periode.value, periode.value) for periode in distinct_periode]
+    #form.periode.choices = [('','')] + [(periode.value, periode.value) for periode in distinct_periode]
 
     # initialisation des données de retour dans le cas où il n'y ait pas de requête
     donnees = []
@@ -28,7 +28,7 @@ def recherche(page=1):
         region =  clean_arg(request.form.get("region", None))
         type =  clean_arg(request.form.get("type", None))
         genre =  clean_arg(request.form.getlist("genre", None))
-        periode = clean_arg(request.form.getlist("periode", None))
+        #periode = clean_arg(request.form.getlist("periode", None))
         museeFrance =  clean_arg(request.form.get("musee_france", None))
         monumentsInscrits =  clean_arg(request.form.get("monuments_inscrits", None))
         monumentsClasses =  clean_arg(request.form.get("monuments_classes", None))
@@ -64,6 +64,8 @@ def recherche(page=1):
                     """).fetchall()
                 query_results = query_results.filter(Maisons.id.in_([g.id for g in genre] ))
             
+'''
+
             if periode:
                 periode = db.session.execute("""select a.id from maisons a 
                     inner join personnes b on b.idWikidata = a.idWikidata and siecles_vie == '"""+periode+"""'
@@ -71,7 +73,7 @@ def recherche(page=1):
                 query_results = query_results.filter(Maisons.id.in_([p.id for p in periode] ))
             
             donnees = query_results.order_by(Maisons.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
-
+'''
             # renvoi des filtres de recherche pour préremplissage du formulaire
             form.denomination.data = denomination
             form.region.data = region

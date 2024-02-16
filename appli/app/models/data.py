@@ -31,7 +31,7 @@ class Maisons(db.Model):
     museeFrance = db.Column(db.Boolean)
     monumentsInscrits = db.Column(db.Boolean)
     monumentsClasses = db.Column(db.Boolean)
-    nombreSPR = db.Column(db.Integer)
+    nombreSPR = db.Column(db.Integer, nullable=True)
     type = db.Column(db.Enum(Domaine))
     idWikidata = db.Column(
         db.String(20),  
