@@ -53,10 +53,11 @@ class UpdateMaisons(FlaskForm):
 
 
 class Recherche(FlaskForm):
+    denomination =  StringField("denomination", validators=[])
     type =  SelectField("type", choices=[], validators = [])
     region = SelectField("region", choices=[], validators=[])
     genre = SelectField("genre", choices=[], validators=[])
-    periode = SelectField("periode", choix=[], validators=[])
+    periode = SelectField("periode", choices=[], validators=[])
     museeFrance =  BooleanField("musee_france", validators=[])
     monumentsInscrits =  BooleanField("monuments_inscrits", validators=[])
     monumentsClasses =  BooleanField("monuments_classes", validators=[])

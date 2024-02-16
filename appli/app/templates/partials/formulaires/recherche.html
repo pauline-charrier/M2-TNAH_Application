@@ -2,6 +2,11 @@
     {{ form.hidden_tag() }}
 
     <div class="form-group">
+        <label for="denomination">Dénomination du bâtiment : </label>
+        {{ form.denomination(class_="form-control", placeholder_="Dénomination du bâtiment") }}
+    </div>
+
+    <div class="form-group">
         <label for="genre">Choisir le genre ou la catégorie : </label>
         {{ form.genre(class_="form-control") }}
     </div>

@@ -1,0 +1,86 @@
+
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<!--affichage caché du formulaire-->
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+
+        <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+            aria-controls="collapseExample">
+            Afficher la recherche <i class="fa-solid fa-caret-down"></i>
+    </h3>
+        <div class="collapse " id="collapseExample">
+            <div class="card card-body">
+                {% include "partials/formulaires/recherche.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+
+
+<section class="padding-lg">
+    <div class="container">
+        <div class="row heading heading-icon">
+        <h2>Catalogue des Maisons des Illustres</h2>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    {%if donnees.prev_num %}
+                    <a class="list-group-item list-group-item-action" id="list-list-prev" 
+                         href="{{ url_for('maisons', page=donnees.prev_num) }}" class="btn btn-outline-dark 
+                        {% if donnees.page == 1 %}disabled{% endif %}">
+                            &laquo;
+                    </a>
+                    {% endif %}
+    
+    <ul>
+        {% for maisons in donnees.items %}
+            <li>
+                <div>
+                <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
+                   href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
+                   aria-controls="{{maisons.denomination}}">
+                   {{maisons.denomination}}
+                </a>
+            
+    
+    <div class="btn-group btn-group-sm">
+        <form action="{{ url_for('sup_maison', nom_maison=maison_a_supp) }}" method=post class=del-component>
+            <button class="btn btn-danger">
+                <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>poubelle</input>
+            </button>                            
+        </form>
+    </div>
+    
+    <div class="btn-group btn-group-sm">
+        <a href="{{ url_for('update_maisons', nom_maison=maisons.denomination) }}">
+            <button class="btn btn-info" type="submit">stylo</button>
+        </form>
+    </div>
+    
+    
+            </div>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    {% if donnees.next_num %}
+        <a class="list-group-item list-group-item-action" id="list-list-next" 
+           href="{{ url_for('maisons', page=donnees.next_num) }}"
+           class="btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}">
+           &raquo;
+        </a>
+    {% endif %}
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    
+    {%endblock%}
