@@ -77,7 +77,7 @@ def insertion_personnes():
             nomIllustre =  clean_arg(request.form.get("nom_illustre", None))
             ddn =  clean_arg(request.form.get("ddn", None))
             ddm=  clean_arg(request.form.get("ddm", None))
-            genre =  clean_arg(request.form.getlist("genre", None))
+            genre =  clean_arg(request.form.get("genre", None))
             image =  clean_arg(request.form.get("image", None))
             article =  clean_arg(request.form.get("article", None))
 
