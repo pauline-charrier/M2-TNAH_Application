@@ -63,6 +63,15 @@ def recherche(page=1):
                     inner join personnes b on b.idWikidata = a.idWikiata and b.resource  == '"""+genre+"""'
                     """).fetchall()
                 query_results = query_results.filter(Maisons.id.in_([g.id for g in genre] ))
+
+        form.denomination.data = denomination
+        form.region.data = region
+        form.type.data = type
+
+        return render_template("pages/liste2.html", 
+            sous_titre= "Recherche", 
+            donnees=donnees,
+            form=form)
             
 '''
 
@@ -75,14 +84,7 @@ def recherche(page=1):
             donnees = query_results.order_by(Maisons.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
 '''
             # renvoi des filtres de recherche pour préremplissage du formulaire
-            form.denomination.data = denomination
-            form.region.data = region
-            form.type.data = type
-
-    return render_template("pages/liste2.html", 
-            sous_titre= "Recherche", 
-            donnees=donnees,
-            form=form)
+        
 
 
 '''
