@@ -2,8 +2,6 @@ from ..app import app, db
 from ..utils.transformations import nettoyage_string_to_int
 from enum import Enum
 
-#ajout de commentaire / il faut annoter le code 
-
 class Domaine(Enum):
     TYPE1 = 'Littérature et idées'
     TYPE2 = 'Sciences et industrie'
