@@ -1,6 +1,6 @@
 from ..app import app, db
 from flask import render_template, request
-from sqlalchemy import or_
+from sqlalchemy import or_, text
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
@@ -48,7 +48,7 @@ def recherche(page=1):
                 print(region)
 
             if type : 
-                query_results = query_results.filter(Maisons.type == type)
+                query_results = query_results.filter(Maisons.type == Domaine.obtenir_clef(type))
 
             if museeFrance:
                 query_results = query_results.filter(Maisons.museeFrance == True)
@@ -59,16 +59,21 @@ def recherche(page=1):
             if monumentsClasses:
                 query_results = query_results.filter(Maisons.monumentsClasses == True)
             
-            if genre :
-                genre = db.session.execute("""select a.id from maisons a 
-                    inner join personnes b on b.idWikidata = a.idWikiata and b.genre  == '"""+genre+"""'
-                    """).fetchall()
-                query_results = query_results.filter(Maisons.id.in_([g.id for g in genre] ))
+            if genre:
+                subquery = text("""
+                    SELECT a.id
+                    FROM maisons a
+                    INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND b.genre = :genre
+                    """)
+                genre_ids = [row[0] for row in db.session.execute(subquery, {'genre': Genre.obtenir_clef(genre)})]
 
-            donnees = query_results.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+                query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
+
+            donnees = query_results.paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
             print(donnees)
 
         #form.denomination.data = denomination
+        form.region.data = region
         form.type.data = type
 
     return render_template("pages/resultats_recherche.html", 

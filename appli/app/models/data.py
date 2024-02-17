@@ -9,10 +9,22 @@ class Domaine(Enum):
     TYPE4 = 'Histoire et politique'
     TYPE5 = 'Musique, théâtre et cinéma'
 
+    @classmethod
+    def obtenir_clef(cls, value):
+        for member in cls:
+            if member.value == value:
+                return member.name
+
 class Genre(Enum):
     TYPE1 = 'masc'
     TYPE2 = 'fem'
     TYPE3 = 'couple/famille'
+
+    @classmethod
+    def obtenir_clef(cls, value):
+        for member in cls:
+            if member.value == value:
+                return member.name
 
 class Maisons(db.Model):
     __tablename__ = "maisons"
