@@ -37,6 +37,7 @@ class Maisons(db.Model):
         db.String(20),  
         db.ForeignKey('personnes.idWikidata')) 
     
+    @staticmethod
     def get_distinct_regions():
         distinct_regions = db.session.query(Maisons.region.distinct()).all()
         return [region[0] for region in distinct_regions]

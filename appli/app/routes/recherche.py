@@ -12,7 +12,7 @@ from ..utils.transformations import nettoyage_string_to_int, clean_arg
 def recherche(page=1):
     form = Recherche()
     personnes_instance = Personnes()
-    distinct_periode = personnes_instance.get_distinct_siecles()
+    #distinct_periode = personnes_instance.get_distinct_siecles()
     distinct_regions = Maisons.get_distinct_regions()
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
@@ -27,7 +27,7 @@ def recherche(page=1):
         denomination = clean_arg(request.form.get("region", None))
         region =  clean_arg(request.form.get("region", None))
         type =  clean_arg(request.form.get("type", None))
-        genre =  clean_arg(request.form.getlist("genre", None))
+        genre =  clean_arg(request.form.get("genre", None))
         #periode = clean_arg(request.form.getlist("periode", None))
         museeFrance =  clean_arg(request.form.get("musee_france", None))
         monumentsInscrits =  clean_arg(request.form.get("monuments_inscrits", None))
@@ -35,16 +35,17 @@ def recherche(page=1):
 
         # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
         # dans les données
-        if denomination or region  or type or genre or museeFrance or monumentsClasses or monumentsInscrits or periode :
+        if region or type or genre or museeFrance or monumentsClasses or monumentsInscrits :
             # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
             # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
             query_results = Maisons.query
 
-            if denomination:
-                query_results = query_results.filter(Maisons.denomination.ilike("%"+denomination.lower()+"%")) #.lower ou pas ?
+            #if denomination:
+                #query_results = query_results.filter(Maisons.denomination.ilike("%"+denomination.lower()+"%")) #.lower upper ?
 
             if region : 
                 query_results = query_results.filter(Maisons.region == region)
+                print(region)
 
             if type : 
                 query_results = query_results.filter(Maisons.type == type)
@@ -60,18 +61,20 @@ def recherche(page=1):
             
             if genre :
                 genre = db.session.execute("""select a.id from maisons a 
-                    inner join personnes b on b.idWikidata = a.idWikiata and b.resource  == '"""+genre+"""'
+                    inner join personnes b on b.idWikidata = a.idWikiata and b.genre  == '"""+genre+"""'
                     """).fetchall()
                 query_results = query_results.filter(Maisons.id.in_([g.id for g in genre] ))
 
-        form.denomination.data = denomination
-        form.region.data = region
+            donnees = query_results.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+            print(donnees)
+
+        #form.denomination.data = denomination
         form.type.data = type
 
-        return render_template("pages/liste2.html", 
-            sous_titre= "Recherche", 
-            donnees=donnees,
-            form=form)
+    return render_template("pages/resultats_recherche.html", 
+        sous_titre= "Recherche", 
+        donnees=donnees,
+        form=form)
             
 '''
 
@@ -83,8 +86,6 @@ def recherche(page=1):
             
             donnees = query_results.order_by(Maisons.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
 '''
-            # renvoi des filtres de recherche pour préremplissage du formulaire
-        
 
 
 '''

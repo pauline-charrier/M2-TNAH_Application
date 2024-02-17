@@ -12,7 +12,7 @@
 
             <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
                 aria-controls="collapseExample">
-                Effectuer une recherche <i class="fa-solid fa-caret-down"></i>
+                Effectuer une recherche car pas de resultats <i class="fa-solid fa-caret-down"></i>
         </h3>
             <div class="collapse show" id="collapseExample">
                 <div class="card card-body">
@@ -24,7 +24,7 @@
     </div>
 
     {%else%}
-
+    <!--s'il y a des résultats-->
     <!--affichage caché du formulaire-->
     <div class="row">
         <div class="col-sm-4"></div>
@@ -44,96 +44,70 @@
     </div>
 
     <!-- affichage des résultats-->
-    <h1>Résultats de la recherche </h1>
-    <br>
-    <div class="row">
-        <div class="col-4">
-            <div class="list-group" id="list-tab" role="tablist">
-                {%if donnees.prev_num %}
-                <a class="list-group-item list-group-item-action" id="list-list-prev"
-                    href="{{ url_for('maisons', page=donnees.prev_num) }}" class="btn btn-outline-dark 
-                    {% if donnees.page == 1 %}disabled{% endif %}">
-                    &laquo;
-                </a>
-                {% endif %}
 
-                {% for maison in donnees.items %}
-                {% if (donnees.items).index(maison) == 0 %}
-                <a class="list-group-item list-group-item-action active" id="list-{{maison.id}}-list" data-toggle="list"
-                    href="#list-{{maisons.id}}" role="tab" aria-controls="{{maison.id}}">{{maisons.denomination | safe}}</a>
-                {% else %}
-                <a class="list-group-item list-group-item-action" id="list-{{maison.id}}-list" data-toggle="list"
-                    href="#list-{{maison.id}}" role="tab" aria-controls="{{maison.id}}">{{pays.name | safe}}</a>
-                {% endif %}
-                {% endfor %}
-
-                {%if donnees.next_num %}
-                <a class="list-group-item list-group-item-action" id="list-list-next"
-                    href="{{ url_for('maisons', page=donnees.next_num) }}" class="btn btn-outline-dark 
-                        {% if donnees.page == donnees.pages %}disabled{% endif %}">
-                    &raquo;
-                </a>
-                {% endif %}
+    <section class="padding-lg">
+        <div class="container">
+            <div class="row heading heading-icon">
+            <h2>résultats recherche</h2>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <div class="list-group" id="list-tab" role="tablist">
+                        {%if donnees.prev_num %}
+                        <a class="list-group-item list-group-item-action" id="list-list-prev" 
+                             href="{{ url_for('recherche', page=donnees.prev_num) }}" class="btn btn-outline-dark 
+                            {% if donnees.page == 1 %}disabled{% endif %}">
+                                &laquo;
+                        </a>
+                        {% endif %}
+        
+        <ul>
+            {% for maisons in donnees.items %}
+                <li>
+                    <div>
+                    <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
+                       href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
+                       aria-controls="{{maisons.denomination}}">
+                       {{maisons.denomination}}
+                    </a>
+                
+        
+        <div class="btn-group btn-group-sm">
+            <form action="{{ url_for('sup_maison', nom_maison=maison_a_supp) }}" method=post class=del-component>
+                <button class="btn btn-danger">
+                    <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>poubelle</input>
+                </button>                            
+            </form>
         </div>
-        <div class="col-8">
-            <div class="tab-content" id="nav-tabContent">
-                {% for pays in donnees.items %}
-                {% if (donnees.items).index(pays) == 0 %}
-                <div class="tab-pane fade show active" id="list-{{maison.id}}" role="tabpanel"
-                    aria-labelledby="list-{{pays.id}}-list">
-                    <a href="{{ url_for('info_maisons', nom_maisons=maison.denomination) }}"> Voir les données de {{maison.denomination | safe}}</a>
-                    
+        
+        <div class="btn-group btn-group-sm">
+            <a href="{{ url_for('update_maisons', nom_maison=maisons.denomination) }}">
+                <button class="btn btn-info" type="submit">stylo</button>
+            </form>
+        </div>
+        
+        
                 </div>
-                {% else %}
-                <div class="tab-pane fade " id="list-{{pays.id}}" role="tabpanel"
-                    aria-labelledby="list-{{pays.id}}-list">
-                    <a href="{{ url_for('info_maison', nom_maisons=maison.denomination) }}"> Voir les données de {{maison.denomination | safe}}</a>
-                    
+                </li>
+            {% endfor %}
+        </ul>
+        
+        {% if donnees.next_num %}
+            <a class="list-group-item list-group-item-action" id="list-list-next" 
+               href="{{ url_for('recherche', page=donnees.next_num) }}"
+               class="btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}">
+               &raquo;
+            </a>
+        {% endif %}
+                    </div>
                 </div>
-                {% endif %}
-
-                {% endfor %}
             </div>
-        </div>
-    </div>
+            </div>
+        </section>
 
     {%endif%}
 
-</div>
-<br>
-{% if donnees %}
-<!-- la pagination n'est à afficher que si des résultats sont renvoyés-->
-<div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-5">
-        <a href="{{ url_for('recherche', page=donnees.prev_num) }}" class="btn btn-outline-dark 
-               {% if donnees.page == 1 %}disabled{% endif %}">
-            &laquo;
-        </a>
-        {% for page_num in donnees.iter_pages() %}
-        {% if page_num %}
-        {% if donnees.page == page_num %}
-        <a href="{{ url_for('recherche', page=page_num) }}" class="btn btn-dark">
-            {{ page_num }}
-        </a>
-        {% else %}
-        <a href="{{ url_for('recherche', page=page_num) }}" class="btn btn-outline-dark">
-            {{ page_num }}
-        </a>
-        {% endif %}
-        {% else %}
-        ...
-        {% endif %}
-        {% endfor %}
-        <a href="{{ url_for('recherche', page=donnees.next_num) }}" class="btn btn-outline-dark 
-               {% if donnees.page == donnees.pages %}disabled{% endif %}">
-            &raquo;
-        </a>
-    </div>
-    <div class="col-sm-3"></div>
-</div>
-{%endif%}
-</div>
+
 
 {% endblock %}
