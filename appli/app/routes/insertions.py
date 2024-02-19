@@ -28,11 +28,11 @@ def insertion_maisons():
             longitude =  clean_arg(request.form.get("longitude", None))
             date_label =  clean_arg(request.form.get("date_label", None))
             type =  clean_arg(request.form.get("type", None))
-            museeFrance =  clean_arg(request.form.get("musee_france", None))
-            monumentsInscrits =  clean_arg(request.form.get("monuments_inscrits", None))
-            monumentsClasses =  clean_arg(request.form.get("monuments_classes", None))
-            nombreSPR =  clean_arg(request.form.get("nombre_SPR", None))
-            idWikidata = clean_arg(request.form.get("id_wikidata", None))
+            museeFrance =  clean_arg(request.form.get("museeFrance", None))
+            monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
+            monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
+            nombreSPR =  clean_arg(request.form.get("nombreSPR", None))
+            idWikidata = clean_arg(request.form.get("idWikidata", None))
 
         nouvelle_maison = Maisons(id=id, 
             denomination=denomination,
