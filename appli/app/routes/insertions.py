@@ -46,7 +46,7 @@ def insertion_maisons():
             latitude=latitude,
             longitude=longitude,
             date_label=date_label,
-            type = type,
+            type = Domaine.obtenir_clef(type),
             museeFrance=museeFrance,
             monumentsClasses=monumentsClasses,
             monumentsInscrits=monumentsInscrits,
@@ -73,8 +73,9 @@ def insertion_personnes():
 
     try:
         if form.validate_on_submit():
-            idWikidata =  clean_arg(request.form.get("id_illustre", None))
-            nomIllustre =  clean_arg(request.form.get("nom_illustre", None))
+            print("le formulaire est valide")
+            idWikidata =  clean_arg(request.form.get("idWikidata", None))
+            nomIllustre =  clean_arg(request.form.get("nomIllustre", None))
             ddn =  clean_arg(request.form.get("ddn", None))
             ddm=  clean_arg(request.form.get("ddm", None))
             genre =  clean_arg(request.form.get("genre", None))
@@ -85,14 +86,22 @@ def insertion_personnes():
                 nomIllustre=nomIllustre,
                 ddn=ddn,
                 ddm=ddm,
-                genre=genre,
+                genre=Genre.obtenir_clef(genre),
                 image=image,
                 article=article)
             
-            db.session.add(nouvelle_personne)
-            db.session.commit()
+            personne_existante = Personnes.query.filter_by(idWikidata=idWikidata).first()
+            
+            if personne_existante:
+                flash("L'insertion a échoué. Cette personne existe déjà en base.", 'error')
+                return render_template("pages/insertion_personnes.html", sous_titre="Insertion personne", form=form)
+            
+            else:
+                db.session.add(nouvelle_personne)
+                db.session.commit()
+                print("l'insertion s'est bien déroulée")
 
-            flash("L'insertion du pays "+ nomIllustre + " s'est correctement déroulée", 'info')
+                flash("L'insertion du pays "+ nomIllustre + " s'est correctement déroulée", 'info')
 
     except Exception as e :
         print(e)

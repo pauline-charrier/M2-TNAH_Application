@@ -1,4 +1,4 @@
-<form action="{{url_for('update_maisons', nom_maison=donnees.denomination)}}" method="post" name="update_maisons">
+<form action="{{url_for('update_maisons', nom_maison=donnees.denomination)}}" method="POST" name="update_maisons">
     {{ form.hidden_tag() }}
 
 {%if donnees%}
@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-group">
-        <label for="code_INSEE">Enter le code INSEE de la commune : </label>
+        <label for="code_INSEE">Entrer le code INSEE de la commune : </label>
         {{ form.code_INSEE(class_="form-control") }}
     </div>
 
@@ -40,6 +40,11 @@
     <div class="form-group">
         <label for="region">Région d'appartenance : </label>
         {{ form.region(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="pays">Pays : </label>
+        {{ form.pays(class_="form-control") }}
     </div>
 
     <div class="form-group">
@@ -68,16 +73,17 @@
         <label for="musee_france">Le bâtiment est aussi Musée de France </label>
         {{ form.museeFrance() }}
     </div>
-
+    
     <div class="form-group">
         <label for="monuments_inscrit">Le bâtiment est aussi Monument National Inscrit </label>
         {{ form.monumentsInscrits() }}
     </div>
-
+    
     <div class="form-group">
         <label for="monuments_classes">Le bâtiment est aussi Monument National Classé </label>
         {{ form.monumentsClasses() }}
     </div>
+    
 
     <div class="form-group">
         <label for="nombre_SPR">Nombre de Sites Patrimoniaux Remarquables dans la commune : </label>

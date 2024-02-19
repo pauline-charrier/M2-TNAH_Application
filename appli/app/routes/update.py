@@ -32,11 +32,11 @@ def update_maisons(nom_maison):
             longitude =  clean_arg(request.form.get("longitude", None))
             date_label =  clean_arg(request.form.get("date_label", None))
             type =  clean_arg(request.form.get("type", None))
-            museeFrance =  clean_arg(request.form.get("musee_france", None))
-            monumentsInscrits =  clean_arg(request.form.get("monuments_inscrits", None))
-            monumentsClasses =  clean_arg(request.form.get("monuments_classes", None))
-            nombreSPR =  clean_arg(request.form.get("nombre_SPR", None))
-            idWikidata = clean_arg(request.form.get("id_wikidata", None))
+            museeFrance =  clean_arg(request.form.get("museeFrance", None))
+            monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
+            monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
+            nombreSPR =  clean_arg(request.form.get("nombreSPR", None))
+            idWikidata = clean_arg(request.form.get("idWikidata", None))
 
 
         # Récupérer l'objet Maison à mettre à jour
@@ -56,7 +56,7 @@ def update_maisons(nom_maison):
                 maison_a_mettre_a_jour.latitude = latitude
                 maison_a_mettre_a_jour.longitude = longitude
                 maison_a_mettre_a_jour.date_label = date_label
-                maison_a_mettre_a_jour.type = Domaine[type]
+                maison_a_mettre_a_jour.type = Domaine.obtenir_clef(type)
                 maison_a_mettre_a_jour.museeFrance = museeFrance
                 maison_a_mettre_a_jour.monumentsInscrits = monumentsInscrits
                 maison_a_mettre_a_jour.monumentsClasses = monumentsClasses

@@ -24,14 +24,14 @@ def recherche(page=1):
 
     if form.validate_on_submit():
         # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
-        denomination = clean_arg(request.form.get("region", None))
+        denomination = clean_arg(request.form.get("denomination", None))
         region =  clean_arg(request.form.get("region", None))
         type =  clean_arg(request.form.get("type", None))
         genre =  clean_arg(request.form.get("genre", None))
         #periode = clean_arg(request.form.getlist("periode", None))
-        museeFrance =  clean_arg(request.form.get("musee_france", None))
-        monumentsInscrits =  clean_arg(request.form.get("monuments_inscrits", None))
-        monumentsClasses =  clean_arg(request.form.get("monuments_classes", None))
+        museeFrance =  clean_arg(request.form.get("museeFrance", None))
+        monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
+        monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
 
         # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
         # dans les données
@@ -40,8 +40,9 @@ def recherche(page=1):
             # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
             query_results = Maisons.query
 
-            #if denomination:
-                #query_results = query_results.filter(Maisons.denomination.ilike("%"+denomination.lower()+"%")) #.lower upper ?
+            #le filtre denomination ne fonctionne pas
+            if denomination:
+                query_results = query_results.filter(Maisons.denomination.ilike("%"+denomination+"%")) #.lower upper ?
 
             if region : 
                 query_results = query_results.filter(Maisons.region == region)
