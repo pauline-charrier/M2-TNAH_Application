@@ -11,7 +11,7 @@ from ..utils.transformations import nettoyage_string_to_int, clean_arg
 @app.route("/recherche/<int:page>", methods=['GET', 'POST'])
 def recherche(page=1):
     form = Recherche()
-    personnes_instance = Personnes()
+    #personnes_instance = Personnes()
     #distinct_periode = personnes_instance.get_distinct_siecles()
     distinct_regions = Maisons.get_distinct_regions()
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]

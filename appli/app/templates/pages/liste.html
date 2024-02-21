@@ -32,7 +32,7 @@
         
 
 <div class="btn-group btn-group-sm">
-    <form action="{{ url_for('sup_maison', nom_maison=maison_a_supp) }}" method=post class=del-component>
+    <form action="{{ url_for('sup_maison', nom_maison=maisons.denomination) }}" method="post" class=del-component>
         <button class="btn btn-danger">
             <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>poubelle</input>
         </button>                            
