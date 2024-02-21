@@ -23,6 +23,7 @@ def sup_maison(nom_maison):
 
     except Exception as e :
         print(e)
-    
+        flash('Une erreur s\'est produite lors de la suppression de la maison.', 'error')
+
     return redirect(url_for('maisons'))
 
