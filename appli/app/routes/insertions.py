@@ -19,7 +19,7 @@ def insertion_maisons():
             denomination =  clean_arg(request.form.get("denomination", None))
             adresse =  clean_arg(request.form.get("adresse", None))
             commune =  clean_arg(request.form.get("commune", None))
-            code_postal =  clean_arg(request.form.getlist("code_postal", None))
+            code_postal =  clean_arg(request.form.get("code_postal", None))
             code_INSEE =  clean_arg(request.form.get("code_INSEE", None))
             dpmt =  clean_arg(request.form.get("dpmt", None))
             region =  clean_arg(request.form.get("region", None))
