@@ -47,16 +47,22 @@ def insertion_maisons():
             longitude=longitude,
             date_label=date_label,
             type = Domaine.obtenir_clef(type),
-            museeFrance=museeFrance,
-            monumentsClasses=monumentsClasses,
-            monumentsInscrits=monumentsInscrits,
+            museeFrance=True if museeFrance == 'y' else False,
+            monumentsClasses=True if monumentsClasses == 'y' else False,
+            monumentsInscrits=True if monumentsInscrits == 'y' else False,
             nombreSPR=nombreSPR, 
             idWikidata=idWikidata)
-
-        db.session.add(nouvelle_maison)
-        db.session.commit()
-
-        flash("L'insertion du pays "+ denomination + " s'est correctement déroulée", 'info')
+        
+        maison_existante = Maisons.query.filter_by(idWikidata=idWikidata).first()
+            
+        if maison_existante:
+            flash("L'insertion a échoué. Cette personne existe déjà en base.", 'error')
+            return render_template("pages/insertion_personnes.html", sous_titre="Insertion personne", form=form)
+        else:
+            db.session.add(nouvelle_maison)
+            db.session.commit()
+            flash("L'insertion du pays "+ denomination + " s'est correctement déroulée", 'info')
+            print("insertion faite")
     
     except Exception as e :
         print(e)

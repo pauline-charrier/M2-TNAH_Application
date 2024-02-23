@@ -32,6 +32,7 @@ class InsertionMaison(FlaskForm):
     type =  SelectField("type", choices=[], validators = [])
     idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
 
+
 class UpdateMaisons(FlaskForm):
     id =  StringField("id", validators=[DataRequired()]) 
     denomination =  StringField("denomination", validators=[])
@@ -59,7 +60,7 @@ class Recherche(FlaskForm):
     region = SelectField("region", choices=[], validators=[])
     genre = SelectField("genre", choices=[], validators=[])
     #periode = SelectField("periode", choices=[], validators=[])
-    museeFrance =  BooleanField("musee_france", validators=[])
-    monumentsInscrits =  BooleanField("monuments_inscrits", validators=[])
-    monumentsClasses =  BooleanField("monuments_classes", validators=[])
+    museeFrance =  BooleanField("musee_france", default=False)
+    monumentsInscrits =  BooleanField("monuments_inscrits", default=False)
+    monumentsClasses =  BooleanField("monuments_classes", default=False)
 

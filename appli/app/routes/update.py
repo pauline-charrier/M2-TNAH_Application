@@ -57,9 +57,9 @@ def update_maisons(nom_maison):
                 maison_a_mettre_a_jour.longitude = longitude
                 maison_a_mettre_a_jour.date_label = date_label
                 maison_a_mettre_a_jour.type = Domaine.obtenir_clef(type)
-                maison_a_mettre_a_jour.museeFrance = museeFrance
-                maison_a_mettre_a_jour.monumentsInscrits = monumentsInscrits
-                maison_a_mettre_a_jour.monumentsClasses = monumentsClasses
+                maison_a_mettre_a_jour.museeFrance = True if museeFrance == 'y' else False
+                maison_a_mettre_a_jour.monumentsInscrits = True if monumentsInscrits == 'y' else False
+                maison_a_mettre_a_jour.monumentsClasses = True if monumentsClasses == 'y' else False
                 maison_a_mettre_a_jour.nombreSPR = nombreSPR
                 maison_a_mettre_a_jour.idWikidata = idWikidata
 
