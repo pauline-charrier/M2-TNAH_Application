@@ -80,7 +80,8 @@ def recherche(page=1):
     return render_template("pages/resultats_recherche.html", 
         sous_titre= "Recherche", 
         donnees=donnees,
-        form=form)
+        form=form, 
+        page=page)
             
 '''
 

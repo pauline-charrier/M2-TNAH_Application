@@ -67,8 +67,9 @@ def update_maisons(nom_maison):
                 db.session.commit()
                 print("insertion faite")
 
-                # Rediriger vers une page de confirmation ou une autre page appropriée
-                #return redirect(url_for('info_maisons', nom_maisons=nom_maison))
+                #Rediriger vers une page de confirmation ou une autre page appropriée
+                return redirect(url_for('info_maisons', nom_maisons=nom_maison))
+                
             else:
                 print("Aucun information sur cette maison.")
     except Exception as e:

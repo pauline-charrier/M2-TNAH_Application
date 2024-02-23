@@ -63,6 +63,7 @@ def insertion_maisons():
             db.session.commit()
             flash("L'insertion du pays "+ denomination + " s'est correctement déroulée", 'info')
             print("insertion faite")
+            #ou return redirect(url_for('info_maisons', nom_maisons=nouvelle_maison.denomination)) ???
     
     except Exception as e :
         print(e)
