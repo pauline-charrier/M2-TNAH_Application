@@ -14,6 +14,12 @@ class Domaine(Enum):
         for member in cls:
             if member.value == value:
                 return member.name
+    
+    @classmethod
+    def obtenir_valeur(cls, cle):
+        for member in cls:
+            if member.name == cle:
+                return member.value
 
     @classmethod
     def comparer_valeurs(cls, value):

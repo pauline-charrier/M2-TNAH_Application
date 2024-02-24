@@ -8,6 +8,7 @@ from ..utils.transformations import  clean_arg
 '''
 Problèmes avec la route insertion : ca ne fonctionne pas si on ne renseigne pas le nb de SPR
 Peut-être en faire un selectfield dans le formulaire avec 123 ... 10 ou valeur nulle
+réglé changé pour un selectfield
 '''
 
 @app.route("/insertions/maisons", methods=['GET', 'POST'])
