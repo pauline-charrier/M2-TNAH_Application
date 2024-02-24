@@ -49,7 +49,7 @@ class UpdateMaisons(FlaskForm):
     museeFrance =  BooleanField("musee_france", validators=[])
     monumentsInscrits =  BooleanField("monuments_inscrits", validators=[])
     monumentsClasses =  BooleanField("monuments_classes", validators=[])
-    nombreSPR =  IntegerField("nombre_SPR", validators=[])
+    nombreSPR =  IntegerField("nombre_SPR", validators=[]) 
     type =  SelectField("type", choices=[], validators = [])
     idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
 

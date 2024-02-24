@@ -5,6 +5,11 @@ from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import InsertionMaison, InsertionPersonne
 from ..utils.transformations import  clean_arg
 
+'''
+Problèmes avec la route insertion : ca ne fonctionne pas si on ne renseigne pas le nb de SPR
+Peut-être en faire un selectfield dans le formulaire avec 123 ... 10 ou valeur nulle
+'''
+
 @app.route("/insertions/maisons", methods=['GET', 'POST'])
 def insertion_maisons():
     distinct_regions = Maisons.get_distinct_regions()
@@ -53,11 +58,11 @@ def insertion_maisons():
             nombreSPR=nombreSPR, 
             idWikidata=idWikidata)
         
-        maison_existante = Maisons.query.filter_by(idWikidata=idWikidata).first()
+        maison_existante = Maisons.query.filter_by(id=id).first()
             
         if maison_existante:
-            flash("L'insertion a échoué. Cette personne existe déjà en base.", 'error')
-            return render_template("pages/insertion_personnes.html", sous_titre="Insertion personne", form=form)
+            flash("L'insertion a échoué. Cette maison existe déjà en base.", 'error')
+            return render_template("pages/insertion_maisons.html", sous_titre="Insertion maison", form=form)
         else:
             db.session.add(nouvelle_maison)
             db.session.commit()
@@ -72,6 +77,7 @@ def insertion_maisons():
     return render_template("pages/insertion_maisons.html", 
             sous_titre= "Insertion maisons" , 
             form=form)
+
 
 @app.route("/insertions/personnes", methods=['GET', 'POST'])
 def insertion_personnes():

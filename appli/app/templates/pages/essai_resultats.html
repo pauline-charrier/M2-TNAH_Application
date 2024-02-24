@@ -1,0 +1,15 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+{%if donnees %}
+<ul>
+    {%for maisons in donnees %}
+    <li>{{maisons.denomination}}{{maisons.id}}</li>
+    {%endfor%}
+</ul>
+{%else%}
+<p>Pas de données</p>
+{%endif%}
+
+{% endblock %}

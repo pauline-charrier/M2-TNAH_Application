@@ -1,11 +1,14 @@
 from ..app import app, db
-from flask import render_template, request
-from sqlalchemy import or_, text
+from flask import render_template, request, flash
+from sqlalchemy import or_, text, func
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
-
+'''
+Sur la route recherche, le .paginate ne fonctionne pas, 
+le filtre sur le nom du bâtiment ne fonctionne pas non plus
+'''
 
 @app.route("/recherche", methods=['GET', 'POST'])
 @app.route("/recherche/<int:page>", methods=['GET', 'POST'])
@@ -39,10 +42,9 @@ def recherche(page=1):
             # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
             # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
             query_results = Maisons.query
-
-            #le filtre denomination ne fonctionne pas
+#ce filtre ne fonctionne pas
             if denomination:
-                query_results = query_results.filter(Maisons.denomination.ilike("%"+denomination+"%")) #.lower upper ?
+                query_results = query_results.filter(func.lower(Maisons.denomination).ilike("%"+denomination+"%".lower()))
 
             if region : 
                 query_results = query_results.filter(Maisons.region == region)
@@ -70,8 +72,11 @@ def recherche(page=1):
 
                 query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
 
-            donnees = query_results.paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+            donnees = query_results.all()
+            #paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
             print(donnees)
+
+#le .paginate ne fonctionne pas 
 
         form.denomination.data = denomination
         form.region.data = region
@@ -87,7 +92,7 @@ def recherche(page=1):
         page=page)
             
 '''
-
+essai avorté sur une recherche en fonction de la période
             if periode:
                 periode = db.session.execute("""select a.id from maisons a 
                     inner join personnes b on b.idWikidata = a.idWikidata and siecles_vie == '"""+periode+"""'
@@ -97,7 +102,14 @@ def recherche(page=1):
             donnees = query_results.order_by(Maisons.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
 '''
 
-
+'''
+Problème avec la route de la barre de recherche : elle envoie des faux positifs -_-' Waruuuuum !!
+20 maisons, toujours les mêmes 
+[<Maisons MI189>, <Maisons MI154>, <Maisons MI236>, <Maisons MI047>, <Maisons MI029>, 
+<Maisons MI158>, <Maisons MI010>, <Maisons MI237>, <Maisons MI239>, <Maisons MI240>, 
+<Maisons MI241>, <Maisons MI243>, <Maisons MI244>, <Maisons MI102>, <Maisons MI246>, 
+<Maisons MI247>, <Maisons MI066>, <Maisons MI249>, <Maisons MI093>, <Maisons MI250>, <Maisons MI251>]
+'''
 
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")
@@ -110,27 +122,39 @@ def recherche_rapide(page=1):
                 FROM maisons a
                 INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND b.nomIllustre like '%"""+chaine+"""%' or b.ddn like '%"""+chaine+"""%' or b.ddm like '%"""+chaine+"""%'
                 """)
-        personnes_ids = [row[0] for row in db.session.execute(subquery)]
+        personnes_ids = [row[0] for row in db.session.execute(subquery)]#ok fonctionne
 
-        domaines = Domaine.comparer_valeurs(chaine)
+        domaines = Domaine.comparer_valeurs(chaine)#ok fonctionne
 
         resultats = Maisons.query.\
             filter(
                 or_(
-                    Maisons.denomination.ilike("%"+chaine+"%"),
-                    Maisons.region.ilike("%"+chaine+"%"),
-                    Maisons.commune.ilike("%"+chaine+"%"),
-                    Maisons.id.in_(personnes_ids),
-                    Maisons.type == domaines
+                    func.lower(Maisons.denomination).ilike("%"+chaine.lower()+"%"),#ok fonctionne
+                    func.lower(Maisons.region).ilike("%"+chaine.lower()+"%"),#ok fonctionne
+                    func.lower(Maisons.commune).ilike("%"+chaine.lower()+"%"),#ok fonctionne sauf pb avec les accents (par exemple on trouve chamb mais pas chambéry)
+                    Maisons.id.in_(personnes_ids),#ok fonctionn
+                    Maisons.type == domaines#ok fonctionne
                 )
             ).\
             distinct(Maisons.denomination).\
-            order_by(Maisons.denomination).\
-            paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+            order_by(Maisons.denomination).all()
+        #.\
+            #paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+        #pareil : le .paginate ne fonctionen pas. On passe de /recherche/1 à maisons/2
+        
+        if resultats:
+            print(resultats)
+            print(personnes_ids)
+            print(domaines)
+        else:
+            print("il n'y a pas de résultats")
+            flash("Pas de résultats, effectuer une nouvelle recherche")
+
     else:
         resultats = None
         
-    return render_template("pages/resultats_recherche_full_texte.html", 
+        
+    return render_template("pages/essai_resultats.html", 
             sous_titre= "Recherche | " + chaine, 
             donnees=resultats,
             requete=chaine)

@@ -5,11 +5,18 @@ from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import InsertionMaison, InsertionPersonne, UpdateMaisons
 from ..utils.transformations import clean_arg
 
+
+'''
+Problème avec la route update : 
+populate le formulaire avec les données de la maison 
+ne prend pas le nb de spr ni le domaine
+'''
+
 @app.route("/update/maisons/<string:nom_maison>", methods=['GET', 'POST'])
 def update_maisons(nom_maison):
     distinct_regions = Maisons.get_distinct_regions()
     donnees= Maisons.query.filter(Maisons.denomination == nom_maison).first()
-    form = UpdateMaisons(obj=donnees)
+    form = UpdateMaisons(obj=donnees) #ne prends pas les valeurs pour nb de SPR et pour domaine
     form.idWikidata.choices = [('','')] + [(personnes.idWikidata, personnes.idWikidata) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
