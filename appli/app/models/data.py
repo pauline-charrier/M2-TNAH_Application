@@ -15,6 +15,12 @@ class Domaine(Enum):
             if member.value == value:
                 return member.name
 
+    @classmethod
+    def comparer_valeurs(cls, value):
+        for member in cls:
+            if value.lower() in member.value.lower():
+                return member.name
+
 class Genre(Enum):
     TYPE1 = 'masc'
     TYPE2 = 'fem'

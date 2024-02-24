@@ -73,9 +73,12 @@ def recherche(page=1):
             donnees = query_results.paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
             print(donnees)
 
-        #form.denomination.data = denomination
+        form.denomination.data = denomination
         form.region.data = region
         form.type.data = type
+        form.museeFrance.data = museeFrance
+        form.monumentsClasses.data=monumentsClasses
+        form.monumentsInscrits.data=monumentsClasses
 
     return render_template("pages/resultats_recherche.html", 
         sous_titre= "Recherche", 
@@ -95,41 +98,40 @@ def recherche(page=1):
 '''
 
 
-'''
+
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")
 def recherche_rapide(page=1):
     chaine =  request.args.get("chaine", None)
 
     if chaine:
-        resources = db.session.execute("""select a.id from country a 
-            inner join country_resources b on b.id = a.id 
-            inner join resources c on c.name = b.resource and (c.name like '%"""+chaine+"""%' or  c.id like '%"""+chaine+"""%')
-            """).fetchall()
-        
-        maps = db.session.execute("""select a.id from country a 
-            inner join country_map b on b.id = a.id 
-            inner join map  c on c.name = b.map_ref and (c.name like '%"""+chaine+"""%' or  c.id like '%"""+chaine+"""%')
-            """).fetchall()
+        subquery = text("""
+                SELECT a.id
+                FROM maisons a
+                INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND b.nomIllustre like '%"""+chaine+"""%' or b.ddn like '%"""+chaine+"""%' or b.ddm like '%"""+chaine+"""%'
+                """)
+        personnes_ids = [row[0] for row in db.session.execute(subquery)]
 
-        resultats = Country.query.\
+        domaines = Domaine.comparer_valeurs(chaine)
+
+        resultats = Maisons.query.\
             filter(
                 or_(
-                    Country.name.ilike("%"+chaine+"%"),
-                    Country.type.ilike("%"+chaine+"%"),
-                    Country.Introduction.ilike("%"+chaine+"%"),
-                    Country.id.in_([r.id for r in resources] + [m.id for m in maps])
+                    Maisons.denomination.ilike("%"+chaine+"%"),
+                    Maisons.region.ilike("%"+chaine+"%"),
+                    Maisons.commune.ilike("%"+chaine+"%"),
+                    Maisons.id.in_(personnes_ids),
+                    Maisons.type == domaines
                 )
             ).\
-            distinct(Country.name).\
-            order_by(Country.name).\
-            paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
+            distinct(Maisons.denomination).\
+            order_by(Maisons.denomination).\
+            paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
     else:
         resultats = None
         
-    return render_template("pages/resultats_recherche_pays.html", 
+    return render_template("pages/resultats_recherche_full_texte.html", 
             sous_titre= "Recherche | " + chaine, 
             donnees=resultats,
             requete=chaine)
 
-'''
