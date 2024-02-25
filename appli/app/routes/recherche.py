@@ -76,6 +76,7 @@ def recherche(page_num=1):
 
 #le .paginate ne fonctionne pas pourquoi ???????????  
 
+        #pré-remplir le formulaire pour la prochaine recherche
         form.denomination.data = denomination
         form.region.data = region
         form.type.data = type
@@ -156,5 +157,6 @@ def recherche_rapide(page=1):
     return render_template("pages/essai_resultats.html", 
             sous_titre= "Recherche | " + chaine, 
             donnees=resultats,
+            init=init,
             requete=chaine)
 
