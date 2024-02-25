@@ -1,4 +1,6 @@
 import re
+from flask import flash
+from sqlalchemy import func, case
 
 def nettoyage_string_to_int(chaine):
     # Dans le cas où plusieurs informations sont données dans la chaine comme 
@@ -33,3 +35,34 @@ def clean_arg(arg):
         return None
     else:
         return arg
+    
+def normaliser(expression):
+    expression = func.lower(expression)
+    return case(
+        (expression.like('%á%'), 'a'),
+        (expression.like('%é%'), 'e'),
+        (expression.like('%ê%'), 'e'),
+        (expression.like('%è%'), 'e'),
+    else_=expression)
+
+
+def supprimer_accents(chaine):
+    accents = {
+        'à': 'a', 'â': 'a', 'ä': 'a',
+        'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+        'î': 'i', 'ï': 'i',
+        'ô': 'o', 'ö': 'o',
+        'ù': 'u', 'û': 'u', 'ü': 'u',
+        'ç': 'c',
+        'À': 'A', 'Â': 'A', 'Ä': 'A',
+        'É': 'E', 'È': 'E', 'Ê': 'E', 'Ë': 'E',
+        'Î': 'I', 'Ï': 'I',
+        'Ô': 'O', 'Ö': 'O',
+        'Ù': 'U', 'Û': 'U', 'Ü': 'U',
+        'Ç': 'C'
+    }
+
+    for accent, sans_accent in accents.items():
+        chaine = chaine.replace(accent, sans_accent)
+
+    return chaine

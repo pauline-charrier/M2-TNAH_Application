@@ -18,7 +18,8 @@ def update_maisons(nom_maison):
     distinct_regions = Maisons.get_distinct_regions()
     donnees= Maisons.query.filter(Maisons.denomination == nom_maison).first()
     form = UpdateMaisons(obj=donnees) #ne prends pas les valeurs pour domaine
-    #form.type.data = Domaine.obtenir_valeur(donnees.type)
+    #valeur_domaine = Domaine.obtenir_valeur(donnees.type)
+    #form.type.data = Domaine.obtenir_valeur(valeur_domaine)
     #ne fonctionne pas
     form.idWikidata.choices = [('','')] + [(personnes.idWikidata, personnes.idWikidata) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
@@ -75,7 +76,7 @@ def update_maisons(nom_maison):
 
                 # Effectuez l'opération de mise à jour
                 db.session.commit()
-                print("insertion faite")
+                print("mise à jour effectuée")
 
                 #Rediriger vers une page de confirmation ou une autre page appropriée
                 return redirect(url_for('info_maisons', nom_maisons=nom_maison))

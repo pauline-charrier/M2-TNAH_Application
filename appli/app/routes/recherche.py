@@ -3,7 +3,7 @@ from flask import render_template, request, flash
 from sqlalchemy import or_, text, func
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
-from ..utils.transformations import nettoyage_string_to_int, clean_arg
+from ..utils.transformations import nettoyage_string_to_int, clean_arg, normaliser, supprimer_accents
 
 '''
 Sur la route recherche, le .paginate ne fonctionne pas, 
@@ -117,6 +117,7 @@ def recherche_rapide(page=1):
     chaine =  request.args.get("chaine", None)
 
     if chaine:
+        chaine = supprimer_accents(chaine)
         subquery = text("""
                 SELECT a.id
                 FROM maisons a
@@ -129,9 +130,9 @@ def recherche_rapide(page=1):
         resultats = Maisons.query.\
             filter(
                 or_(
-                    func.lower(Maisons.denomination).ilike("%"+chaine.lower()+"%"),#ok fonctionne
-                    func.lower(Maisons.region).ilike("%"+chaine.lower()+"%"),#ok fonctionne
-                    func.lower(Maisons.commune).ilike("%"+chaine.lower()+"%"),#ok fonctionne sauf pb avec les accents (par exemple on trouve chamb mais pas chambéry)
+                    normaliser(Maisons.denomination).ilike("%"+chaine.lower()+"%"),#ok fonctionne
+                    normaliser(Maisons.region).ilike("%"+chaine.lower()+"%"),#ok fonctionne
+                    normaliser(Maisons.commune).ilike("%"+chaine.lower()+"%"),#ok fonctionne sauf pb avec les accents (par exemple on trouve chamb mais pas chambéry)
                     Maisons.id.in_(personnes_ids),#ok fonctionn
                     Maisons.type == domaines#ok fonctionne
                 )

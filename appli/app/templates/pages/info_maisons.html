@@ -15,16 +15,19 @@
         <label>Nom :</label>
         <span>{{donnees.denomination}}</span>
     </div>
-  
+    
     <div class="info">
         <label>adresse : </label>
         <span>{{donnees.adresse}} {{donnees.code_postal}} {{donnees.commune}} {{donnees.region}} {{donnees.pays}}</span>
     </div>
 
+
+    {% if donnees.type is not none and donnees.type != '' %}
     <div class="info">
         <label>Domaine de virtuosité dans lequel l'illustre laissa une trace indélébile :</label>
         <span>{{donnees.type.value}}</span>
     </div>
+{%endif%}
 
 {%if donnees.museeFrance == 1%}
     <div class="info">
