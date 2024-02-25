@@ -1,6 +1,6 @@
 from ..app import app, db
 from flask import render_template, request, flash, redirect, url_for
-from sqlalchemy import distinct
+from sqlalchemy import distinct, text
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import InsertionMaison, InsertionPersonne, UpdateMaisons
 from ..utils.transformations import clean_arg
@@ -21,7 +21,8 @@ def update_maisons(nom_maison):
     #valeur_domaine = Domaine.obtenir_valeur(donnees.type)
     #form.type.data = Domaine.obtenir_valeur(valeur_domaine)
     #ne fonctionne pas
-    form.idWikidata.choices = [('','')] + [(personnes.idWikidata, personnes.idWikidata) for personnes in Personnes.query.all()]
+    #form.idWikidata.choices = [('','')] + [(personnes.idWikidata, personnes.idWikidata) for personnes in Personnes.query.all()]
+    form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
 
@@ -47,11 +48,15 @@ def update_maisons(nom_maison):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             nombreSPR =  clean_arg(request.form.get("nombreSPR", None))
-            idWikidata = clean_arg(request.form.get("idWikidata", None))
+            nomIllustre = clean_arg(request.form.get("nomIllustre", None))
+
+            if nomIllustre:
+                id_pers = Personnes.query.filter(Personnes.nomIllustre == nomIllustre).first()
 
 
         # Récupérer l'objet Maison à mettre à jour
             maison_a_mettre_a_jour = Maisons.query.filter(Maisons.denomination == nom_maison).first()
+
 
             # Vérifier si l'objet existe
             if maison_a_mettre_a_jour:
@@ -72,7 +77,9 @@ def update_maisons(nom_maison):
                 maison_a_mettre_a_jour.monumentsInscrits = True if monumentsInscrits == 'y' else False
                 maison_a_mettre_a_jour.monumentsClasses = True if monumentsClasses == 'y' else False
                 maison_a_mettre_a_jour.nombreSPR = nombreSPR
-                maison_a_mettre_a_jour.idWikidata = idWikidata
+                if nomIllustre:
+                    pers_a_lier = Personnes.query.filter(Personnes.nomIllustre == nomIllustre).first()
+                    maison_a_mettre_a_jour.idWikidata = pers_a_lier.idWikidata
 
                 # Effectuez l'opération de mise à jour
                 db.session.commit()
