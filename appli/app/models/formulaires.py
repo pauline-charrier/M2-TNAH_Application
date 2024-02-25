@@ -51,7 +51,6 @@ class UpdateMaisons(FlaskForm):
     monumentsClasses =  BooleanField("monuments_classes", validators=[])
     nombreSPR =  SelectField("Nombre_SPR", choices=[(None, '')] + [(i, str(i)) for i in range(1, 11)]) 
     type =  SelectField("type", choices=[], validators = [])
-    #idWikidata =  SelectField("id_wikidata", choices = [], validators=[])
     nomIllustre = SelectField("nomIllustre", choices = [], validators=[])
 
 

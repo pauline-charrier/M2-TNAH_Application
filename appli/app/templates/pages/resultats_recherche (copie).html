@@ -85,30 +85,7 @@
             {% endfor %}
         </ul>
         
-        <nav aria-label="research-pagination">
-            <ul class="pagination">
-              {%- for page in donnees.iter_pages() %}
-                  {% if page %}
-          
-                    {% if page != donnees.page %}
-                      <li class="page-item">
-                          <a class="page-link" href="{{ url_for('recherche', page_num=page) }}">{{page}}</a>
-                      </li>
-                    {% else %}
-                      <li class="page-item active disabled">
-                        <a class="page-link">{{page}} <span class="sr-only">(actuelle)</span></a>
-                      </li>
-                    {% endif %}
-          
-                  {% else %}
-                      <li class="page-item disabled">
-                        <a class="page-link">...</a>
-                      </li>
-                  {% endif %}
-          
-              {%- endfor %}
-            </ul>
-          </nav>
+        
 
                     </div>
                 </div>

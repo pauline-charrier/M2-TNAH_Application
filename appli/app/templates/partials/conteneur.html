@@ -9,6 +9,7 @@
     {% block js %}{%endblock%}
     {% block css %}{%endblock%}
 
+
 </head>
 
 <body>
@@ -26,14 +27,25 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Page 1</a>
+                    <div class="dropdown">
+                      <button class="btn btn-light btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Gestion des enregistrements
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="{{url_for('insertion_maisons')}}">Insérer une maison</a>
+                          <a class="dropdown-item" href="{{url_for('insertion_personnes')}}">Insérer une personne</a>
+                          <a class="dropdown-item" href="#">Liste des personnes</a>
+                      </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Page 2</a>
+                    <a class="nav-link" href="#">Carte</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Page 3</a>
+                    <a class="nav-link" href="#">Graphiques</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('recherche')}}">Recherche</a>
+              </li>
             </ul>
         </div>
     </div>

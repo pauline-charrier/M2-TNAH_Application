@@ -11,16 +11,13 @@ le filtre sur le nom du bâtiment ne fonctionne pas non plus
 '''
 
 @app.route("/recherche", methods=['GET', 'POST'])
-@app.route("/recherche/<int:page>", methods=['GET', 'POST'])
-def recherche(page=1):
+@app.route("/recherche/<int:page_num>", methods=['GET', 'POST'])
+def recherche(page_num=1):
     form = Recherche()
-    #personnes_instance = Personnes()
-    #distinct_periode = personnes_instance.get_distinct_siecles()
     distinct_regions = Maisons.get_distinct_regions()
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
-    #form.periode.choices = [('','')] + [(periode.value, periode.value) for periode in distinct_periode]
 
     # initialisation des données de retour dans le cas où il n'y ait pas de requête
     donnees = []
@@ -73,10 +70,11 @@ def recherche(page=1):
                 query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
 
             donnees = query_results.all()
-            #paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
-            print(donnees)
+            #.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+            #print(donnees)
+            #print(donnees.items)
 
-#le .paginate ne fonctionne pas 
+#le .paginate ne fonctionne pas pourquoi ???????????  
 
         form.denomination.data = denomination
         form.region.data = region
@@ -85,11 +83,11 @@ def recherche(page=1):
         form.monumentsClasses.data=monumentsClasses
         form.monumentsInscrits.data=monumentsClasses
 
-    return render_template("pages/resultats_recherche.html", 
+    return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
         donnees=donnees,
         form=form, 
-        page=page)
+        page=page_num)
             
 '''
 essai avorté sur une recherche en fonction de la période

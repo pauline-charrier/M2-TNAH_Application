@@ -6,18 +6,32 @@ from ..models.formulaires import InsertionMaison, InsertionPersonne, UpdateMaiso
 from ..utils.transformations import clean_arg
 
 
-'''
-Problème avec la route update : 
-populate le formulaire avec les données de la maison 
-ne prend pas le nb de spr ni le domaine
-sprréglé car changement dans le formualaire de integer à selectfield
-'''
-
 @app.route("/update/maisons/<string:nom_maison>", methods=['GET', 'POST'])
 def update_maisons(nom_maison):
     distinct_regions = Maisons.get_distinct_regions()
-    donnees= Maisons.query.filter(Maisons.denomination == nom_maison).first()
-    form = UpdateMaisons(obj=donnees) #ne prends pas les valeurs pour domaine
+    maison= Maisons.query.filter(Maisons.denomination == nom_maison).first()
+    personne = Personnes.query.filter(Personnes.idWikidata == str(maison.idWikidata)).first()
+    form = UpdateMaisons() 
+    # Remplir le formulaire avec les données en base
+    form.id.data = maison.id
+    form.denomination.data = maison.denomination
+    form.code_postal.data = maison.code_postal
+    form.adresse.data = maison.adresse
+    form.commune.data = maison.commune
+    form.dpmt.data = maison.dpmt
+    form.region.data = maison.region
+    form.code_INSEE.data = maison.code_INSEE
+    form.pays.data = maison.pays
+    form.date_label.data = str(maison.date_label)
+    form.latitude.data = str(maison.latitude) 
+    form.longitude.data = str(maison.longitude) 
+    form.museeFrance.data = maison.museeFrance
+    form.monumentsInscrits.data = maison.monumentsInscrits
+    form.monumentsClasses.data = maison.monumentsClasses
+    form.nombreSPR.data = str(maison.nombreSPR) if maison.nombreSPR is not None else None
+    form.type.data = maison.type.value
+    form.nomIllustre.data = personne.nomIllustre if personne else None
+
     #valeur_domaine = Domaine.obtenir_valeur(donnees.type)
     #form.type.data = Domaine.obtenir_valeur(valeur_domaine)
     #ne fonctionne pas
@@ -25,10 +39,6 @@ def update_maisons(nom_maison):
     form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
-
-    print("Formulaire est-il valide ?", form.validate_on_submit())
-    if not form.validate_on_submit():
-        app.logger.error("Erreurs de validation du formulaire : %s", form.errors)
 
     try:
         if form.validate_on_submit():
@@ -97,4 +107,4 @@ def update_maisons(nom_maison):
     return render_template("pages/update_maisons.html", 
             sous_titre= "Update maisons", 
             form=form, 
-            donnees=donnees)
+            donnees=maison)

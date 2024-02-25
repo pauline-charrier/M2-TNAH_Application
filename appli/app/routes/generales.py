@@ -2,18 +2,20 @@ from ..app import app, db
 from flask import render_template, request
 from sqlalchemy import or_
 from ..models.data import Maisons, Personnes, Domaine, Genre
+from ..models.formulaires import Recherche
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/maisons", methods=['GET', 'POST'])
 @app.route("/maisons/<int:page>", methods=['GET', 'POST'])
 def maisons(page=1):
-
+    form=Recherche()
     donnees = Maisons.query.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
 
     return render_template("pages/liste.html", 
         sous_titre="Liste des maisons", 
-        donnees=donnees)
+        donnees=donnees,
+        form=form)
 
 
 
