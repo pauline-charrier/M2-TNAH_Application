@@ -18,7 +18,11 @@
     
     <div class="info">
         <label>adresse : </label>
-        <span>{{donnees.adresse}} {{donnees.code_postal}} {{donnees.commune}} {{donnees.region}} {{donnees.pays}}</span>
+        <span>{% if donnees.adresse %}{{donnees.adresse}} {%endif%}
+            {% if donnees.code_postal %}{{donnees.code_postal}} {%endif%}
+            {% if donnees.commune %}{{donnees.commune}} {%endif%}
+            {% if donnees.region%}{{donnees.region}} {%endif%}
+            {% if donnees.pays%}{{donnees.pays}} {%endif%}</span>
     </div>
 
 
@@ -41,28 +45,38 @@
         <span>{{personne.nomIllustre}}</span>
     </div>
 
+    {%if personne.genre.value%}  
     <div class="info">
         <label>Genre de la personne :</label>
         <span>{{personne.genre.value}}</span>
     </div>
+    {%endif%}
 
+    {%if personne.ddn%}
     <div class="info">
         <label>Date de naissance :</label>
         <span>{{personne.ddn}}</span>
     </div>
+    {%endif%}
 
+    {%if personne.ddm%}
     <div class="info">
         <label>Date de mort :</label>
         <span>{{personne.ddm}}</span>
     </div>
+    {%endif%}
 
+    {%if personne.article%}
     <div class="info">
         <a href="{{personne.article}}">Consultez sa page wikipedia</a>
     </div>
+    {%endif%}
 
+    {%if personne.image%}
     <div class="info">
         <img src="{{personne.image}}" alt="image de l'illustre">
     </div>
+    {%endif%}
 
 </div>
 </div>
