@@ -12,6 +12,7 @@ def update_maisons(nom_maison):
     maison= Maisons.query.filter(Maisons.denomination == nom_maison).first()
     personne = Personnes.query.filter(Personnes.idWikidata == str(maison.idWikidata)).first()
     form = UpdateMaisons() 
+    
     # Remplir le formulaire avec les données en base
     form.id.data = maison.id
     form.denomination.data = maison.denomination
@@ -28,17 +29,19 @@ def update_maisons(nom_maison):
     form.museeFrance.data = maison.museeFrance
     form.monumentsInscrits.data = maison.monumentsInscrits
     form.monumentsClasses.data = maison.monumentsClasses
-    form.nombreSPR.data = str(maison.nombreSPR) if maison.nombreSPR is not None else None
-    form.type.data = maison.type.value
-    form.nomIllustre.data = personne.nomIllustre if personne else None
+   
+    #form.nombreSPR.data = str(maison.nombreSPR) if maison.nombreSPR else ''
+    #form.type.data = maison.type.value if maison.type else ''
+    #form.nomIllustre.data = personne.nomIllustre if personne else ''
 
-    #valeur_domaine = Domaine.obtenir_valeur(donnees.type)
-    #form.type.data = Domaine.obtenir_valeur(valeur_domaine)
-    #ne fonctionne pas
-    #form.idWikidata.choices = [('','')] + [(personnes.idWikidata, personnes.idWikidata) for personnes in Personnes.query.all()]
+
     form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
+
+    print("Formulaire est-il valide ?", form.validate_on_submit())
+    if not form.validate_on_submit():
+       app.logger.error("Erreurs de validation du formulaire : %s", form.errors)
 
     try:
         if form.validate_on_submit():
@@ -59,43 +62,43 @@ def update_maisons(nom_maison):
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             nombreSPR =  clean_arg(request.form.get("nombreSPR", None))
             nomIllustre = clean_arg(request.form.get("nomIllustre", None))
-
-            if nomIllustre:
-                id_pers = Personnes.query.filter(Personnes.nomIllustre == nomIllustre).first()
-
-
-        # Récupérer l'objet Maison à mettre à jour
-            maison_a_mettre_a_jour = Maisons.query.filter(Maisons.denomination == nom_maison).first()
-
+            print(nomIllustre)
 
             # Vérifier si l'objet existe
-            if maison_a_mettre_a_jour:
+            if maison:
+                print(maison)
                 # Mettre à jour les propriétés de l'objet avec les nouvelles valeurs
-                maison_a_mettre_a_jour.id = id
-                maison_a_mettre_a_jour.adresse = adresse
-                maison_a_mettre_a_jour.commune = commune
-                maison_a_mettre_a_jour.code_postal = code_postal
-                maison_a_mettre_a_jour.code_INSEE = code_INSEE
-                maison_a_mettre_a_jour.dpmt = dpmt
-                maison_a_mettre_a_jour.region = region
-                maison_a_mettre_a_jour.pays = pays
-                maison_a_mettre_a_jour.latitude = latitude
-                maison_a_mettre_a_jour.longitude = longitude
-                maison_a_mettre_a_jour.date_label = date_label
-                maison_a_mettre_a_jour.type = Domaine.obtenir_clef(type)
-                maison_a_mettre_a_jour.museeFrance = True if museeFrance == 'y' else False
-                maison_a_mettre_a_jour.monumentsInscrits = True if monumentsInscrits == 'y' else False
-                maison_a_mettre_a_jour.monumentsClasses = True if monumentsClasses == 'y' else False
-                maison_a_mettre_a_jour.nombreSPR = nombreSPR
-                if nomIllustre:
+                maison.id = id
+                maison.adresse = adresse
+                maison.commune = commune
+                maison.code_postal = code_postal
+                maison.code_INSEE = code_INSEE
+                maison.dpmt = dpmt
+                maison.region = region
+                maison.pays = pays
+                maison.latitude = latitude
+                maison.longitude = longitude
+                maison.date_label = date_label
+                maison.type = Domaine.obtenir_clef(type)
+                maison.museeFrance = True if museeFrance == 'y' else False
+                maison.monumentsInscrits = True if monumentsInscrits == 'y' else False
+                maison.monumentsClasses = True if monumentsClasses == 'y' else False
+                maison.nombreSPR = nombreSPR
+                if nomIllustre is not None:
+                    print("je détecte quelque chose")
                     pers_a_lier = Personnes.query.filter(Personnes.nomIllustre == nomIllustre).first()
-                    maison_a_mettre_a_jour.idWikidata = pers_a_lier.idWikidata
+                    maison.idWikidata = pers_a_lier.idWikidata
+                else :   
+                    print("je ne détecte rien")
+                    maison.idWikidata = None
+
+                    
 
                 # Effectuez l'opération de mise à jour
                 db.session.commit()
                 print("mise à jour effectuée")
 
-                #Rediriger vers une page de confirmation ou une autre page appropriée
+                #Rediriger vers la page de la maison avec les données mises à jour
                 return redirect(url_for('info_maisons', nom_maisons=nom_maison))
                 
             else:
