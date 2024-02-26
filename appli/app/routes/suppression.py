@@ -3,7 +3,6 @@ from flask import render_template, request, redirect, url_for, flash
 from ..models.data import Maisons, Personnes
 from ..utils.transformations import  clean_arg
 
-#la route qui supprime la personne et la maison
 
 @app.route("/suppression/maisons/<string:nom_maison>", methods=['GET', 'POST'])
 def sup_maison(nom_maison):

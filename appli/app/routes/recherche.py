@@ -35,7 +35,7 @@ def recherche(page_num=1):
 
         # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
         # dans les données
-        if region or type or genre or museeFrance or monumentsClasses or monumentsInscrits :
+        if denomination or region or type or genre or museeFrance or monumentsClasses or monumentsInscrits :
             # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
             # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
             query_results = Maisons.query

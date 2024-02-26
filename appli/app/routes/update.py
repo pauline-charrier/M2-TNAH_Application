@@ -30,7 +30,7 @@ def update_maisons(nom_maison):
     form.monumentsInscrits.data = maison.monumentsInscrits
     form.monumentsClasses.data = maison.monumentsClasses
    
-    form.nombreSPR.data = maison.nombreSPR if maison.nombreSPR else ''
+    form.nombreSPR.data = maison.nombreSPR #if maison.nombreSPR else ''
     form.type.data = maison.type.value if maison.type else ''
     form.nomIllustre.data = personne.nomIllustre if personne else ''
 

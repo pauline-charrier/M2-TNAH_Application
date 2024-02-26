@@ -28,7 +28,7 @@ class InsertionMaison(FlaskForm):
     museeFrance =  BooleanField("musee_france", validators=[optional()])
     monumentsInscrits =  BooleanField("monuments_inscrits", validators=[optional()])
     monumentsClasses =  BooleanField("monuments_classes", validators=[optional()])
-    nombreSPR =  SelectField("Nombre_SPR", choices=[(None, '')] + [(i, str(i)) for i in range(1, 11)], validators = [optional()])
+    nombreSPR =  SelectField("Nombre_SPR", choices=[('', '')] + [(i, i) for i in range(0, 11)], validators = [optional()])
     type =  SelectField("type", choices=[], validators = [optional()])
     nomIllustre =  SelectField("nomIllustre", choices = [], validators=[optional()])
 
@@ -49,7 +49,8 @@ class UpdateMaisons(FlaskForm):
     museeFrance =  BooleanField("musee_france", validators=[optional()])
     monumentsInscrits =  BooleanField("monuments_inscrits", validators=[optional()])
     monumentsClasses =  BooleanField("monuments_classes", validators=[optional()])
-    nombreSPR =  SelectField("Nombre_SPR", choices=[('', '')] + [(i, str(i)) for i in range(1, 11)], validators=[optional()]) 
+    nombreSPR = IntegerField("Nombre_SPR", validators=[optional()])
+    #nombreSPR =  SelectField("Nombre_SPR", choices=[('', '')] + [(i, i) for i in range(0, 5)], validators=[optional()]) 
     type =  SelectField("type", choices=[], validators = [optional()])
     nomIllustre = SelectField("nomIllustre", choices = [optional()], validators=[optional()])
 
@@ -64,3 +65,8 @@ class Recherche(FlaskForm):
     monumentsInscrits =  BooleanField("monuments_inscrits", default=False)
     monumentsClasses =  BooleanField("monuments_classes", default=False)
 
+class RecherchePersonne(FlaskForm):
+    nomIllustre =  StringField("nomIllustre", validators=[])
+    genre =  SelectField("genre", choices=[], validators = [])
+    denomination = SelectField("denomination", choices=[], validators=[])
+    
