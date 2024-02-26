@@ -3,86 +3,99 @@
 
 {% block body %}
 
+    {%if donnees%}
+
     <div class="container mt-4">
         <div class="jumbotron">
             <h1 class="display-4">Présentation de la maison {{ donnees.denomination }}</h1>
-
-    {%if donnees%}
-
-<div id="maison">
-
-    <div class="info">
-        <label>Nom :</label>
-        <span>{{donnees.denomination}}</span>
+    
+            {% if donnees %}
+    
+                <div id="maison">
+    
+                    <!-- Informations sur la maison -->
+                    <div class="info">
+                        <label>Nom :</label>
+                        <span>{{ donnees.denomination }}</span>
+                    </div>
+    
+                    <div class="info">
+                        <label>Adresse :</label>
+                        <span>
+                            {% if donnees.adresse %}{{ donnees.adresse }} {% endif %}
+                            {% if donnees.code_postal %}{{ donnees.code_postal }} {% endif %}
+                            {% if donnees.commune %}{{ donnees.commune }} {% endif %}
+                            {% if donnees.region %}{{ donnees.region }} {% endif %}
+                            {% if donnees.pays %}{{ donnees.pays }} {% endif %}
+                        </span>
+                    </div>
+    
+                    {% if donnees.type is not none and donnees.type != '' %}
+                        <div class="info">
+                            <label>Domaine de virtuosité :</label>
+                            <span>{{ donnees.type.value }}</span>
+                        </div>
+                    {% endif %}
+    
+                    {% if donnees.museeFrance == 1 %}
+                        <div class="info">
+                            <span>Cette maison est aussi Musée de France</span>
+                        </div>
+                    {% endif %}
+    
+                    <!-- Informations sur la personne -->
+                    {% if personne %}
+    
+                        <h1>Carte d'identité de la personne :</h1>
+    
+                        <div class="info">
+                            <label>Nom de la personne :</label>
+                            <span>{{ personne.nomIllustre }}</span>
+                        </div>
+    
+                        {% if personne.genre.value %}
+                            <div class="info">
+                                <label>Genre de la personne :</label>
+                                <span>{{ personne.genre.value }}</span>
+                            </div>
+                        {% endif %}
+    
+                        {% if personne.ddn %}
+                            <div class="info">
+                                <label>Date de naissance :</label>
+                                <span>{{ personne.ddn }}</span>
+                            </div>
+                        {% endif %}
+    
+                        {% if personne.ddm %}
+                            <div class="info">
+                                <label>Date de mort :</label>
+                                <span>{{ personne.ddm }}</span>
+                            </div>
+                        {% endif %}
+    
+                        {% if personne.article %}
+                            <div class="info">
+                                <a href="{{ personne.article }}">Consultez sa page Wikipedia</a>
+                            </div>
+                        {% endif %}
+    
+                        <div class="info">
+                            <label>Image de l'illustre :</label>
+                            {% if personne.image %}
+                                <img src="{{ personne.image }}" alt="image de l'illustre">
+                            {% else %}
+                                <img src="lien_vers_silhouette_lambda.jpg" alt="image de l'illustre lambda">
+                            {% endif %}
+                        </div>
+    
+                    {% endif %}
+                    
+                </div>
+            {% endif %}
+        </div>
     </div>
     
-    <div class="info">
-        <label>adresse : </label>
-        <span>{% if donnees.adresse %}{{donnees.adresse}} {%endif%}
-            {% if donnees.code_postal %}{{donnees.code_postal}} {%endif%}
-            {% if donnees.commune %}{{donnees.commune}} {%endif%}
-            {% if donnees.region%}{{donnees.region}} {%endif%}
-            {% if donnees.pays%}{{donnees.pays}} {%endif%}</span>
-    </div>
-
-
-    {% if donnees.type is not none and donnees.type != '' %}
-    <div class="info">
-        <label>Domaine de virtuosité dans lequel l'illustre laissa une trace indélébile :</label>
-        <span>{{donnees.type.value}}</span>
-    </div>
-{%endif%}
-
-{%if donnees.museeFrance == 1%}
-    <div class="info">
-        <span>Cette maison est aussi Musée de France</span>
-    </div>
-{%endif%}
-
-{%if personne%}
-    <div class="info">
-        <label>Nom de la personne :</label>
-        <span>{{personne.nomIllustre}}</span>
-    </div>
-
-    {%if personne.genre.value%}  
-    <div class="info">
-        <label>Genre de la personne :</label>
-        <span>{{personne.genre.value}}</span>
-    </div>
-    {%endif%}
-
-    {%if personne.ddn%}
-    <div class="info">
-        <label>Date de naissance :</label>
-        <span>{{personne.ddn}}</span>
-    </div>
-    {%endif%}
-
-    {%if personne.ddm%}
-    <div class="info">
-        <label>Date de mort :</label>
-        <span>{{personne.ddm}}</span>
-    </div>
-    {%endif%}
-
-    {%if personne.article%}
-    <div class="info">
-        <a href="{{personne.article}}">Consultez sa page wikipedia</a>
-    </div>
-    {%endif%}
-
-    {%if personne.image%}
-    <div class="info">
-        <img src="{{personne.image}}" alt="image de l'illustre">
-    </div>
-    {%endif%}
-
-</div>
-</div>
-{%endif%}
-
-</div>
 {% endif %}
 
 {%endblock%}

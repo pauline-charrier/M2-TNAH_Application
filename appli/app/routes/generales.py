@@ -35,8 +35,8 @@ def info_maisons(nom_maisons):
 @app.route("/personnes/<int:page>", methods=['GET', 'POST'])
 def personnes(page=1):
 
-    donnees = Personnes.query.order_by(Personnes.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+    donnees = Personnes.query.order_by(Personnes.nomIllustre).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
 
     return render_template("pages/liste_personnes.html", 
-        sous_titre="Liste des maisons", 
+        sous_titre="Liste des personnes", 
         donnees=donnees)

@@ -59,6 +59,11 @@ class Maisons(db.Model):
     def get_distinct_regions():
         distinct_regions = db.session.query(Maisons.region.distinct()).all()
         return [region[0] for region in distinct_regions]
+    
+    @staticmethod
+    def get_distinct_denomination():
+        distinct_denomination = db.session.query(Maisons.denomination.distinct()).all()
+        return [maison[0] for maison in distinct_denomination]
 
 class Personnes(db.Model):
     __tablename__ = "personnes"

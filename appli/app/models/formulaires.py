@@ -65,7 +65,7 @@ class Recherche(FlaskForm):
     monumentsInscrits =  BooleanField("monuments_inscrits", default=False)
     monumentsClasses =  BooleanField("monuments_classes", default=False)
 
-class RecherchePersonne(FlaskForm):
+class UpdatePersonnes(FlaskForm):
     nomIllustre =  StringField("nomIllustre", validators=[])
     genre =  SelectField("genre", choices=[], validators = [])
     denomination = SelectField("denomination", choices=[], validators=[])

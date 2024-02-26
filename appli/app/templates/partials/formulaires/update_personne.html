@@ -1,0 +1,101 @@
+<form action="{{url_for('update_maisons', nom_maison=donnees.denomination)}}" method="POST" name="update_maisons">
+    {{ form.hidden_tag() }}
+
+{%if donnees%}
+    <div>
+       <h1>Dénomination du bâtiment : 
+        {{donnees.denomination}}</h1>
+    </div>
+
+    <div class="form-group">
+        <label for="id">Identifiant Mérimée : </label>
+        {{ form.id(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="adresse">Adresse : </label>
+        {{ form.adresse(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="code_postal">Enter le code Postal : </label>
+        {{ form.code_postal(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="commune">Dans quelle commune : </label>
+        {{ form.commune(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="code_INSEE">Entrer le code INSEE de la commune : </label>
+        {{ form.code_INSEE(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="dpmt">Dans quel département : </label>
+        {{ form.dpmt(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="region">Région d'appartenance : </label>
+        {{ form.region(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="pays">Pays : </label>
+        {{ form.pays(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="latitude">Latitude : </label>
+        {{ form.latitude(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="longitude">Longitude : </label>
+        {{ form.longitude(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="date_label">Date de labellisation : </label>
+        {{ form.date_label(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="type">Domaine de génie : </label>
+        <small id="type" class="form-text text-muted">Sélectionner le domaine : </small>
+        {{ form.type(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <p>Cocher les labels additionnels : </p>
+        <label for="musee_france">Le bâtiment est aussi Musée de France </label>
+        {{ form.museeFrance() }}
+    </div>
+    
+    <div class="form-group">
+        <label for="monuments_inscrit">Le bâtiment est aussi Monument National Inscrit </label>
+        {{ form.monumentsInscrits() }}
+    </div>
+    
+    <div class="form-group">
+        <label for="monuments_classes">Le bâtiment est aussi Monument National Classé </label>
+        {{ form.monumentsClasses() }}
+    </div>
+    
+
+    <div class="form-group">
+        <label for="nombre_SPR">Nombre de Sites Patrimoniaux Remarquables dans la commune : </label>
+        {{ form.nombreSPR(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="nomIllustre">Sélectionner le nom de la personne associée : </label>
+        {{ form.nomIllustre(class_="form-control") }}
+    </div>
+
+    {%endif%}
+
+    <p><input type="submit" value="Mettre à jour"></p>
+</form>

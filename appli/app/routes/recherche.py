@@ -157,6 +157,6 @@ def recherche_rapide(page=1):
     return render_template("pages/essai_resultats.html", 
             sous_titre= "Recherche | " + chaine, 
             donnees=resultats,
-            init=init,
             requete=chaine)
+
 
