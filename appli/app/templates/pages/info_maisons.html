@@ -81,11 +81,10 @@
                         {% endif %}
     
                         <div class="info">
-                            <label>Image de l'illustre :</label>
                             {% if personne.image %}
-                                <img src="{{ personne.image }}" alt="image de l'illustre">
+                                <img src="{{ personne.image }}" alt="image de l'illustre" style="display: block; margin: 0 auto; max-height: 250px;">
                             {% else %}
-                                <img src="lien_vers_silhouette_lambda.jpg" alt="image de l'illustre lambda">
+                                <img src="appli/app/statics/images/39052-Chouquette-20g-Packshot-Patisserie.jpg" alt="image de l'illustre lambda">
                             {% endif %}
                         </div>
     
