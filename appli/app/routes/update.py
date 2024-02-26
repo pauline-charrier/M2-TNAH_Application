@@ -23,16 +23,16 @@ def update_maisons(nom_maison):
     form.region.data = maison.region
     form.code_INSEE.data = maison.code_INSEE
     form.pays.data = maison.pays
-    form.date_label.data = str(maison.date_label)
-    form.latitude.data = str(maison.latitude) 
-    form.longitude.data = str(maison.longitude) 
+    form.date_label.data = maison.date_label
+    form.latitude.data = maison.latitude
+    form.longitude.data = maison.longitude
     form.museeFrance.data = maison.museeFrance
     form.monumentsInscrits.data = maison.monumentsInscrits
     form.monumentsClasses.data = maison.monumentsClasses
    
-    #form.nombreSPR.data = str(maison.nombreSPR) if maison.nombreSPR else ''
-    #form.type.data = maison.type.value if maison.type else ''
-    #form.nomIllustre.data = personne.nomIllustre if personne else ''
+    form.nombreSPR.data = maison.nombreSPR if maison.nombreSPR else ''
+    form.type.data = maison.type.value if maison.type else ''
+    form.nomIllustre.data = personne.nomIllustre if personne else ''
 
 
     form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.all()]
@@ -62,7 +62,6 @@ def update_maisons(nom_maison):
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             nombreSPR =  clean_arg(request.form.get("nombreSPR", None))
             nomIllustre = clean_arg(request.form.get("nomIllustre", None))
-            print(nomIllustre)
 
             # Vérifier si l'objet existe
             if maison:
@@ -83,7 +82,7 @@ def update_maisons(nom_maison):
                 maison.museeFrance = True if museeFrance == 'y' else False
                 maison.monumentsInscrits = True if monumentsInscrits == 'y' else False
                 maison.monumentsClasses = True if monumentsClasses == 'y' else False
-                maison.nombreSPR = nombreSPR
+                maison.nombreSPR = nombreSPR #if nombreSPR else None
                 if nomIllustre is not None:
                     print("je détecte quelque chose")
                     pers_a_lier = Personnes.query.filter(Personnes.nomIllustre == nomIllustre).first()
@@ -105,6 +104,7 @@ def update_maisons(nom_maison):
                 print("Aucun information sur cette maison.")
     except Exception as e:
         print(f"Une erreur s'est produite : {str(e)}")
+        print(nombreSPR)
         db.session.rollback()
 
     return render_template("pages/update_maisons.html", 
