@@ -66,7 +66,10 @@ class Recherche(FlaskForm):
     monumentsClasses =  BooleanField("monuments_classes", default=False)
 
 class UpdatePersonnes(FlaskForm):
-    nomIllustre =  StringField("nomIllustre", validators=[])
-    genre =  SelectField("genre", choices=[], validators = [])
-    denomination = SelectField("denomination", choices=[], validators=[])
+    nomIllustre =  StringField("nomIllustre", validators=[DataRequired()])
+    genre =  SelectField("genre", choices=[], validators = [optional()])
+    ddn = StringField("ddn", validators = [optional()])
+    ddm = StringField("ddm", validators = [optional()])
+    image = StringField("image", validators = [optional()])
+    article = StringField("article", validators = [optional()])
     
