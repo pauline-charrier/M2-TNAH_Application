@@ -15,7 +15,8 @@ réglé changé pour un selectfield
 def insertion_maisons():
     distinct_regions = Maisons.get_distinct_regions()
     form = InsertionMaison()
-    form.idWikidata.choices = [('','')] + [(personne.idWikidata, personne.idWikidata) for personne in Personnes.query.all()]
+    #form.idWikidata.choices = [('','')] + [(personne.idWikidata, personne.idWikidata) for personne in Personnes.query.all()]
+    form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
 
@@ -38,7 +39,7 @@ def insertion_maisons():
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             nombreSPR =  clean_arg(request.form.get("nombreSPR", None))
-            idWikidata = clean_arg(request.form.get("idWikidata", None))
+            nomIllustre = clean_arg(request.form.get("nomIllustre", None))
 
         nouvelle_maison = Maisons(id=id, 
             denomination=denomination,
@@ -56,8 +57,15 @@ def insertion_maisons():
             museeFrance=True if museeFrance == 'y' else False,
             monumentsClasses=True if monumentsClasses == 'y' else False,
             monumentsInscrits=True if monumentsInscrits == 'y' else False,
-            nombreSPR=nombreSPR, 
-            idWikidata=idWikidata)
+            nombreSPR=nombreSPR)
+        
+        if nomIllustre is not None:
+            print("je détecte quelque chose")
+            pers_a_lier = Personnes.query.filter(Personnes.nomIllustre == nomIllustre).first()
+            nouvelle_maison.idWikidata = pers_a_lier.idWikidata
+        else :   
+            print("je ne détecte rien")
+            nouvelle_maison.idWikidata = None
         
         maison_existante = Maisons.query.filter_by(id=id).first()
             

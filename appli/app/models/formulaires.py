@@ -30,7 +30,7 @@ class InsertionMaison(FlaskForm):
     monumentsClasses =  BooleanField("monuments_classes", validators=[optional()])
     nombreSPR =  SelectField("Nombre_SPR", choices=[(None, '')] + [(i, str(i)) for i in range(1, 11)], validators = [optional()])
     type =  SelectField("type", choices=[], validators = [optional()])
-    idWikidata =  SelectField("id_wikidata", choices = [], validators=[optional()])
+    nomIllustre =  SelectField("nomIllustre", choices = [], validators=[optional()])
 
 
 class UpdateMaisons(FlaskForm):
