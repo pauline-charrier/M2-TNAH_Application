@@ -40,3 +40,10 @@ def personnes(page=1):
     return render_template("pages/liste_personnes.html", 
         sous_titre="Liste des personnes", 
         donnees=donnees)
+
+@app.route("/carte", methods=['GET'])
+def carte():
+    donnees = Maisons.query.all()
+    return render_template("pages/carte.html",
+        sous_titre="Carte",
+        donnees = donnees)

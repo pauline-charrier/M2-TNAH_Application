@@ -35,7 +35,7 @@ def update_maisons(nom_maison):
     form.nomIllustre.data = personne.nomIllustre if personne else ''
 
 
-    form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.all()]
+    form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.order_by(Personnes.nomIllustre).all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
 
