@@ -1,6 +1,7 @@
 from ..app import app, db
 from ..utils.transformations import nettoyage_string_to_int
 from enum import Enum
+from unidecode import unidecode
 
 class Domaine(Enum):
     TYPE1 = 'Littérature et idées'
@@ -69,6 +70,15 @@ class Maisons(db.Model):
     def get_distinct_date_label():
         distinct_date_label = db.session.query(Maisons.date_label.distinct()).order_by(Maisons.date_label).all()
         return [date[0] for date in distinct_date_label]
+    
+    def get_denomination_sans_accents(self):
+        return unidecode(self.denomination) if self.denomination else None
+
+    def get_region_sans_accents(self):
+        return unidecode(self.region) if self.region else None
+    
+    def get_pays_sans_accents(self):
+        return unidecode(self.pays) if self.pays else None
 
 class Personnes(db.Model):
     __tablename__ = "personnes"

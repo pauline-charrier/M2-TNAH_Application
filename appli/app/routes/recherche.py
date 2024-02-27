@@ -4,6 +4,8 @@ from sqlalchemy import or_, text, func
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..utils.transformations import nettoyage_string_to_int, clean_arg, normaliser, supprimer_accents
+from unidecode import unidecode
+
 
 '''
 Sur la route recherche, le .paginate ne fonctionne pas, 
@@ -47,7 +49,15 @@ def recherche(page_num=1):
             query_results = Maisons.query
 #ce filtre ne fonctionne pas
             if denomination:
-                query_results = query_results.filter(func.lower(Maisons.denomination).ilike("%"+denomination+"%".lower()))
+                denomination = supprimer_accents(denomination).lower()
+                subquery_1 = text("""
+                    SELECT *
+FROM maisons 
+WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+denomination+"""%'
+                    """)
+                comparaison_ids = [row[0] for row in db.session.execute(subquery_1)]
+                query_results = query_results.filter(Maisons.id.in_(comparaison_ids))
+                #query_results = query_results.filter(func.lower(Maisons.denomination).ilike("%"+denomination+"%".lower()))
 
             if region : 
                 query_results = query_results.filter(Maisons.region == region)

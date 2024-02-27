@@ -1,6 +1,7 @@
 import re
 from flask import flash
 from sqlalchemy import func, case
+from unidecode import unidecode
 
 def nettoyage_string_to_int(chaine):
     # Dans le cas où plusieurs informations sont données dans la chaine comme 
@@ -36,14 +37,8 @@ def clean_arg(arg):
     else:
         return arg
     
-def normaliser(expression):
-    expression = func.lower(expression)
-    return case(
-        (expression.like('%á%'), 'a'),
-        (expression.like('%é%'), 'e'),
-        (expression.like('%ê%'), 'e'),
-        (expression.like('%è%'), 'e'),
-    else_=expression)
+def normaliser(string):
+    return unidecode(string).lower()
 
 
 def supprimer_accents(chaine):
