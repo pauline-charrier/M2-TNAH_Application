@@ -51,7 +51,7 @@ def recherche(page_num=1):
             if denomination:
                 denomination = supprimer_accents(denomination).lower()
                 subquery_1 = text("""
-                    SELECT *
+                    SELECT id
 FROM maisons 
 WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+denomination+"""%'
                     """)
