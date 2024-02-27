@@ -15,7 +15,11 @@ le filtre sur le nom du bâtiment ne fonctionne pas non plus
 def recherche(page_num=1):
     form = Recherche()
     distinct_regions = Maisons.get_distinct_regions()
+    distinct_departements = Maisons.get_distinct_departements()
+    distinct_dates = Maisons.get_distinct_date_label()
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
+    form.departement.choices = [('','')] + [(dp, dp) for dp in distinct_departements]
+    form.date_label.choices = [('','')] + [(date, date) for date in distinct_dates]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
 
@@ -26,16 +30,18 @@ def recherche(page_num=1):
         # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
         denomination = clean_arg(request.form.get("denomination", None))
         region =  clean_arg(request.form.get("region", None))
+        departement = clean_arg(request.form.get("departement", None))
         type =  clean_arg(request.form.get("type", None))
         genre =  clean_arg(request.form.get("genre", None))
         #periode = clean_arg(request.form.getlist("periode", None))
         museeFrance =  clean_arg(request.form.get("museeFrance", None))
         monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
         monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
+        date_label = clean_arg(request.form.get("date_label", None))
 
         # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
         # dans les données
-        if denomination or region or type or genre or museeFrance or monumentsClasses or monumentsInscrits :
+        if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label :
             # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
             # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
             query_results = Maisons.query
@@ -45,7 +51,9 @@ def recherche(page_num=1):
 
             if region : 
                 query_results = query_results.filter(Maisons.region == region)
-                print(region)
+
+            if departement:
+                query_results = query_results.filter(Maisons.dpmt == departement)
 
             if type : 
                 query_results = query_results.filter(Maisons.type == Domaine.obtenir_clef(type))
@@ -68,6 +76,9 @@ def recherche(page_num=1):
                 genre_ids = [row[0] for row in db.session.execute(subquery, {'genre': Genre.obtenir_clef(genre)})]
 
                 query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
+            
+            if date_label:
+                query_results = query_results.filter(Maisons.date_label == date_label)
 
             donnees = query_results.all()
             #.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
@@ -83,6 +94,8 @@ def recherche(page_num=1):
         form.museeFrance.data = museeFrance
         form.monumentsClasses.data=monumentsClasses
         form.monumentsInscrits.data=monumentsClasses
+        form.departement.data = departement
+        form.date_label.data = date_label
 
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 

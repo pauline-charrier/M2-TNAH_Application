@@ -59,11 +59,13 @@ class Recherche(FlaskForm):
     denomination =  StringField("denomination", validators=[])
     type =  SelectField("type", choices=[], validators = [])
     region = SelectField("region", choices=[], validators=[])
+    departement = SelectField("departement", choices=[])
     genre = SelectField("genre", choices=[], validators=[])
     #periode = SelectField("periode", choices=[], validators=[])
     museeFrance =  BooleanField("musee_france", default=False)
     monumentsInscrits =  BooleanField("monuments_inscrits", default=False)
     monumentsClasses =  BooleanField("monuments_classes", default=False)
+    date_label = SelectField("date_label", choices=[], validators=[])
 
 class UpdatePersonnes(FlaskForm):
     nomIllustre =  StringField("nomIllustre", validators=[DataRequired()])

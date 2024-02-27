@@ -17,6 +17,11 @@
     </div>
 
     <div class="form-group">
+        <label for="dpmt">Département d'appartenance : </label>
+        {{ form.departement(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
         <label for="type">Domaine de génie : </label>
         {{ form.type(class_="form-control") }}
     </div>
@@ -35,6 +40,11 @@
     <div class="form-group">
         <label for="monuments_classes">Le bâtiment est aussi Monument National Classé </label>
         {{ form.monumentsClasses() }}
+    </div>
+
+    <div class="form-group">
+        <label for="dpmt">Date de labellisation : </label>
+        {{ form.date_label(class_="form-control") }}
     </div>
 
     <p><input type="submit" value="Rechercher"></p>
