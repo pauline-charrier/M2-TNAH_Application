@@ -47,3 +47,8 @@ def carte():
     return render_template("pages/carte.html",
         sous_titre="Carte",
         donnees = donnees)
+
+
+@app.route("/graphiques", methods=['GET'])
+def graphiques():
+    return "rien pour le moment"
