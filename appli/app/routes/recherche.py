@@ -3,7 +3,7 @@ from flask import render_template, request, flash
 from sqlalchemy import or_, text, func
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
-from ..utils.transformations import nettoyage_string_to_int, clean_arg, normaliser, supprimer_accents
+from ..utils.transformations import nettoyage_string_to_int, clean_arg, normaliser
 from unidecode import unidecode
 
 
@@ -49,7 +49,7 @@ def recherche(page_num=1):
             query_results = Maisons.query
 #ce filtre ne fonctionne pas
             if denomination:
-                denomination = supprimer_accents(denomination).lower()
+                denomination = normaliser(denomination)
                 subquery_1 = text("""
                     SELECT id
 FROM maisons 
@@ -139,16 +139,16 @@ def recherche_rapide(page=1):
     chaine =  request.args.get("chaine", None)
 
     if chaine:
-        chaine = supprimer_accents(chaine)
+        chaine = normaliser(chaine)
         subquery = text("""
                 SELECT a.id
                 FROM maisons a
-                INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND b.nomIllustre like '%"""+chaine+"""%' or b.ddn like '%"""+chaine+"""%' or b.ddm like '%"""+chaine+"""%'
+                INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(b.nomIllustre, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+chaine+"""%'
                 """)
         personnes_ids = [row[0] for row in db.session.execute(subquery)]#ok fonctionne
 
         domaines = Domaine.comparer_valeurs(chaine)#ok fonctionne
-
+#implémenter la méthode de grosse bourrine 
         resultats = Maisons.query.\
             filter(
                 or_(
