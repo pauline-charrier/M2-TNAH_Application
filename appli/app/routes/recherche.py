@@ -12,8 +12,6 @@ Sur la route recherche, le .paginate ne fonctionne pas,
 le filtre sur le nom du bâtiment ne fonctionne pas non plus
 '''
 
-@app.route("/maisons//<int:page_num>", methods=['GET', 'POST'])
-@app.route("/recherche", methods=['GET', 'POST'])
 @app.route("/recherche", methods=['GET', 'POST'])
 @app.route("/recherche/<int:page_num>", methods=['GET', 'POST'])
 def recherche(page_num=1):
@@ -106,10 +104,11 @@ WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(repl
         form.type.data = type
         form.museeFrance.data = museeFrance
         form.monumentsClasses.data=monumentsClasses
-        form.monumentsInscrits.data=monumentsClasses
+        form.monumentsInscrits.data=monumentsInscrits
         form.departement.data = departement
         form.date_label.data = date_label
 
+    print(donnees_init.next_num)
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
         donnees_init=donnees_init,
