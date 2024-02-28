@@ -172,11 +172,8 @@ def recherche_rapide(page=1):
                 )
             ).\
             distinct(Maisons.denomination).\
-            order_by(Maisons.denomination).all()
-        #.\
-            #paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
-        #pareil : le .paginate ne fonctionen pas. On passe de /recherche/1 à maisons/2
-        
+            order_by(Maisons.denomination).\
+            paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])        
 
         if resultats:
             print(resultats)
@@ -191,7 +188,7 @@ def recherche_rapide(page=1):
         flash("Pas de résultats, effectuer une nouvelle recherche")
         
         
-    return render_template("pages/essai_resultats.html", 
+    return render_template("pages/resultats_recherche_full_texte.html", 
             sous_titre= "Recherche | " + chaine, 
             donnees=resultats,
             requete=chaine)
