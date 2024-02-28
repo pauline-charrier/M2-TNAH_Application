@@ -12,6 +12,8 @@ Sur la route recherche, le .paginate ne fonctionne pas,
 le filtre sur le nom du bâtiment ne fonctionne pas non plus
 '''
 
+@app.route("/maisons//<int:page_num>", methods=['GET', 'POST'])
+@app.route("/recherche", methods=['GET', 'POST'])
 @app.route("/recherche", methods=['GET', 'POST'])
 @app.route("/recherche/<int:page_num>", methods=['GET', 'POST'])
 def recherche(page_num=1):
@@ -26,6 +28,7 @@ def recherche(page_num=1):
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
 
     # initialisation des données de retour dans le cas où il n'y ait pas de requête
+    donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
     donnees = []
 
     if form.validate_on_submit():
@@ -109,6 +112,7 @@ WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(repl
 
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
+        donnees_init=donnees_init,
         donnees=donnees,
         form=form, 
         page=page_num)

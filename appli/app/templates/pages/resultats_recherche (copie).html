@@ -6,93 +6,146 @@
 
     <!-- affichage en cas d'absence de résultats (lors du premier chargement de la page, ou d'absence de résultats suite à la recherche)-->
     {% if not donnees %}
-    <div class="row">
-        <div class="col-sm-8"></div>
-        <div class="col-sm-8">
-
-            <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                aria-controls="collapseExample">
-                Effectuer une recherche<i class="fa-solid fa-caret-down"></i>
-        </h3>
-            <div class="collapse show" id="collapseExample">
-                <div class="card card-body">
-                    {% include "partials/formulaires/recherche.html" %}
+    {% if donnees_init %}
+    <section class="padding-lg">
+        <div class="container">
+            <div class="row heading heading-icon">
+                <div class="col-12">
+                    <h2>Catalogue des Maisons des Illustres</h2>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <!-- Colonne pour le catalogue des maisons -->
+                <div class="col-md-6">
+                    <div class="list-group" id="list-tab" role="tablist">
+                        {% if donnees_init.prev_num %}
+                            <a class="list-group-item list-group-item-action btn btn-outline-dark {% if donnees.page == 1 %}disabled{% endif %}" 
+                               id="list-list-prev" href="{{ url_for('recherche', page=donnees.prev_num) }}">
+                                &laquo; Page précédente
+                            </a>
+                        {% endif %}
+                        
+                        <ul class="list-group">
+                            {% for maisons in donnees_init.items %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
+                                       href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
+                                       aria-controls="{{maisons.denomination}}">
+                                       {{maisons.denomination}}
+                                    </a>
+                                
+                                    <div class="btn-group btn-group-sm">
+                                        <form action="{{ url_for('sup_maison', nom_maison=maisons.denomination) }}" method="post" class="del-component">
+                                            <button class="btn btn-danger" type="submit">
+                                                <input type="hidden" value="{{ maisons.denomination }}" name="maison_a_supp">
+                                                <i class="fa fa-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('update_maisons', nom_maison=maisons.denomination) }}">
+                                            <button class="btn btn-info" type="submit">
+                                                <i class="fa fa-pencil"></i> Éditer
+                                            </button>
+                                        </a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% if donnees_init.next_num %}
+                            <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
+                               id="list-list-next" href="{{ url_for('recherche', page=donnees.next_num) }}">
+                                Page suivante &raquo;
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Fin de la colonne pour le catalogue des maisons -->
+                
+                <!-- Colonne pour le formulaire de recherche -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <h3 class="card-header" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Effectuer une recherche <i class="fa-solid fa-caret-down"></i>
+                        </h3>
+                        <div class="collapse show" id="collapseExample">
+                            <div class="card-body">
+                                {% include "partials/formulaires/recherche.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin de la colonne pour le formulaire de recherche -->
+            </div>
         </div>
-        <div class="col-sm-8"></div>
-    </div>
-
+    </section>
+    {% endif %}
     {%else%}
     <!--s'il y a des résultats-->
-    <!--affichage caché du formulaire-->
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4">
-
-            <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                aria-controls="collapseExample">
-                Afficher la recherche <i class="fa-solid fa-caret-down"></i>
-        </h3>
-            <div class="collapse " id="collapseExample">
-                <div class="card card-body">
-                    {% include "partials/formulaires/recherche.html" %}
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4"></div>
-    </div>
-
-    <!-- affichage des résultats-->
 
     <section class="padding-lg">
         <div class="container">
             <div class="row heading heading-icon">
-            <h2>résultats recherche</h2>
+                <div class="col-12">
+                    <h2>Résultats de la recherche</h2>
+                </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-4">
-
-        <ul>
-            {% for maisons in donnees %}
-                <li>
-                    <div>
-                    <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
-                       href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
-                       aria-controls="{{maisons.denomination}}">
-                       {{maisons.denomination}}
-                    </a>
-                
-        
-        <div class="btn-group btn-group-sm">
-            <form action="{{ url_for('sup_maison', nom_maison=maison_a_supp) }}" method=post class=del-component>
-                <button class="btn btn-danger">
-                    <input type=hidden value="{{ maisons.denomination }}" name=maison_a_supp>poubelle</input>
-                </button>                            
-            </form>
-        </div>
-        
-        <div class="btn-group btn-group-sm">
-            <a href="{{ url_for('update_maisons', nom_maison=maisons.denomination) }}">
-                <button class="btn btn-info" type="submit">stylo</button>
-            </form>
-        </div>
-        
-        
-                </div>
-                </li>
-            {% endfor %}
-        </ul>
-        
-        
-
+                <!-- Colonne pour le catalogue des maisons -->
+                <div class="col-md-6">
+                    <div class="list-group" id="list-tab" role="tablist">
+                        
+                        
+                        <ul class="list-group">
+                            {% for maisons in donnees %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
+                                       href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
+                                       aria-controls="{{maisons.denomination}}">
+                                       {{maisons.denomination}}
+                                    </a>
+                                
+                                    <div class="btn-group btn-group-sm">
+                                        <form action="{{ url_for('sup_maison', nom_maison=maisons.denomination) }}" method="post" class="del-component">
+                                            <button class="btn btn-danger" type="submit">
+                                                <input type="hidden" value="{{ maisons.denomination }}" name="maison_a_supp">
+                                                <i class="fa fa-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('update_maisons', nom_maison=maisons.denomination) }}">
+                                            <button class="btn btn-info" type="submit">
+                                                <i class="fa fa-pencil"></i> Éditer
+                                            </button>
+                                        </a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
+                <!-- Fin de la colonne pour l'affichage des résultats -->
+                
+                <!-- Colonne pour le formulaire de recherche -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <h3 class="card-header" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Affiner la recherche <i class="fa-solid fa-caret-down"></i>
+                        </h3>
+                        <div class="collapse show" id="collapseExample">
+                            <div class="card-body">
+                                {% include "partials/formulaires/recherche.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin de la colonne pour le formulaire de recherche -->
             </div>
-
-            </div>
-        </section>
+        </div>
+    </section>
 
     {%endif%}
 

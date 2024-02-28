@@ -5,6 +5,7 @@ from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import Recherche
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
+
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/maisons", methods=['GET', 'POST'])
 @app.route("/maisons/<int:page>", methods=['GET', 'POST'])
@@ -16,6 +17,7 @@ def maisons(page=1):
         sous_titre="Liste des maisons", 
         donnees=donnees,
         form=form)
+
 
 
 
