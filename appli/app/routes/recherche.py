@@ -147,14 +147,22 @@ def recherche_rapide(page=1):
                 """)
         personnes_ids = [row[0] for row in db.session.execute(subquery)]#ok fonctionne
 
+        subquery_1 = text("""
+                SELECT id
+                FROM maisons 
+                WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+normaliser(chaine)+"""%'
+                    """)
+        denomination_ids = [row[0] for row in db.session.execute(subquery_1)]
+
         domaines = Domaine.comparer_valeurs(chaine)#ok fonctionne
 #implémenter la méthode de grosse bourrine 
         resultats = Maisons.query.\
             filter(
                 or_(
-                    normaliser(Maisons.denomination).ilike("%"+chaine.lower()+"%"),#ok fonctionne
-                    normaliser(Maisons.region).ilike("%"+chaine.lower()+"%"),#ok fonctionne
-                    normaliser(Maisons.commune).ilike("%"+chaine.lower()+"%"),#ok fonctionne sauf pb avec les accents (par exemple on trouve chamb mais pas chambéry)
+                    #func.lower(func.replace(Maisons.denomination, 'É', 'E')).ilike("%"+normaliser(chaine)+"%"),#ok fonctionne
+                    Maisons.id.in_(denomination_ids),
+                    func.lower(func.replace(func.replace(func.replace(Maisons.region, 'î', 'i'),'Î', 'I'),'é', 'e' )).ilike("%" + normaliser(chaine) + "%"),
+                    func.lower(func.replace(Maisons.commune, 'É', 'E')).ilike("%"+normaliser(chaine)+"%"),
                     Maisons.id.in_(personnes_ids),#ok fonctionn
                     Maisons.type == domaines#ok fonctionne
                 )
@@ -165,16 +173,18 @@ def recherche_rapide(page=1):
             #paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
         #pareil : le .paginate ne fonctionen pas. On passe de /recherche/1 à maisons/2
         
+
         if resultats:
             print(resultats)
             print(personnes_ids)
             print(domaines)
         else:
             print("il n'y a pas de résultats")
-            flash("Pas de résultats, effectuer une nouvelle recherche")
+            
 
     else:
         resultats = None
+        flash("Pas de résultats, effectuer une nouvelle recherche")
         
         
     return render_template("pages/essai_resultats.html", 

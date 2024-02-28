@@ -3,6 +3,9 @@
 {% block body %}
 
 {%if donnees %}
+
+<h1>Résultats correspondants à '{{requete}}'</h1>
+
 <ul>
     {%for maisons in donnees %}
     <li>{{maisons.denomination}}{{maisons.id}}</li>

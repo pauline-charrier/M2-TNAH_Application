@@ -1,7 +1,6 @@
 from ..app import app, db
-from ..utils.transformations import nettoyage_string_to_int
+from ..utils.transformations import normaliser
 from enum import Enum
-from unidecode import unidecode
 
 class Domaine(Enum):
     TYPE1 = 'Littérature et idées'
@@ -19,7 +18,8 @@ class Domaine(Enum):
     @classmethod
     def comparer_valeurs(cls, value):
         for member in cls:
-            if value.lower() in member.value.lower():
+            #if value.lower() in member.value.lower():
+            if normaliser(value) in normaliser(member.value):
                 return member.name
 
 class Genre(Enum):
@@ -71,15 +71,6 @@ class Maisons(db.Model):
         distinct_date_label = db.session.query(Maisons.date_label.distinct()).order_by(Maisons.date_label).all()
         return [date[0] for date in distinct_date_label]
     
-    def get_denomination_sans_accents(self):
-        return unidecode(self.denomination) if self.denomination else None
-
-    def get_region_sans_accents(self):
-        return unidecode(self.region) if self.region else None
-    
-    def get_pays_sans_accents(self):
-        return unidecode(self.pays) if self.pays else None
-
 class Personnes(db.Model):
     __tablename__ = "personnes"
     idWikidata = db.Column(db.String(20), primary_key=True)
