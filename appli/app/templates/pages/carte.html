@@ -27,19 +27,18 @@ let layers = L.geoJSON(geojson_data, {
     }
 }).addTo(mymap);
 
+var selectedDomain;
 
-/*
- * Classe gérant l'interface utilisateur de filtrage
- */
+//Classe gérant l'interface utilisateur de filtrage
+
  let MyControlClass =  L.Control.extend({
 
 options: {
   position: 'topright'
 },
 
-/*
- * Ajout de l'interface à la carte
- */
+// Ajout de l'interface à la carte
+
 onAdd: function(mymap) {
 
   this.mymap = mymap;
@@ -91,6 +90,29 @@ onAdd: function(mymap) {
     let labelInscr = L.DomUtil.create('label', '', divTypeInscr);
     labelInscr.innerHTML = " Monument Inscrit";
 
+    // Menu déroulant pour le filtre des domaines
+    let divTypeDropdown = L.DomUtil.create('div', '', div);
+    divTypeDropdown.innerHTML = "Filtrer par Domaine : ";
+
+    let selectDomain = L.DomUtil.create('select', 'dropdown', divTypeDropdown);
+
+    // Ajoutez des options pour chaque domaine
+    addOptionToSelect(selectDomain, "Tous les domaines", ""); // Option pour afficher tous les domaines
+    addOptionToSelect(selectDomain, "Littérature et idées", "Littérature et idées");
+    addOptionToSelect(selectDomain, "Sciences et industrie", "Sciences et industrie");
+    addOptionToSelect(selectDomain, "Arts et architecture", "Arts et architecture");
+    addOptionToSelect(selectDomain, "Histoire et politique", "Histoire et politique");
+    addOptionToSelect(selectDomain, "Musique, théâtre et cinéma", "Musique, théâtre et cinéma");
+    selectedDomain = selectDomain.value;
+
+
+    // Fonction pour ajouter une option à un menu déroulant
+    function addOptionToSelect(select, label, value) {
+        let option = L.DomUtil.create('option', '', select);
+        option.innerHTML = label;
+        option.value = value;
+}
+
 		// Bouton de lancement de l'action de filtrage
     var buttonFilter = L.DomUtil.create('button', 'button-class', div);
     buttonFilter.innerHTML = "Filter";
@@ -124,7 +146,14 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
              return false;
             }
 
+            else if (selectedDomain === "" && feature.properties.domaine === selectedDomain) {
+                return false;
+            }
+
             return true;
+        }, 
+        onEachFeature: function (feature, layer) {
+          layer.bindPopup(feature.properties.popup);
         }
     }).addTo(mymap);
 },
@@ -136,6 +165,7 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
 
 // Ajout de l'interface utilisateur à la carte
 let myControl = new MyControlClass().addTo(mymap);
+
 
 </script>
 
