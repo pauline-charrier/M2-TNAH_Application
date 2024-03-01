@@ -27,8 +27,6 @@ let layers = L.geoJSON(geojson_data, {
     }
 }).addTo(mymap);
 
-var selectedDomain;
-
 //Classe gérant l'interface utilisateur de filtrage
 
  let MyControlClass =  L.Control.extend({
@@ -64,6 +62,19 @@ onAdd: function(mymap) {
     let inputMax = L.DomUtil.create('input', 'input-number', divMax);
     inputMax.type = "number";
     inputMax.value = 2000;
+
+    // Menu déroulant pour le filtre le genre
+    let divGenreDropdown = L.DomUtil.create('div', '', div);
+    divGenreDropdown.innerHTML = "Filtrer par le genre de l'illustre : ";
+
+    let selectGenre = L.DomUtil.create('select', 'dropdown', divGenreDropdown);
+
+    // Ajouter des options
+    addOptionToSelect(selectGenre, "Tous les genre", ""); // Option pour afficher tous les domaines
+    addOptionToSelect(selectGenre, "femmes", "femmes");
+    addOptionToSelect(selectGenre, "hommes", "hommes");
+    addOptionToSelect(selectGenre, "couples, famille et autres", "couples, famille et autres");
+    selectedGenre = selectGenre.value;
 
 		// Checkbox des domaines
     let divType = L.DomUtil.create('div', '', div);
@@ -129,13 +140,17 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
     layers = L.geoJSON(geojson_data,
     {
         filter: function (feature) {
+          if (feature.properties.ddn_pers !== null) {
             if (startDate && endDate) {
                 if (endDate) {
-                    if (!(feature.properties.ddn_pers >= startDate && feature.properties.ddn_pers <= endDate))
+                    if (!(feature.properties.ddn_pers >= startDate && feature.properties.ddn_pers <= endDate)) {
                         return false;
-                } else if (feature.properties.ddn_pers < startDate)
+                    }
+                } else if (feature.properties.ddn_pers < startDate) {
                     return false;
+                }
             }
+        }
             if(feature.properties.museeFrance === true && !inputMusChecked) {
              return false;
             }
@@ -146,8 +161,8 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
              return false;
             }
 
-            else if (selectedDomain === "" && feature.properties.domaine === selectedDomain) {
-                return false;
+            if (selectedDomain === feature.properties.domaine) {
+              return false;
             }
 
             return true;
