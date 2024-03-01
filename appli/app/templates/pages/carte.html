@@ -2,7 +2,7 @@
 
 {% block body %}
  
-<div id="maCarte" style="height: 500px;"></div>
+<div id="maCarte" style="height: 700px;"></div>
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -10,13 +10,34 @@
      crossorigin=""></script>
 
 <script>
-    var mymap = L.map('maCarte').setView([51.505, -0.09], 13);
+    var mymap = L.map('maCarte').setView([46.603354, 1.8883335], 6);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 20
+    maxZoom: 19
   }).addTo(mymap);
 
-  var marker = L.marker([51.5, -0.09]).addTo(myMap);
+
+  var marker = L.marker([48.8588897, 2.320041]).addTo(mymap);
+
+  // Creation de l'objet geojson
+  let geojson_data = {{ donnees | safe }};
+
+  // Ajout des données de l'objet GEOJSON à la carte
+  L.geoJSON(geojson_data).addTo(mymap);
+
+  // Ajout de la popup au marqueur
+  var popupContent = "<b>Nom de la maisons</b>";
+    marker.bindPopup(popupContent);
+
+    // Écoute de l'événement mouseover pour ouvrir la popup
+    marker.on('mouseover', function () {
+        marker.openPopup();
+    });
+
+    // Écoute de l'événement mouseout pour fermer la popup
+    marker.on('mouseout', function () {
+        marker.closePopup();
+    });
 
 
 </script>

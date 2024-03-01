@@ -4,6 +4,7 @@ from sqlalchemy import or_
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import Recherche
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
+from ..utils.parse import convertir_geojson
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -45,10 +46,30 @@ def personnes(page=1):
 
 @app.route("/carte", methods=['GET'])
 def carte():
-    donnees = Maisons.query.all()
+    maisons = Maisons.query.all()
+    donnees = []
+
+    for maison in maisons:
+        donnees.append(
+            {
+                'lat': maison.latitude,
+                'lon': maison.longitude,
+                'popup': maison.denomination
+            }
+        )
+    
+    donnees = convertir_geojson(donnees)
+    
     return render_template("pages/carte.html",
         sous_titre="Carte",
         donnees = donnees)
+
+
+'''
+points = Point.query.filter_by(district_id=district_id).all()
+    coords = [[point.latitude, point.longitude] for point in points]
+    return jsonify({"data": coords})
+'''
 
 
 @app.route("/graphiques", methods=['GET'])
