@@ -50,11 +50,18 @@ def carte():
     donnees = []
 
     for maison in maisons:
+        personne = Personnes.query.filter(Personnes.idWikidata == maison.idWikidata).first()
         donnees.append(
             {
                 'lat': maison.latitude,
                 'lon': maison.longitude,
-                'popup': maison.denomination
+                'popup': maison.denomination,
+                'domaine': maison.type.value if maison.type else None, 
+                'museeFrance':maison.museeFrance, 
+                'monClasse' : maison.monumentsClasses,
+                'monInscrit' : maison.monumentsInscrits,
+                'genre': personne.genre.value if personne and maison.type else None,
+                'ddn_pers' : personne.ddn if personne else None
             }
         )
     
@@ -63,13 +70,6 @@ def carte():
     return render_template("pages/carte.html",
         sous_titre="Carte",
         donnees = donnees)
-
-
-'''
-points = Point.query.filter_by(district_id=district_id).all()
-    coords = [[point.latitude, point.longitude] for point in points]
-    return jsonify({"data": coords})
-'''
 
 
 @app.route("/graphiques", methods=['GET'])

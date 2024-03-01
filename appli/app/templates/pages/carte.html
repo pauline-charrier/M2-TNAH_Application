@@ -21,12 +21,128 @@
 
 
   // Ajout des données de l'objet GEOJSON à la carte
-L.geoJSON(geojson_data, {
+let layers = L.geoJSON(geojson_data, {
     onEachFeature: function (feature, layer) {
         layer.bindPopup(feature.properties.popup);
     }
 }).addTo(mymap);
 
+
+/*
+ * Classe gérant l'interface utilisateur de filtrage
+ */
+ let MyControlClass =  L.Control.extend({
+
+options: {
+  position: 'topright'
+},
+
+/*
+ * Ajout de l'interface à la carte
+ */
+onAdd: function(mymap) {
+
+  this.mymap = mymap;
+
+  let div = L.DomUtil.create('div', 'leaflet-bar my-control');
+
+  let title = L.DomUtil.create('h3', '', div);
+    title.innerHTML = "Filtrer : ";
+
+		// Champ date (année) minimal
+    let divMin = L.DomUtil.create('div', '', div);
+    divMin.innerHTML = "Date de naissance de la personne : <br>";
+    let labelMin = L.DomUtil.create('label', '', divMin);
+    labelMin.innerHTML = "Année Min : ";
+    let inputMin = L.DomUtil.create('input', 'input-number', divMin);
+    inputMin.type = "number";
+    inputMin.value = 1200;
+
+		// Champ date (année) maximal
+    let divMax = L.DomUtil.create('div', '', div);
+    let labelMax = L.DomUtil.create('label', '', divMax);
+    labelMax.innerHTML = "Année Max : ";
+    let inputMax = L.DomUtil.create('input', 'input-number', divMax);
+    inputMax.type = "number";
+    inputMax.value = 2000;
+
+		// Checkbox des domaines
+    let divType = L.DomUtil.create('div', '', div);
+    divType.innerHTML = "Labels additionnels : ";
+
+    let divTypeMus = L.DomUtil.create('div', '', divType);
+    let inputMus = L.DomUtil.create('input', '', divTypeMus);
+    inputMus.type = "checkbox";
+    inputMus.checked = true;
+    let labelMus = L.DomUtil.create('label', '', divTypeMus);
+    labelMus.innerHTML = " Musée de France";
+
+    let divTypeClass = L.DomUtil.create('div', '', divType);
+    let inputClass = L.DomUtil.create('input', '', divTypeClass);
+    inputClass.type = "checkbox";
+    inputClass.checked = true;
+    let labelClass = L.DomUtil.create('label', '', divTypeClass);
+    labelClass.innerHTML = " Monument Classé";
+
+    let divTypeInscr = L.DomUtil.create('div', '', divType);
+    let inputInscr = L.DomUtil.create('input', '', divTypeInscr);
+    inputInscr.type = "checkbox";
+    inputInscr.checked = true;
+    let labelInscr = L.DomUtil.create('label', '', divTypeInscr);
+    labelInscr.innerHTML = " Monument Inscrit";
+
+		// Bouton de lancement de l'action de filtrage
+    var buttonFilter = L.DomUtil.create('button', 'button-class', div);
+    buttonFilter.innerHTML = "Filter";
+
+    L.DomEvent.on(buttonFilter, 'click', function() { this.filter(parseInt(inputMin.value), parseInt(inputMax.value), inputMus.checked, inputClass.checked, inputInscr.checked); }, this);
+
+    return div;
+  },
+
+/*
+   * Filtrage les données du GEOJSON
+   * @param {number}          startDate                  L'année de début
+   * @param {number}          endDate                    L'année de fin
+   * @param {boolean}         inputOtherChecked          L'état "checked" de l'input "AUTRE" 
+   * @param {boolean}         inputPublicChecked         L'état "checked" de l'input "PUBLIC" 
+   * @param {boolean}         inputBusinessChecked       L'état "checked" de l'input "COMMERCE" 
+   */
+   filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked) {
+    mymap.removeLayer(layers);
+
+    layers = L.geoJSON(geojson_data,
+    {
+        filter: function (feature) {
+            if (startDate && endDate) {
+                if (endDate) {
+                    if (!(feature.properties.ddn >= startDate && feature.properties.ddn <= endDate))
+                        return false;
+                } else if (feature.properties.ddn < startDate)
+                    return false;
+            }
+            if(feature.properties.museeFance = true && !inputMusChecked) {
+             return false;
+            }
+            else if(feature.properties.monClasse = true && !inputClassChecked) {
+             return false;
+            }
+            else if(feature.properties.momnInscrit = true && !inputInscrChecked) {
+             return false;
+            }
+
+            return true;
+        }
+    }).addTo(mymap);
+  },
+
+  onRemove: function(mymap)
+  {
+  }
+});
+
+// Ajout de l'interface utilisateur à la carte
+let myControl = new MyControlClass().addTo(mymap);
 
 </script>
 
