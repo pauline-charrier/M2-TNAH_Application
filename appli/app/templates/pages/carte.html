@@ -100,15 +100,8 @@ onAdd: function(mymap) {
     return div;
   },
 
-/*
-   * Filtrage les données du GEOJSON
-   * @param {number}          startDate                  L'année de début
-   * @param {number}          endDate                    L'année de fin
-   * @param {boolean}         inputOtherChecked          L'état "checked" de l'input "AUTRE" 
-   * @param {boolean}         inputPublicChecked         L'état "checked" de l'input "PUBLIC" 
-   * @param {boolean}         inputBusinessChecked       L'état "checked" de l'input "COMMERCE" 
-   */
-   filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked) {
+//filtrer les données du GeoJson
+filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked) {
     mymap.removeLayer(layers);
 
     layers = L.geoJSON(geojson_data,
@@ -116,25 +109,25 @@ onAdd: function(mymap) {
         filter: function (feature) {
             if (startDate && endDate) {
                 if (endDate) {
-                    if (!(feature.properties.ddn >= startDate && feature.properties.ddn <= endDate))
+                    if (!(feature.properties.ddn_pers >= startDate && feature.properties.ddn_pers <= endDate))
                         return false;
-                } else if (feature.properties.ddn < startDate)
+                } else if (feature.properties.ddn_pers < startDate)
                     return false;
             }
-            if(feature.properties.museeFance = true && !inputMusChecked) {
+            if(feature.properties.museeFrance === true && !inputMusChecked) {
              return false;
             }
-            else if(feature.properties.monClasse = true && !inputClassChecked) {
+            else if(feature.properties.monClasse === true && !inputClassChecked) {
              return false;
             }
-            else if(feature.properties.momnInscrit = true && !inputInscrChecked) {
+            else if(feature.properties.monInscrit === true && !inputInscrChecked) {
              return false;
             }
 
             return true;
         }
     }).addTo(mymap);
-  },
+},
 
   onRemove: function(mymap)
   {
