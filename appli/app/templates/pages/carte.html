@@ -18,7 +18,7 @@
 
   // Creation de l'objet geojson
   let geojson_data = {{ donnees | safe }};
-
+;
 
   // Ajout des données de l'objet GEOJSON à la carte
 let layers = L.geoJSON(geojson_data, {
@@ -27,7 +27,7 @@ let layers = L.geoJSON(geojson_data, {
     }
 }).addTo(mymap);
 
-//Classe gérant l'interface utilisateur de filtrage
+//Classe gérant l'interface de filtrage
 
  let MyControlClass =  L.Control.extend({
 
@@ -35,7 +35,7 @@ options: {
   position: 'topright'
 },
 
-// Ajout de l'interface à la carte
+// Création de l'interface
 
 onAdd: function(mymap) {
 
@@ -46,7 +46,7 @@ onAdd: function(mymap) {
   let title = L.DomUtil.create('h3', '', div);
     title.innerHTML = "Filtrer : ";
 
-		// Champ date (année) minimal
+		// Champ date minimal
     let divMin = L.DomUtil.create('div', '', div);
     divMin.innerHTML = "Date de naissance de la personne : <br>";
     let labelMin = L.DomUtil.create('label', '', divMin);
@@ -55,7 +55,7 @@ onAdd: function(mymap) {
     inputMin.type = "number";
     inputMin.value = 1200;
 
-		// Champ date (année) maximal
+		// Champ date maximal
     let divMax = L.DomUtil.create('div', '', div);
     let labelMax = L.DomUtil.create('label', '', divMax);
     labelMax.innerHTML = "Année Max : ";
@@ -63,7 +63,7 @@ onAdd: function(mymap) {
     inputMax.type = "number";
     inputMax.value = 2000;
 
-    // Menu déroulant pour le filtre le genre
+    // Menu déroulant pour le filtre sur le genre
     let divGenreDropdown = L.DomUtil.create('div', '', div);
     divGenreDropdown.innerHTML = "Filtrer par le genre de l'illustre : ";
 
@@ -71,10 +71,10 @@ onAdd: function(mymap) {
 
     // Ajouter des options
     addOptionToSelect(selectGenre, "Tous les genre", ""); // Option pour afficher tous les domaines
-    addOptionToSelect(selectGenre, "femmes", "femmes");
-    addOptionToSelect(selectGenre, "hommes", "hommes");
-    addOptionToSelect(selectGenre, "couples, famille et autres", "couples, famille et autres");
-    selectedGenre = selectGenre.value;
+    addOptionToSelect(selectGenre, "femmes", "fem");
+    addOptionToSelect(selectGenre, "hommes", "masc");
+    addOptionToSelect(selectGenre, "couples, famille et autres", "couple/famille");
+    let selectedGenre = selectGenre.value;
 
 		// Checkbox des domaines
     let divType = L.DomUtil.create('div', '', div);
@@ -114,10 +114,10 @@ onAdd: function(mymap) {
     addOptionToSelect(selectDomain, "Arts et architecture", "Arts et architecture");
     addOptionToSelect(selectDomain, "Histoire et politique", "Histoire et politique");
     addOptionToSelect(selectDomain, "Musique, théâtre et cinéma", "Musique, théâtre et cinéma");
-    //selectedDomain = selectDomain.value;
+    let selectedDomaine = selectDomain.value;
 
 
-    // Fonction pour ajouter une option à un menu déroulant
+    // Fonction pour ajouter une option au menu déroulant
     function addOptionToSelect(select, label, value) {
         let option = L.DomUtil.create('option', '', select);
         option.innerHTML = label;
@@ -128,13 +128,13 @@ onAdd: function(mymap) {
     var buttonFilter = L.DomUtil.create('button', 'button-class', div);
     buttonFilter.innerHTML = "Filter";
 
-    L.DomEvent.on(buttonFilter, 'click', function() { this.filter(parseInt(inputMin.value), parseInt(inputMax.value), inputMus.checked, inputClass.checked, inputInscr.checked, selectDomain.value); }, this);
+    L.DomEvent.on(buttonFilter, 'click', function() { this.filter(parseInt(inputMin.value), parseInt(inputMax.value), inputMus.checked, inputClass.checked, inputInscr.checked, selectDomain.value, selectGenre.value); }, this);
 
     return div;
   },
 
 //filtrer les données du GeoJson
-filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked, selectedDomaine) {
+filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked, selectedDomaine, selectedGenre) {
     mymap.removeLayer(layers);
 
     layers = L.geoJSON(geojson_data,
@@ -142,6 +142,8 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
         filter: function (feature) {
           console.log("Selected Domain:", selectedDomaine);
           console.log("Feature Domain:", feature.properties.domaine);
+          console.log("genre sélectionne : ", selectedGenre)
+          console.log("genre du feature : ", feature.properties.genre)
           if (feature.properties.ddn_pers !== null) {
             if (startDate && endDate) {
                 if (endDate) {
@@ -163,11 +165,11 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
              return false;
             }
 
-            if (selectedDomaine === feature.properties.domaine) {
+            if (selectedDomaine !== "" && selectedDomaine !== feature.properties.domaine) {
               return false;
             }
 
-            if (selectedGenre === feature.properties.genre) {
+            if (selectedGenre !== "" && selectedGenre !== feature.properties.genre) {
               return false;
             }
 
