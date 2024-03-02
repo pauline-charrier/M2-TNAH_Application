@@ -114,7 +114,7 @@ onAdd: function(mymap) {
     addOptionToSelect(selectDomain, "Arts et architecture", "Arts et architecture");
     addOptionToSelect(selectDomain, "Histoire et politique", "Histoire et politique");
     addOptionToSelect(selectDomain, "Musique, théâtre et cinéma", "Musique, théâtre et cinéma");
-    selectedDomain = selectDomain.value;
+    //selectedDomain = selectDomain.value;
 
 
     // Fonction pour ajouter une option à un menu déroulant
@@ -128,18 +128,20 @@ onAdd: function(mymap) {
     var buttonFilter = L.DomUtil.create('button', 'button-class', div);
     buttonFilter.innerHTML = "Filter";
 
-    L.DomEvent.on(buttonFilter, 'click', function() { this.filter(parseInt(inputMin.value), parseInt(inputMax.value), inputMus.checked, inputClass.checked, inputInscr.checked); }, this);
+    L.DomEvent.on(buttonFilter, 'click', function() { this.filter(parseInt(inputMin.value), parseInt(inputMax.value), inputMus.checked, inputClass.checked, inputInscr.checked, selectDomain.value); }, this);
 
     return div;
   },
 
 //filtrer les données du GeoJson
-filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked) {
+filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked, selectedDomaine) {
     mymap.removeLayer(layers);
 
     layers = L.geoJSON(geojson_data,
     {
         filter: function (feature) {
+          console.log("Selected Domain:", selectedDomaine);
+          console.log("Feature Domain:", feature.properties.domaine);
           if (feature.properties.ddn_pers !== null) {
             if (startDate && endDate) {
                 if (endDate) {
@@ -161,7 +163,11 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
              return false;
             }
 
-            if (selectedDomain === feature.properties.domaine) {
+            if (selectedDomaine === feature.properties.domaine) {
+              return false;
+            }
+
+            if (selectedGenre === feature.properties.genre) {
               return false;
             }
 
