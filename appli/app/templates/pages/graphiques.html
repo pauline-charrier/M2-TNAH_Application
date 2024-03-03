@@ -1,0 +1,55 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<!-- premier graphique sur les genres des illustres-->
+<div class="container">
+
+    <div class="row">
+        <h1>Proportion des hommes et des femmes</h1>
+        <div>
+            <canvas id="genreGraph", style="width: 800px;"></canvas>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-deferred@1.0.2/dist/chartjs-plugin-deferred.min.js"></script>
+        <script type="text/javascript" src="https://github.com/nagix/chartjs-plugin-colorschemes/releases/download/v0.4.0/chartjs-plugin-colorschemes.js"></script>
+
+        <script>
+            const ctx = document.getElementById('genreGraph');
+            
+            var genreGraph = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hommes', 'Femmes'],
+                    datasets: [{
+                        data: []
+                    }]
+                },
+                options: {
+                }
+            });
+
+            fetch('{{url_for("graphiques")}}')
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    // extraction des données
+                    var hommes = data.hommes;
+                    var femmes = data.femmes;
+                    
+                    // ajout des données dans le graphique
+                    genreGraph.data.datasets.forEach((dataset) => {
+                        dataset.data = [hommes, femmes];
+                    });
+                    
+                    // mise à jour du graphique une fois les données calculées et insérées
+                    genreGraph.update();
+                });
+        </script>
+    </div>
+
+</div>
+
+{% endblock %}
