@@ -1,0 +1,78 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Répartition des Domaines</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- ajout d'un plugin chart js -->
+
+    <style> /* CSS intégré pour l'apparence du graphique et de son titre (taille, marge, alignement, police)*/
+        #diagrammeCanvas {
+            width: 600px;  
+            height: 600px; 
+            margin: 0 auto; 
+            display: block;
+        }
+        #titre {
+            font-family: Verdana;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="titre">Répartition des domaines des Maisons des Illustres</h1>
+    <canvas id="diagrammeCanvas" width="200" height="200"></canvas> <!-- Informations de taille ne marchent pas -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var labels = JSON.parse('{{ labels | tojson | safe | replace("None", "null") }}');
+            var counts = JSON.parse('{{ counts | tojson | safe | replace("None", "null") }}');
+    
+            var ctx = document.getElementById('diagrammeCanvas').getContext('2d');
+    
+            var diagramme = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(144, 238, 144, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio : true,
+                    responsive : true,
+                    aspectRatio : 1,
+                    plugins: { // affichage des étiquettes de valeurs
+                        datalabels: {
+                        color: '#fff', 
+                        display: function(context) {
+                            return context.dataset.data[context.dataIndex] !== 0; // n'affiche pas les étiquettes pour les valeurs nulles
+                            },
+                        formatter: function(value, context) {
+                            return value; 
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
+
+{%endblock%}
