@@ -18,7 +18,6 @@ class Domaine(Enum):
     @classmethod
     def comparer_valeurs(cls, value):
         for member in cls:
-            #if value.lower() in member.value.lower():
             if normaliser(value) in normaliser(member.value):
                 return member.name
 

@@ -8,8 +8,7 @@ from unidecode import unidecode
 
 
 '''
-Sur la route recherche, le .paginate ne fonctionne pas, 
-le filtre sur le nom du bâtiment ne fonctionne pas non plus
+pb de pagination !!!!!!
 '''
 
 @app.route("/recherche", methods=['GET', 'POST'])
@@ -93,8 +92,6 @@ WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(repl
 
             donnees = query_results.all()
             #.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
-            #print(donnees)
-            #print(donnees.items)
 
 #le .paginate ne fonctionne pas pourquoi ???????????  
 
@@ -127,14 +124,6 @@ essai avorté sur une recherche en fonction de la période
             donnees = query_results.order_by(Maisons.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
 '''
 
-'''
-Problème avec la route de la barre de recherche : elle envoie des faux positifs -_-' Waruuuuum !!
-20 maisons, toujours les mêmes 
-[<Maisons MI189>, <Maisons MI154>, <Maisons MI236>, <Maisons MI047>, <Maisons MI029>, 
-<Maisons MI158>, <Maisons MI010>, <Maisons MI237>, <Maisons MI239>, <Maisons MI240>, 
-<Maisons MI241>, <Maisons MI243>, <Maisons MI244>, <Maisons MI102>, <Maisons MI246>, 
-<Maisons MI247>, <Maisons MI066>, <Maisons MI249>, <Maisons MI093>, <Maisons MI250>, <Maisons MI251>]
-'''
 
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")
@@ -148,7 +137,7 @@ def recherche_rapide(page=1):
                 FROM maisons a
                 INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(b.nomIllustre, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+chaine+"""%'
                 """)
-        personnes_ids = [row[0] for row in db.session.execute(subquery)]#ok fonctionne
+        personnes_ids = [row[0] for row in db.session.execute(subquery)]
 
         subquery_1 = text("""
                 SELECT id
@@ -157,34 +146,40 @@ def recherche_rapide(page=1):
                     """)
         denomination_ids = [row[0] for row in db.session.execute(subquery_1)]
 
-        domaines = Domaine.comparer_valeurs(chaine)#ok fonctionne
-#implémenter la méthode de grosse bourrine 
-        resultats = Maisons.query.\
-            filter(
-                or_(
-                    #func.lower(func.replace(Maisons.denomination, 'É', 'E')).ilike("%"+normaliser(chaine)+"%"),#ok fonctionne
-                    Maisons.id.in_(denomination_ids),
-                    func.lower(func.replace(func.replace(func.replace(Maisons.region, 'î', 'i'),'Î', 'I'),'é', 'e' )).ilike("%" + normaliser(chaine) + "%"),
-                    func.lower(func.replace(Maisons.commune, 'É', 'E')).ilike("%"+normaliser(chaine)+"%"),
-                    Maisons.id.in_(personnes_ids),#ok fonctionn
-                    Maisons.type == domaines#ok fonctionne
-                )
-            ).\
-            distinct(Maisons.denomination).\
-            order_by(Maisons.denomination).\
-            paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])        
+        domaines = Domaine.comparer_valeurs(chaine)
 
-        if resultats:
-            print(resultats)
-            print(personnes_ids)
-            print(domaines)
+        if domaines:
+            resultats = Maisons.query.\
+                filter(
+                    or_(
+                        Maisons.id.in_(denomination_ids),
+                        func.lower(func.replace(func.replace(func.replace(Maisons.region, 'î', 'i'),'Î', 'I'),'é', 'e' )).ilike("%" + normaliser(chaine) + "%"),
+                        func.lower(func.replace(Maisons.commune, 'É', 'E')).ilike("%"+normaliser(chaine)+"%"),
+                        Maisons.id.in_(personnes_ids),
+                        Maisons.type == domaines
+                    )
+                ).\
+                distinct(Maisons.denomination).\
+                order_by(Maisons.denomination).\
+                paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])        
+        
         else:
-            print("il n'y a pas de résultats")
-            
+            resultats = Maisons.query.\
+                filter(
+                    or_(
+                        Maisons.id.in_(denomination_ids),
+                        func.lower(func.replace(func.replace(func.replace(Maisons.region, 'î', 'i'),'Î', 'I'),'é', 'e' )).ilike("%" + normaliser(chaine) + "%"),
+                        func.lower(func.replace(Maisons.commune, 'É', 'E')).ilike("%"+normaliser(chaine)+"%"),
+                        Maisons.id.in_(personnes_ids),
+                    )
+                ).\
+                distinct(Maisons.denomination).\
+                order_by(Maisons.denomination).\
+                paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
 
     else:
         resultats = None
-        flash("Pas de résultats, effectuer une nouvelle recherche")
+        
         
         
     return render_template("pages/resultats_recherche_full_texte.html", 

@@ -2,6 +2,7 @@
 
 {% block body %}
 
+{%if donnees%}
 <section class="padding-lg">
     <div class="container">
         <div class="row heading heading-icon">
@@ -56,5 +57,8 @@
                     {% endif %}
                 </div>
             </div>
+            {% else %}
+            <h2>Pas de résultats, effectuez une nouvelle recherche ou utilisez la <a href="{{ url_for('recherche')}}">recherche à facette</a></h2>
+            {% endif %}
 
 {% endblock %}
