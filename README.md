@@ -65,7 +65,7 @@ source env/bin/activate
 ```
 
 9. Installer les dépendances requises : 
-```shell
+```console
 pip install -r requirements.txt
 ```
 
