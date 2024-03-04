@@ -24,112 +24,97 @@ def recherche(page_num=1):
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
 
-    # initialisation des données de retour dans le cas où il n'y ait pas de requête
-    donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
-    donnees = []
+    # initialisation des données dans le cas où il n'y ait pas de requête
+    if request.method == 'GET':
+        donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
+        donnees = [] #initialisation des données de retour s'il n'y a pas de requête
+        print(donnees_init.next_num)
+        print(donnees_init)
 
-    if form.validate_on_submit():
-        # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
-        denomination = clean_arg(request.form.get("denomination", None))
-        region =  clean_arg(request.form.get("region", None))
-        departement = clean_arg(request.form.get("departement", None))
-        type =  clean_arg(request.form.get("type", None))
-        genre =  clean_arg(request.form.get("genre", None))
-        #periode = clean_arg(request.form.getlist("periode", None))
-        museeFrance =  clean_arg(request.form.get("museeFrance", None))
-        monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
-        monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
-        date_label = clean_arg(request.form.get("date_label", None))
+    else:
+        donnees_init=[]
 
-        # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
-        # dans les données
-        if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label :
-            # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
-            # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
-            query_results = Maisons.query
-#ce filtre ne fonctionne pas
-            if denomination:
-                denomination = normaliser(denomination)
-                subquery_1 = text("""
-                    SELECT id
-FROM maisons 
-WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+denomination+"""%'
-                    """)
-                comparaison_ids = [row[0] for row in db.session.execute(subquery_1)]
-                query_results = query_results.filter(Maisons.id.in_(comparaison_ids))
-                #query_results = query_results.filter(func.lower(Maisons.denomination).ilike("%"+denomination+"%".lower()))
+        if form.validate_on_submit():
+            # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
+            denomination = clean_arg(request.form.get("denomination", None))
+            region =  clean_arg(request.form.get("region", None))
+            departement = clean_arg(request.form.get("departement", None))
+            type =  clean_arg(request.form.get("type", None))
+            genre =  clean_arg(request.form.get("genre", None))
+            museeFrance =  clean_arg(request.form.get("museeFrance", None))
+            monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
+            monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
+            date_label = clean_arg(request.form.get("date_label", None))
 
-            if region : 
-                query_results = query_results.filter(Maisons.region == region)
+            # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
+            # dans les données
+            if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label :
+                # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
+                # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
+                query_results = Maisons.query
+                if denomination:
+                    denomination = normaliser(denomination)
+                    subquery_1 = text("""
+                        SELECT id
+    FROM maisons 
+    WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+denomination+"""%'
+                        """)
+                    comparaison_ids = [row[0] for row in db.session.execute(subquery_1)]
+                    query_results = query_results.filter(Maisons.id.in_(comparaison_ids))
 
-            if departement:
-                query_results = query_results.filter(Maisons.dpmt == departement)
+                if region : 
+                    query_results = query_results.filter(Maisons.region == region)
 
-            if type : 
-                query_results = query_results.filter(Maisons.type == Domaine.obtenir_clef(type))
+                if departement:
+                    query_results = query_results.filter(Maisons.dpmt == departement)
 
-            if museeFrance:
-                query_results = query_results.filter(Maisons.museeFrance == True)
-            
-            if monumentsInscrits:
-                query_results = query_results.filter(Maisons.monumentsInscrits == True)
+                if type : 
+                    query_results = query_results.filter(Maisons.type == Domaine.obtenir_clef(type))
 
-            if monumentsClasses:
-                query_results = query_results.filter(Maisons.monumentsClasses == True)
-            
-            if genre:
-                subquery = text("""
-                    SELECT a.id
-                    FROM maisons a
-                    INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND b.genre = :genre
-                    """)
-                genre_ids = [row[0] for row in db.session.execute(subquery, {'genre': Genre.obtenir_clef(genre)})]
+                if museeFrance:
+                    query_results = query_results.filter(Maisons.museeFrance == True)
+                
+                if monumentsInscrits:
+                    query_results = query_results.filter(Maisons.monumentsInscrits == True)
 
-                query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
-            
-            if date_label:
-                query_results = query_results.filter(Maisons.date_label == date_label)
+                if monumentsClasses:
+                    query_results = query_results.filter(Maisons.monumentsClasses == True)
+                
+                if genre:
+                    subquery = text("""
+                        SELECT a.id
+                        FROM maisons a
+                        INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND b.genre = :genre
+                        """)
+                    genre_ids = [row[0] for row in db.session.execute(subquery, {'genre': Genre.obtenir_clef(genre)})]
 
-            donnees = query_results.all()
-            #.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+                    query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
+                
+                if date_label:
+                    query_results = query_results.filter(Maisons.date_label == date_label)
 
-#le .paginate ne fonctionne pas pourquoi ???????????  
+                donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
 
-        #pré-remplir le formulaire pour la prochaine recherche
-        form.denomination.data = denomination
-        form.region.data = region
-        form.type.data = type
-        form.museeFrance.data = museeFrance
-        form.monumentsClasses.data=monumentsClasses
-        form.monumentsInscrits.data=monumentsInscrits
-        form.departement.data = departement
-        form.date_label.data = date_label
+    #le .paginate ne fonctionne pas pourquoi ???????????  
 
-    next_url = url_for('recherche', page=donnees.next_num) \
-        if donnees.has_next else None
-    prev_url = url_for('recherche', page=donnees.prev_num) \
-        if donnees.has_prev else None
+            #pré-remplir le formulaire pour la prochaine recherche
+            form.denomination.data = denomination
+            form.region.data = region
+            form.type.data = type
+            form.museeFrance.data = museeFrance
+            form.monumentsClasses.data=monumentsClasses
+            form.monumentsInscrits.data=monumentsInscrits
+            form.departement.data = departement
+            form.date_label.data = date_label
 
-    print(donnees_init.next_num)
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
         donnees_init=donnees_init,
         donnees=donnees,
         form=form, 
-        page=page_num, 
-        next_url=next_url,
-        prev_url=prev_url)
-            
-'''
-essai avorté sur une recherche en fonction de la période
-            if periode:
-                periode = db.session.execute("""select a.id from maisons a 
-                    inner join personnes b on b.idWikidata = a.idWikidata and siecles_vie == '"""+periode+"""'
-                    """).fetchall()
-                query_results = query_results.filter(Maisons.id.in_([p.id for p in periode] ))
-            
-            donnees = query_results.order_by(Maisons.name).paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
-'''
+        page=page_num)
+
+
 
 
 @app.route("/recherche_rapide")
