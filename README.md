@@ -27,17 +27,17 @@ Pour une première utilisation sur Ubuntu, veuillez suivre pas à pas les instru
 1. Télécharger la base de données disponible dans ce répertoire GitHub. 
 
 2. Cloner le dépôt GitHub de l'application avec la commande suivante : 
-```shell
+```bash
 git clone https://github.com/gromettoclara/maisons_illustres.git
 ```
    
 3.  Installer Python :
-```shell
+```bash
 sudo apt-get install python3
 ```
 
 4. Installer Pip :
- ```shell
+ ```bash
 sudo apt install python3-pip
 ```
 
@@ -50,27 +50,27 @@ WTF_CSRF_ENABLE=True
 ```
 
 6. Installer le package "virtualenv" avec la commande suivante :
-```shell
+```bash
 pip install virtualenv
 ```
 
 7. Installer un environnement virtuel dans le dossier "appli" :
-```shell
+```bash
 virtualenv env -p python3
 ```
 
 8. Activer l'environnement virtuel avec la commande : 
-```console
+```bash
 source env/bin/activate
 ```
 
 9. Installer les dépendances requises : 
-```console
+```bash
 pip install -r requirements.txt
 ```
 
 10. Lancer l'application :
-```shell
+```bash
 python run.py
 ```
 
