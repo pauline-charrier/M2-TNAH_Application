@@ -34,7 +34,6 @@ class InsertionMaison(FlaskForm):
 
 
 class UpdateMaisons(FlaskForm):
-    id =  StringField("id", validators=[DataRequired()]) 
     denomination =  StringField("denomination", validators=[DataRequired()])
     code_postal =  StringField("code_postal", validators=[optional()])
     adresse =  StringField("adresse", validators=[optional()])

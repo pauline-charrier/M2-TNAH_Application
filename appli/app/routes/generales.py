@@ -61,7 +61,7 @@ def carte():
                 'monClasse' : maison.monumentsClasses,
                 'monInscrit' : maison.monumentsInscrits,
                 'genre': personne.genre.value if personne and maison.type else None,
-                'ddn_pers' : personne.ddn if personne else None
+                'ddn_pers' : personne.ddn if personne else 0
             }
         )
     

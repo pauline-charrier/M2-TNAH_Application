@@ -1,5 +1,5 @@
 from ..app import app, db
-from flask import render_template, request, flash
+from flask import render_template, request, flash, url_for
 from sqlalchemy import or_, text, func
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
@@ -105,13 +105,20 @@ WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(repl
         form.departement.data = departement
         form.date_label.data = date_label
 
+    next_url = url_for('recherche', page=donnees.next_num) \
+        if donnees.has_next else None
+    prev_url = url_for('recherche', page=donnees.prev_num) \
+        if donnees.has_prev else None
+
     print(donnees_init.next_num)
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
         donnees_init=donnees_init,
         donnees=donnees,
         form=form, 
-        page=page_num)
+        page=page_num, 
+        next_url=next_url,
+        prev_url=prev_url)
             
 '''
 essai avorté sur une recherche en fonction de la période

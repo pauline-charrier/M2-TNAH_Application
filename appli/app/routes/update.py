@@ -14,7 +14,6 @@ def update_maisons(nom_maison):
     form = UpdateMaisons() 
     
     # Remplir le formulaire avec les données en base
-    form.id.data = maison.id
     form.denomination.data = maison.denomination
     form.code_postal.data = maison.code_postal
     form.adresse.data = maison.adresse
@@ -45,7 +44,6 @@ def update_maisons(nom_maison):
 
     try:
         if form.validate_on_submit():
-            id =  clean_arg(request.form.get("id", None))
             adresse =  clean_arg(request.form.get("adresse", None))
             commune =  clean_arg(request.form.get("commune", None))
             code_postal =  clean_arg(request.form.get("code_postal", None))
@@ -67,7 +65,6 @@ def update_maisons(nom_maison):
             if maison:
                 print(maison)
                 # Mettre à jour les propriétés de l'objet avec les nouvelles valeurs
-                maison.id = id
                 maison.adresse = adresse
                 maison.commune = commune
                 maison.code_postal = code_postal
