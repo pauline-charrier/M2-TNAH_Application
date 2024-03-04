@@ -2,7 +2,7 @@
 
 ## 1. Description générale de l’application
 
-Le label "Maison des Illustres" est décerné en France à des maisons, châteaux ou ateliers ayant appartenu à des personnalités éminentes qui ont marqué l'histoire par leurs réalisations dans les domaines de la politique, de la culture, des sciences, ou des arts. Ces lieux doivent alors proposer des visites *a minima* 40 jours dans l'année, mettant en avant leur valeur patrimoniale et l'influence de "l'illustre personne" dans l'Histoire. L’attribution d’un tel label représente une reconnaissance officielle de l’intérêt patrimonial de la Maison. Le label est également un dispositif de valorisation, qui s’accompagne d’avantages divers, en terme de visibilité notamment. De son attribution découle donc des enjeux de représentation et la mise en valeur d'une large diversité de personnes et de lieux avec un intérêt patrimonial. Est-ce vraiment le cas ? 
+Le label "Maison des Illustres" est décerné en France à des maisons, châteaux ou ateliers ayant appartenu à des personnalités éminentes qui ont marqué l'histoire par leurs réalisations dans les domaines de la politique, de la culture, des sciences ou des arts. Ces lieux doivent alors proposer des visites *a minima* 40 jours dans l'année, mettant en avant leur valeur patrimoniale et l'influence de "l'illustre personne" dans l'Histoire. L’attribution d’un tel label représente une reconnaissance officielle de l’intérêt patrimonial de la Maison. Le label est également un dispositif de valorisation, qui s’accompagne d’avantages divers, en termes de visibilité notamment. De son attribution découle donc des enjeux de représentation et la mise en valeur d'une large diversité de personnes et de lieux avec un intérêt patrimonial. Est-ce vraiment le cas ? 
 
 Le but de cette application est de permettre un suivi de la diversité des lieux labellisés et des personnes qu'elles représentent, ainsi qu'un outil de localisation de ces bâtiments, participant ainsi à leur visibilité.
 
@@ -74,8 +74,8 @@ Pour une utilisation ultérieure de l'application, il suffit de répéter les é
 
 ## 4. Fonctionnalités de l'application
 
-La page d'accueil affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages ainsi qu'un formulaire qui permet d'effectuer une recherche en fonction de plusieurs filtres (nom de la maison, genre, labels...). 
-Ce formulaire est aussi accessible depuis l'onglet "Recherche" située dans la barre de navigation supérieure.
+La page d'accueil affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages ainsi qu'un formulaire qui permet d'effectuer une recherche en fonction de plusieurs filtres (nom de la maison, genre de l'illustre, labels...). 
+Ce formulaire est aussi accessible depuis l'onglet "Recherche" situé dans la barre de navigation supérieure.
 
 *Screenshot page d'accueil*
 
@@ -83,7 +83,7 @@ Pour chaque maison, le catalogue propose un bouton "Supprimer" et un bouton "Éd
 
 *Screenshot update maison*
 
-Le menu défilant située au niveau de la barre de navigation donne accès à un catalogue des personnes illustres qui est donc différent de celui des maisons, ainsi que 2 options qui permettent d'ajouter au choix une nouvelle maison ou une nouvelle personne à la base de données.
+Le menu défilant situé au niveau de la barre de navigation donne accès à un catalogue des personnes illustres qui est donc différent de celui des maisons, ainsi qu'à 2 options qui permettent d'ajouter au choix une nouvelle maison ou une nouvelle personne à la base de données.
 
 *Screenshot catalogue personnes avec le menu défilant*
 
@@ -91,7 +91,7 @@ Ensuite, l'onglet "Carte" affiche une carte avec l'emplacement de toutes les mai
 
 *Screenshot carte*
 
-L'onglet "graphiques" quant à elle permet d'afficher les différentes visualisations graphiques réalisées à partir des données.
+L'onglet "graphiques" permet quant à lui d'afficher les différentes visualisations graphiques réalisées à partir des données.
 
 *Screenshot d'un graphique*
 
