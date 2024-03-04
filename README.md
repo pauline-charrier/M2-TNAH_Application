@@ -60,7 +60,7 @@ virtualenv env -p python3
 ```
 
 8. Activer l'environnement virtuel avec la commande : 
-```shell
+```shellscript
 source env/bin/activate
 ```
 
