@@ -24,34 +24,57 @@ A compléter
 
 Pour une première utilisation sur Ubuntu, veuillez suivre pas à pas les instructions suivantes :
 
-1. Cloner le dépôt GitHub de l'application avec la commande suivante : git clone https://github.com/gromettoclara/maisons_illustres.git
-```bash
+1. Télécharger la base de données disponible dans ce répertoire GitHub. 
+
+2. Cloner le dépôt GitHub de l'application avec la commande suivante : 
+```shell
 git clone https://github.com/gromettoclara/maisons_illustres.git
 ```
-2. Télécharger la base de données disponible dans le répertoire GitHub
    
-3.  Installer Python avec la commande suivante :
-```bash
+3.  Installer Python :
+```shell
 sudo apt-get install python3
 ```
 
-6. Installer Pip avec la commande : sudo apt install python3-pip
-7. Créer un fichier .env dans le dossier "appli" avec les variables spécifiées ci-dessous
-8. Installer le package "virtualenv" avec la commande : pip install virtualenv
-9. Installer un environnement virtuel dans le dossier "appli" : virtualenv env -p python3
-10. Activer l'environnement virtuel avec la commande : source env/bin/activate
-11. Installer les dépendances requises avec la commande : pip install -r requirements.txt
-12. Lancer l'application avec la commande : python run.py
+4. Installer Pip :
+ ```shell
+sudo apt install python3-pip
+```
 
-Pour une utilisation ultérieure de l'application, il suffit de répéter les étapes 8 et 10.
-
-Voici le contenu à saisir dans le fichier .env en complétant "SQLALCHEMY_DATABASE_URI=" par le chemin absolu de la base de données :
-
+5. Créer un fichier .env dans le dossier "appli" avec les variables ci-dessous :
 ```Python
 DEBUG=True
 SQLALCHEMY_DATABASE_URI=
 SQLALCHEMY_ECHO=False
 WTF_CSRF_ENABLE=True
-SECRET_KEY=j6SscbFozFFp0muAcNmMPP8cNv1CcpEd
 ```
+
+6. Installer le package "virtualenv" avec la commande suivante :
+```shell
+pip install virtualenv
+```
+
+7. Installer un environnement virtuel dans le dossier "appli" :
+```shell
+virtualenv env -p python3
+```
+
+8. Activer l'environnement virtuel avec la commande : 
+```shell
+source env/bin/activate
+```
+
+9. Installer les dépendances requises : 
+```shell
+pip install -r requirements.txt
+```
+
+10. Lancer l'application :
+```shell
+python run.py
+```
+
+Pour une utilisation ultérieure de l'application, il suffit de répéter les étapes 8 et 10 uniquement.
+
+
 
