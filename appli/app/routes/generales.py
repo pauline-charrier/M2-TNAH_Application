@@ -73,7 +73,7 @@ def carte():
 
 #En cours d'adaptation pour les graphiques
 @app.route("/graphiques/graph1", methods=['GET', 'POST'])
-def graphiques_domaines():
+def graphiques():
     types_count = db.session.query(Maisons.type, db.func.count(Maisons.id)).group_by(Maisons.type).all()
     labels = [result[0].value if result[0] is not None else 'NULL' for result in types_count]
     return render_template('pages/graphiques.html')
