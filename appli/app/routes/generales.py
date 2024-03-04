@@ -71,12 +71,13 @@ def carte():
         sous_titre="Carte",
         donnees = donnees)
 
-#En cours d'adaptation pour les graphiques
+#En cours d'adaptation pour les graphiques : corriger les noms des étiquettes
 @app.route("/graphiques/graph1", methods=['GET', 'POST'])
 def graphiques():
-    types_count = db.session.query(Maisons.type, db.func.count(Maisons.id)).group_by(Maisons.type).all()
-    labels = [result[0].value if result[0] is not None else 'NULL' for result in types_count]
-    return render_template('pages/graphiques.html')
+    genres_count = db.session.query(Personnes.genre, db.func.count(Personnes.nomIllustre)).group_by(Personnes.genre).all()
+    labels = [result[0].value if result[0] is not None else 'NULL' for result in genres_count]
+    counts = [result[1] for result in genres_count]
+    return render_template('pages/graphiques.html', labels=labels, counts=counts)
 
 #Graphique concernant les domaines des maisons des illustres : 
 @app.route("/graphiques/domaines", methods=['GET', 'POST'])

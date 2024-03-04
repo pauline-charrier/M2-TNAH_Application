@@ -8,6 +8,22 @@
     <title>Les genres des Illustres</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- ajout d'un plugin chart js -->
+
+    <style>
+        /* CSS intégré pour l'apparence du graphique et de son titre (taille, marge, alignement, police)*/
+            #diagrammeCanvas {
+                width: 600px;
+                height: 600px;
+                margin: 0 auto;
+                display: block;
+            }
+    
+            #titre {
+                font-family: Verdana;
+                text-align: center;
+            }
+        </style>
+
 <body>
     <h1 id="titre">Répartition des domaines des Maisons des Illustres</h1>
     <!-- Canvas HTML pour l'intégration du graphique -->
@@ -25,7 +41,7 @@
         });
 
         function initializeChart() {
-            var labels = JSON.parse('{{ labels | tojson | safe | replace("None", "null") }}');
+            var labels = JSON.parse('{{ labels | tojson | safe | replace("TYPE1", "Homme") | replace("TYPE2", "Femme") | replace("TYPE3", "Autre") }}');
             var counts = JSON.parse('{{ counts | tojson | safe | replace("None", "null") }}');
             var total = counts.reduce((a, b) => a + b, 0);
 
