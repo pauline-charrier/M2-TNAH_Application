@@ -24,14 +24,14 @@ A compléter
 
 Pour une première utilisation sur Ubuntu, veuillez suivre pas à pas les instructions suivantes :
 
-1. Cloner le dépôt GitHub de l'application avec la commande : git clone https://github.com/gromettoclara/maisons_illustres.git
-```shell
+1. Cloner le dépôt GitHub de l'application avec la commande suivante : git clone https://github.com/gromettoclara/maisons_illustres.git
+```bash
 git clone https://github.com/gromettoclara/maisons_illustres.git
 ```
 2. Télécharger la base de données disponible dans le répertoire GitHub
    
-3.  Installer Python avec la commande :
-```shell
+3.  Installer Python avec la commande suivante :
+```bash
 sudo apt-get install python3
 ```
 
