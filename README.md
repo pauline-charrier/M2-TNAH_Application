@@ -41,7 +41,7 @@ sudo apt-get install python3
 sudo apt install python3-pip
 ```
 
-5. Créer un fichier .env dans le dossier "appli" avec les variables ci-dessous :
+5. Créer un fichier .env dans le dossier "appli" avec les variables ci-dessous en complétant avec le chemin absolu de la base de données : 
 ```Python
 DEBUG=True
 SQLALCHEMY_DATABASE_URI=
@@ -60,7 +60,7 @@ virtualenv env -p python3
 ```
 
 8. Activer l'environnement virtuel avec la commande : 
-```shellscript
+```console
 source env/bin/activate
 ```
 
