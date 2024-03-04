@@ -9,8 +9,11 @@ Le but de cette application est de permettre un suivi de la diversité des lieux
 ## 2. Contributeurs
 
 Maddalena ACCARDO
+
 Pauline CHARRIER
+
 Clara GROMETTO
+
 Kutay SEFIL
 
 ## 3. Fonctionnalités de l'application
