@@ -16,11 +16,7 @@ Clara GROMETTO
 
 Kutay SEFIL
 
-## 3. Fonctionnalités de l'application
-
-A compléter
-
-## 4. Mode d'emploi de l'application 
+## 3. Mode d'emploi de l'application 
 
 Pour une première utilisation sur Ubuntu, veuillez suivre pas à pas les instructions suivantes :
 
@@ -75,6 +71,31 @@ python run.py
 ```
 
 Pour une utilisation ultérieure de l'application, il suffit de répéter les étapes 8 et 10 uniquement.
+
+## 4. Fonctionnalités de l'application
+
+La page d'accueil affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages ainsi qu'un formulaire qui permet d'effectuer une recherche en fonction de plusieurs filtres (nom de la maison, genre, labels...). 
+Ce formulaire est aussi accessible depuis l'onglet "Recherche" située dans la barre de navigation supérieure.
+
+*Screenshot page d'accueil*
+
+Pour chaque maison, le catalogue propose un bouton "Supprimer" et un bouton "Éditer" qui permettent respectivement de supprimer la maison ou de mettre à jour les différentes informations relatives à la maison.
+
+*Screenshot update maison*
+
+Le menu défilant située au niveau de la barre de navigation donne accès à un catalogue des personnes illustres qui est donc différent de celui des maisons, ainsi que 2 options qui permettent d'ajouter au choix une nouvelle maison ou une nouvelle personne à la base de données.
+
+*Screenshot catalogue personnes avec le menu défilant*
+
+Ensuite, l'onglet "Carte" affiche une carte avec l'emplacement de toutes les maisons d'illustres avec la présence de plusieurs filtres là aussi.
+
+*Screenshot carte*
+
+L'onglet "graphiques" quant à elle permet d'afficher les différentes visualisations graphiques réalisées à partir des données.
+
+*Screenshot d'un graphique*
+
+Enfin, la barre de recherche située à droite nous donne la possibilité d'effectuer une recherche rapide en plein texte sur l'ensemble des maisons.
 
 
 
