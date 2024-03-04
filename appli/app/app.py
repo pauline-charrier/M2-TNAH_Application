@@ -15,3 +15,4 @@ from .routes import insertions
 from .routes import suppression
 from .routes import update
 from .routes import recherche
+from .routes import erreurs
