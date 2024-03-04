@@ -2,54 +2,86 @@
 
 {% block body %}
 
-<!-- premier graphique sur les genres des illustres-->
-<div class="container">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les genres des Illustres</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- ajout d'un plugin chart js -->
+<body>
+    <h1 id="titre">Répartition des domaines des Maisons des Illustres</h1>
+    <!-- Canvas HTML pour l'intégration du graphique -->
+    <canvas id="diagrammeCanvas" width="200" height="200"></canvas>
 
-    <div class="row">
-        <h1>Proportion des hommes et des femmes</h1>
-        <div>
-            <canvas id="genreGraph", style="width: 800px;"></canvas>
-        </div>
-        
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-deferred@1.0.2/dist/chartjs-plugin-deferred.min.js"></script>
-        <script type="text/javascript" src="https://github.com/nagix/chartjs-plugin-colorschemes/releases/download/v0.4.0/chartjs-plugin-colorschemes.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('diagrammeCanvas').getContext('2d');
+            var diagramme = initializeChart();
 
-        <script>
-            const ctx = document.getElementById('genreGraph');
-            
-            var genreGraph = new Chart(ctx, {
+            // Mise à jour du graphique toutes les 5 secondes
+            setInterval(function () {
+                updateChart(diagramme);
+            }, 5000);
+        });
+
+        function initializeChart() {
+            var labels = JSON.parse('{{ labels | tojson | safe | replace("None", "null") }}');
+            var counts = JSON.parse('{{ counts | tojson | safe | replace("None", "null") }}');
+            var total = counts.reduce((a, b) => a + b, 0);
+
+            var pourcentages = counts.map(count => (count / total) * 100);
+
+            return new Chart(document.getElementById('diagrammeCanvas').getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Hommes', 'Femmes'],
+                    labels: labels,
                     datasets: [{
-                        data: []
+                        data: pourcentages,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(144, 238, 144, 0.7)'
+                        ],
+                        borderWidth: 1
                     }]
                 },
                 options: {
+                    maintainAspectRatio: true,
+                    responsive: true,
+                    aspectRatio: 1,
+                    plugins: { // affichage des étiquettes de valeurs
+                        datalabels: {
+                            color: '#fff',
+                            display: function (context) {
+                                return context.dataset.data[context.dataIndex] !== 0;
+                            },
+                            formatter: function (value, context) {
+                                return value.toFixed(2) + '%';
+                            }
+                        }
+                    }
                 }
             });
+        }
+        // fonction pour mettre à jour les données du graphique avec les données les plus récentes de la base
+        function updateChart(chart) {
+            // requête AJAX pour obtenir les données mises à jour du serveur
+            fetch('/update_chart_data')
+                .then(response => response.json())
+                .then(data => {
+                    // mise à jour les données du graphique
+                    chart.data.labels = data.labels;
+                    chart.data.datasets[0].data = data.counts;
 
-            fetch('{{url_for("graphiques")}}')
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    // extraction des données
-                    var hommes = data.hommes;
-                    var femmes = data.femmes;
-                    
-                    // ajout des données dans le graphique
-                    genreGraph.data.datasets.forEach((dataset) => {
-                        dataset.data = [hommes, femmes];
-                    });
-                    
-                    // mise à jour du graphique une fois les données calculées et insérées
-                    genreGraph.update();
+                    // mise à jour du graphique avec la méthode .update() de Chart JS
+                    chart.update();
                 });
-        </script>
-    </div>
+        }
+    </script>
 
-</div>
+</body>
 
-{% endblock %}
+{%endblock%}
