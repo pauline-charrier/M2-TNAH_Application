@@ -24,6 +24,7 @@ def recherche(page_num=1):
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
 
+    #A enlever si non nécessaire: 
     donnees_init = []  
     donnees = [] 
 
@@ -123,22 +124,23 @@ def recherche(page_num=1):
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")
 def recherche_rapide(page=1):
-    chaine =  request.args.get("chaine", None)
+    chaine = request.args.get("chaine", None)
+    resultats = None
 
     if chaine:
         chaine = normaliser(chaine)
         subquery = text("""
-                SELECT a.id
-                FROM maisons a
-                INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(b.nomIllustre, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+chaine+"""%'
-                """)
+            SELECT a.id
+            FROM maisons a
+            INNER JOIN personnes b ON b.idWikidata = a.idWikidata AND lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(b.nomIllustre, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%""" + chaine + """%'
+            """)
         personnes_ids = [row[0] for row in db.session.execute(subquery)]
 
         subquery_1 = text("""
-                SELECT id
-                FROM maisons 
-                WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%"""+normaliser(chaine)+"""%'
-                    """)
+            SELECT id
+            FROM maisons 
+            WHERE lower(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(denomination, 'Î', 'I'), 'ë', 'e'), 'ê', 'e'), 'è', 'e'), 'é', 'e'), 'Â', 'A'), 'À', 'A'), 'Ô', 'O'), 'È', 'E'), 'É', 'E')) like '%""" + normaliser(chaine) + """%'
+            """)
         denomination_ids = [row[0] for row in db.session.execute(subquery_1)]
 
         domaines = Domaine.comparer_valeurs(chaine)
@@ -156,8 +158,8 @@ def recherche_rapide(page=1):
                 ).\
                 distinct(Maisons.denomination).\
                 order_by(Maisons.denomination).\
-                paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])        
-        
+                paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+
         else:
             resultats = Maisons.query.\
                 filter(
@@ -172,14 +174,15 @@ def recherche_rapide(page=1):
                 order_by(Maisons.denomination).\
                 paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
 
-    else:
-        resultats = None
-        
-        
-        
-    return render_template("pages/resultats_recherche_full_texte.html", 
-            sous_titre= "Recherche | " + chaine, 
-            donnees=resultats,
-            requete=chaine)
+        if not resultats.items:
+            return render_template("pages/resultats_recherche_full_texte.html",
+                                   sous_titre="Recherche | " + chaine,
+                                   no_results=True,
+                                   requete=chaine)
+
+    return render_template("pages/resultats_recherche_full_texte.html",
+                           sous_titre="Recherche | " + chaine,
+                           donnees=resultats,
+                           requete=chaine)
 
 
