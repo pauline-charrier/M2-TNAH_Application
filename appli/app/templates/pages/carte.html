@@ -71,10 +71,10 @@ onAdd: function(mymap) {
     let selectGenre = L.DomUtil.create('select', 'dropdown', divGenreDropdown);
 
     // Ajouter des options
-    addOptionToSelect(selectGenre, "Tous les genre", ""); // Option pour afficher tous les domaines
-    addOptionToSelect(selectGenre, "femmes", "fem");
-    addOptionToSelect(selectGenre, "hommes", "masc");
-    addOptionToSelect(selectGenre, "couples, famille et autres", "couple/famille");
+    addOptionToSelect(selectGenre, "Tous les genres", ""); // Option pour afficher tous les domaines
+    addOptionToSelect(selectGenre, "femmes", "féminin");
+    addOptionToSelect(selectGenre, "hommes", "masculin");
+    addOptionToSelect(selectGenre, "couples, famille et autres", "couples/familles");
     let selectedGenre = selectGenre.value;
 
 		// Checkbox des domaines
