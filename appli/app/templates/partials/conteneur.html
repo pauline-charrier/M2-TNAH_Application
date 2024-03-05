@@ -9,8 +9,7 @@
     crossorigin=""/>
     {% include "partials/css.html" %}
     {% include "partials/js.html" %}
-    {% block js %}{%endblock%}
-    {% block css %}{%endblock%}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/autre_css.css')}}">
 
 
 </head>
