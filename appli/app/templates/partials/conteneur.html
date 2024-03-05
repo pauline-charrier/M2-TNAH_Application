@@ -7,14 +7,19 @@
     {% include "partials/css.html" %}
     {% include "partials/js.html" %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/autre_css.css')}}">
-
-
 </head>
 
 <body>
-  <div class="bg-warning text-center p-3">
-    <img src="#" alt="Logo" class="img-fluid" style="max-height: 50px;">
-    <h1 class="text-white" style="font-variant: small-caps;">Maison Des Illustres</h1>
+  <!-- mise en page du titre du site et du logo-->
+  <div class="custom-bg-color text-white p-4">
+  <div class="container mx-auto" style="max-width: 600px;">
+    <div class="d-flex align-items-center">
+      <img class="logo mr-3" src="{{ url_for('static', filename='images/1200px-Logo_Maisons_des_illustres.svg.png') }}" alt="Logo Maisons des Illustres">
+      <div class="text-center">
+        <h1 style="font-variant: small-caps; margin-top: 0; margin-bottom: 0;">Maison Des Illustres</h1>
+      </div>
+    </div>
+  </div>
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

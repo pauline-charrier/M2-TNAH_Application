@@ -4,7 +4,9 @@
 
 Le label "Maison des Illustres" est décerné en France à des maisons, châteaux ou ateliers ayant appartenu à des personnalités éminentes qui ont marqué l'histoire par leurs réalisations dans les domaines de la politique, de la culture, des sciences ou des arts. Ces lieux doivent alors proposer des visites *a minima* 40 jours dans l'année, mettant en avant leur valeur patrimoniale et l'influence de "l'illustre personne" dans l'Histoire. L’attribution d’un tel label représente une reconnaissance officielle de l’intérêt patrimonial de la Maison. Le label est également un dispositif de valorisation, qui s’accompagne d’avantages divers, en termes de visibilité notamment. De son attribution découle donc des enjeux de représentation et la mise en valeur d'une large diversité de personnes et de lieux avec un intérêt patrimonial. Est-ce vraiment le cas ? 
 
-Le but de cette application est de permettre un suivi de la diversité des lieux labellisés et des personnes qu'elles représentent, ainsi qu'un outil de localisation de ces bâtiments, participant ainsi à leur visibilité.
+Le but de cette application est de permettre un suivi de la diversité des lieux labellisés et des personnes qu'elles représentent, ainsi qu'un outil de localisation de ces bâtiments, participant ainsi à leur visibilité. 
+
+Cela passe par une illustration concrète, par le biais d'une carte et de plusieurs graphiques, qui permettent une première compréhension du label. Au delà d'une approche qui relève davantage de la découverte, une approche plus précise est permise via la recherche des personnes illustres et de leurs maisons associées. Enfin, une troisième approche est également possible : l'utilisateur peut contribuer à l'enrichissement des données en ajoutant lui-même de nouvelles maisons et les informations correspondantes s'il le juge nécessaire.
 
 ## 2. Contributeurs
 
@@ -91,7 +93,7 @@ Ensuite, l'onglet "Carte" affiche une carte avec l'emplacement de toutes les mai
 
 *Screenshot carte*
 
-L'onglet "graphiques" permet quant à lui d'afficher les différentes visualisations graphiques réalisées à partir des données.
+L'onglet "graphiques" permet quant à lui d'afficher les différentes visualisations graphiques réalisées à partir des données, à savoir un graphique sur les genres les personnes illustres et sur les domaines dans lesquels ils ont brillé. 
 
 *Screenshot d'un graphique*
 
