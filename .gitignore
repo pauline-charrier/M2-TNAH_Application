@@ -2,3 +2,4 @@
 *.env
 mon_env/
 env/
+venv/
