@@ -72,7 +72,7 @@ def carte():
         donnees = donnees)
 
 
-#Fusion des deux routes : 
+#Fusion des deux routes de graphiques : 
 @app.route("/graphiques", methods=['GET', 'POST'])
 def graphiques():
     # Récupérer les données pour le premier graphique (genres des personnes illustres)
@@ -88,4 +88,4 @@ def graphiques():
     return render_template('pages/graphiques.html', 
                            labels_genres=labels_genres, counts_genres=counts_genres,
                            labels_types=labels_types, counts_types=counts_types, 
-                           sous_titre = "graphiques")
+                           sous_titre = "Graphiques")
