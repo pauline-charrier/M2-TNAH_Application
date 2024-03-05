@@ -82,7 +82,7 @@ def graphiques():
 
     # Récupérer les données pour le deuxième graphique (domaines des maisons)
     types_count = db.session.query(Maisons.type, db.func.count(Maisons.id)).group_by(Maisons.type).all()
-    labels_types = [result[0].value if result[0] is not None else 'NULL' for result in types_count]
+    labels_types = [result[0].value if result[0] is not None else 'Non renseigné' for result in types_count]
     counts_types = [result[1] for result in types_count]
 
     return render_template('pages/graphiques.html', 
