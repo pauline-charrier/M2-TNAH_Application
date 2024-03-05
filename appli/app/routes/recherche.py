@@ -24,6 +24,9 @@ def recherche(page_num=1):
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
 
+    donnees_init = []  
+    donnees = [] 
+
     # initialisation des données dans le cas où il n'y ait pas de requête
     if request.method == 'GET':
         donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
