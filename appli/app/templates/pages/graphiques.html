@@ -1,58 +1,109 @@
 {% extends "partials/conteneur.html" %}
 
 {% block body %}
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les genres des Illustres</title>
+    <title>Répartition des genres et des domaines des Maisons des Illustres</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- ajout d'un plugin chart js -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+</head>
+<style>
+    /* CSS intégré pour l'apparence du graphique et de son titre (taille, marge, alignement, police)*/
+        .graph-container {
+            margin-bottom: 20px; /* Ajout d'un espacement entre les graphiques pour plus de lisibilité */
+        }
 
-    <style>
-        /* CSS intégré pour l'apparence du graphique et de son titre (taille, marge, alignement, police)*/
-            #diagrammeCanvas {
-                width: 600px;
-                height: 600px;
-                margin: 0 auto;
-                display: block;
-            }
-    
-            #titre {
-                font-family: Verdana;
-                text-align: center;
-            }
-        </style>
+        #diagrammeGenres {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+            display: block;
+        }
+        #diagrammeTypes {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        #titre {
+            font-family: Verdana;
+            text-align: center;
+        }
+        /* CSS concernant l'apparence du texte introductif */
+        .presentation {
+            font-family: Verdana;
+            text-align: center;
+            font-size: large;
+        }
+    </style>
 
 <body>
-    <h1 id="titre">Répartition des genres des Illustres</h1>
-    <!-- Canvas HTML pour l'intégration du graphique -->
-    <canvas id="diagrammeCanvas" width="200" height="200"></canvas>
+    <div class="container">
+        <div class="presentation">
+            <p>Cette page présente deux datavisualisations asynchrones adossées à notre base de données des Maisons des Illustres.</p> 
+            <p>Le <a href="#diagrammeGenres">premier graphique</a> reflète la proportion (en pourcentages) d'hommes, de femmes et de couples ou familles parmi les personnages "illustres". 
+            Il permet de mettre en évidence la part plus importante d'hommes.</p>
+            <p> Le <a href="#diagrammeTypes">second graphique</a> se concentre sur la répartition (en chiffres absolus) des différents domaines intellectuels auxquels sont rattachées
+            les Maisons de notre base. Il révèle quant à lui une relative variété des profils.</p>
+        </div>
+        
+
+        <!-- Premier graphique (Genres - Pie) -->
+        <div class="graph-container">
+            <h1 id="titre">Répartition des genres des Illustres</h2>
+            <canvas id="diagrammeGenres" width="400" height="400"></canvas>
+        </div>
+        <!-- Deuxième graphique (Domaines - Doughnut) -->
+        <div class="graph-container">
+            <h1 id="titre">Répartition des domaines des Maisons des Illustres</h2>
+            <canvas id="diagrammeTypes" width="400" height="400"></canvas>
+        </div>
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var ctx = document.getElementById('diagrammeCanvas').getContext('2d');
-            var diagramme = initializeChart();
+            // Initialisation du premier graphique (Genres - Pie)
+            var ctxGenres = document.getElementById('diagrammeGenres').getContext('2d');
+            var diagrammeGenres = initializeChart(ctxGenres, '{{ labels_genres | tojson | safe }}', '{{ counts_genres | tojson | safe }}', 'pie');
 
-            // Mise à jour du graphique toutes les 5 secondes
+            // Initialisation du deuxième graphique (Domaines - Doughnut)
+            var ctxTypes = document.getElementById('diagrammeTypes').getContext('2d');
+            var diagrammeTypes = initializeChart(ctxTypes, '{{ labels_types | tojson | safe }}', '{{ counts_types | tojson | safe }}', 'doughnut');
+
+            // Mise à jour des graphiques toutes les 5 secondes
             setInterval(function () {
-                updateChart(diagramme);
+                updateChart(diagrammeGenres, '/update_chart_data_genres');
+                updateChart(diagrammeTypes, '/update_chart_data_types');
             }, 5000);
         });
 
-        function initializeChart() {
-            var labels = JSON.parse('{{ labels | tojson | safe | replace("TYPE1", "Homme") | replace("TYPE2", "Femme") | replace("TYPE3", "Autre") }}');
-            var counts = JSON.parse('{{ counts | tojson | safe | replace("None", "null") }}');
+        function initializeChart(ctx, labels, counts, chartType) {
+            labels = JSON.parse(labels.replace("None", "null"));
+            counts = JSON.parse(counts.replace("None", "null"));
+
             var total = counts.reduce((a, b) => a + b, 0);
+
+            // Choix du format en fonction du type de graphique
+            var datasetLabel = chartType === 'pie' ? 'Pourcentage' : 'Nombre brut';
+            var formatter = chartType === 'pie' ?
+                function (value, context) {
+                    return value.toFixed(2) + '%';
+                } :
+                function (value, context) {
+                    return value;
+                };
 
             var pourcentages = counts.map(count => (count / total) * 100);
 
-            return new Chart(document.getElementById('diagrammeCanvas').getContext('2d'), {
-                type: 'doughnut',
+            return new Chart(ctx, {
+                type: chartType,
                 data: {
                     labels: labels,
                     datasets: [{
-                        data: pourcentages,
+                        data: chartType === 'pie' ? pourcentages : counts,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.7)',
                             'rgba(54, 162, 235, 0.7)',
@@ -68,24 +119,23 @@
                     maintainAspectRatio: true,
                     responsive: true,
                     aspectRatio: 1,
-                    plugins: { // affichage des étiquettes de valeurs
+                    plugins: {
                         datalabels: {
                             color: '#fff',
                             display: function (context) {
                                 return context.dataset.data[context.dataIndex] !== 0;
                             },
-                            formatter: function (value, context) {
-                                return value.toFixed(2) + '%';
-                            }
+                            formatter: formatter
                         }
-                    }
+                    },
+                    
                 }
             });
         }
-        // fonction pour mettre à jour les données du graphique avec les données les plus récentes de la base
-        function updateChart(chart) {
+
+        function updateChart(chart, updateRoute) {
             // requête AJAX pour obtenir les données mises à jour du serveur
-            fetch('/update_chart_data')
+            fetch(updateRoute)
                 .then(response => response.json())
                 .then(data => {
                     // mise à jour les données du graphique
@@ -97,7 +147,5 @@
                 });
         }
     </script>
-
 </body>
-
-{%endblock%}
+{% endblock %}

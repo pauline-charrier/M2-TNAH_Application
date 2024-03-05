@@ -71,18 +71,20 @@ def carte():
         sous_titre="Carte",
         donnees = donnees)
 
-#En cours d'adaptation pour les graphiques : corriger les noms des étiquettes
-@app.route("/graphiques/graph1", methods=['GET', 'POST'])
-def graphiques():
-    genres_count = db.session.query(Personnes.genre, db.func.count(Personnes.nomIllustre)).group_by(Personnes.genre).all()
-    labels = [result[0].value if result[0] is not None else 'NULL' for result in genres_count]
-    counts = [result[1] for result in genres_count]
-    return render_template('pages/graphiques.html', labels=labels, counts=counts)
 
-#Graphique concernant les domaines des maisons des illustres : 
-@app.route("/graphiques/domaines", methods=['GET', 'POST'])
-def graphiques_domaines():
+#Fusion des deux routes : 
+@app.route("/graphiques", methods=['GET', 'POST'])
+def graphiques():
+    # Récupérer les données pour le premier graphique (genres des personnes illustres)
+    genres_count = db.session.query(Personnes.genre, db.func.count(Personnes.nomIllustre)).group_by(Personnes.genre).all()
+    labels_genres = [result[0].value if result[0] is not None else 'NULL' for result in genres_count]
+    counts_genres = [result[1] for result in genres_count]
+
+    # Récupérer les données pour le deuxième graphique (domaines des maisons)
     types_count = db.session.query(Maisons.type, db.func.count(Maisons.id)).group_by(Maisons.type).all()
-    labels = [result[0].value if result[0] is not None else 'NULL' for result in types_count]
-    counts = [result[1] for result in types_count]
-    return render_template('pages/graphiques_domaines.html', labels=labels, counts=counts)
+    labels_types = [result[0].value if result[0] is not None else 'NULL' for result in types_count]
+    counts_types = [result[1] for result in types_count]
+
+    return render_template('pages/graphiques.html', 
+                           labels_genres=labels_genres, counts_genres=counts_genres,
+                           labels_types=labels_types, counts_types=counts_types)
