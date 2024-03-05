@@ -1,13 +1,13 @@
 {% extends "partials/conteneur.html" %}
 
 {% block body %}
-
-<style> 
-/* Couche de CSS pour le message indiquant aucun résultat pour la recherche plein texte */
+<style>
+    /* Couche de CSS pour le message indiquant aucun résultat pour la recherche plein texte */
     #aucun_res {
         font-size: medium;
     }
 </style>
+
 
 <section class="padding-lg">
     <div class="container">
@@ -66,7 +66,57 @@
                 </div>
             </div>
         {% else %}
-            <h2 id="aucun_res">Aucun résultat trouvé, effectuez une nouvelle recherche ou utilisez la <a href="{{ url_for('recherche')}}">recherche à facette</a></h2>
+            <!-- Script JS pour afficher le pop-up -->
+            <script>
+                $(document).ready(function () {
+                    $('#pop_up').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+            
+                    $('#pop_up').modal('show');
+            
+                    // Fermer le pop-up lorsqu'on clique sur "Fermer" ou la croix
+                    $('#pop_upFermer, #pop_upCroix').on('click', function () {
+                        $('#pop_up').modal('hide');
+                    });
+            
+                    // Fermer le pop-up lorsqu'on clique en dehors de celui-ci
+                    $(document).on('click', function (e) {
+                        if ($(e.target).is('.modal')) {
+                            $('#pop_up').modal('hide');
+                        }
+                    });
+                });
+            </script>
+
+            <!-- Boîte de dialogue modale -->
+            <div class="modal fade" id="pop_up">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- En-tête de la boîte de dialogue -->
+                        <!-- Croix en haut à droite comme bouton fermant -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Aucun résultat trouvé</h4>
+                            <button type="button" class="close" id="pop_upCroix" aria-label="Fermer">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <!-- Corps de la boîte de dialogue -->
+                        <div class="modal-body">
+                            <p>Effectuez une nouvelle recherche ou utilisez la <a href="{{ url_for('recherche')}}">recherche à facettes</a>.</p>
+                        </div>
+
+                        <!-- Footer de la boîte de dialogue (bouton fermer) -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="pop_upFermer">Fermer</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         {% endif %}
     </div>
 </section>
