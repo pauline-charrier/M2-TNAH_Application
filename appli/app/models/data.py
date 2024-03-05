@@ -22,9 +22,9 @@ class Domaine(Enum):
                 return member.name
 
 class Genre(Enum):
-    TYPE1 = 'masc'
-    TYPE2 = 'fem'
-    TYPE3 = 'couple/famille'
+    TYPE1 = 'Masculin'
+    TYPE2 = 'Féminin'
+    TYPE3 = 'Couples/familles'
 
     @classmethod
     def obtenir_clef(cls, value):
