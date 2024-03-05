@@ -16,37 +16,36 @@
     width : 60px;
     }
 
-        /* apparence du graphique et de son titre (taille, marge, alignement, police)*/
-        .graph-container {
-            margin-bottom: 80px; /* Ajout d'un espacement entre les graphiques pour plus de lisibilité */
-        }
+/* Couche CSS du template graphiques.html */
+.graph-container {
+    margin-bottom: 80px; 
+    }
 
-        #diagrammeGenres {
-            width: 600px;
-            height: 600px;
-            margin: 0 auto;
-            display: block;
-        }
-        #diagrammeTypes {
-            width: 600px;
-            height: 600px;
-            margin: 0 auto;
-            display: block;
-        }
-
-        #titre {
-            font-family: Verdana;
-            text-align: center;
-        }
-        /* CSS concernant l'apparence du texte introductif */
-        .presentation {
-            font-family: Verdana;
-            text-align: center;
-            font-size: large;
-        }
-        /* CSS du titre général */
-        #header {
-            font-family: Verdana;
-            text-align: center;
-            /*color: rgb(246, 190, 8);*/
-        }
+#diagrammeGenres {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+    display: block;
+    }
+#diagrammeTypes {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+    display: block;
+    }
+/* Titres des diagrammes */
+    #titre {
+    font-family: Verdana;
+    text-align: center;
+    }
+.presentation {
+    font-family: Verdana;
+    text-align: center;
+    font-size: large;
+    }
+/* Titre de la page */
+#header {
+    font-family: Verdana;
+    text-align: center;
+    /*color: rgb(246, 190, 8);*/
+    }
