@@ -87,4 +87,5 @@ def graphiques():
 
     return render_template('pages/graphiques.html', 
                            labels_genres=labels_genres, counts_genres=counts_genres,
-                           labels_types=labels_types, counts_types=counts_types)
+                           labels_types=labels_types, counts_types=counts_types, 
+                           sous_titre = "graphiques")
