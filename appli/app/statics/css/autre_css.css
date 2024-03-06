@@ -40,14 +40,25 @@
     }
 .presentation {
     font-family: Verdana;
-    text-align: center;
     font-size: large;
+    text-align: justify;
     }
+    
+.legend {
+    font-family: Verdana;
+    text-align: justify;
+    }
+
 /* Titre de la page, et gestion du logo */
 #header {
     font-family: Verdana;
     text-align: center;
-    /*color: rgb(246, 190, 8);*/
+    }
+
+/*changement de la police d'écriture pour le titre du bandeau principal*/
+.maison-des-illustres-title {
+        font-family: 'Georgia';
+        text-align: center;
     }
 
 .logo {

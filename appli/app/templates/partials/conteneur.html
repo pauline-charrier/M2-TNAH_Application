@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" href="{{ url_for('static', filename='images/1200px-Logo_Maisons_des_illustres.svg.png') }}" type="image/png">
     <title>Maisons des Illustres | {{sous_titre}}</title>
     {% include "partials/metadata.html" %}
     {% include "partials/css.html" %}
@@ -16,7 +17,7 @@
     <div class="d-flex align-items-center">
       <img class="logo mr-3" src="{{ url_for('static', filename='images/1200px-Logo_Maisons_des_illustres.svg.png') }}" alt="Logo Maisons des Illustres">
       <div class="text-center">
-        <h1 style="font-variant: small-caps; margin-top: 0; margin-bottom: 0;">Maison Des Illustres</h1>
+        <h1 class="maison-des-illustres-title" style="font-variant: small-caps; margin-top: 0; margin-bottom: 0;">Maison Des Illustres</h1>
       </div>
     </div>
   </div>
@@ -75,6 +76,12 @@
     </div>
   </div>
 
+  <!-- création dd'un footer ; changer le contenu si nécessaire -->
+  <footer class="footer mt-5">
+    <div class="container text-center">
+        <p>&copy; 2024 | Maison Des Illustres. Tous droits réservés.</p>
+    </div>
+</footer>
 
 </body>
 
