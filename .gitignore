@@ -3,3 +3,4 @@
 mon_env/
 env/
 venv/
+*.pyc
