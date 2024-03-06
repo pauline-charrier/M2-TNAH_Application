@@ -17,9 +17,6 @@
     }
 
 /* Couche CSS du template graphiques.html */
-.graph-container {
-    margin-bottom: 80px; 
-    }
 
 #diagrammeGenres {
     width: 600px;
@@ -33,38 +30,27 @@
     margin: 0 auto;
     display: block;
     }
-/* Titres des diagrammes */
-    #titre {
-    font-family: Verdana;
+/* Titres de la page et des diagrammes */
+
+#titre, #header {
     text-align: center;
     }
-.presentation {
-    font-family: Verdana;
-    font-size: large;
-    text-align: justify;
-    }
-    
-.legend {
-    font-family: Verdana;
+.presentation, .legend {
     text-align: justify;
     }
 
-/* Titre de la page, et gestion du logo */
-#header {
-    font-family: Verdana;
-    text-align: center;
-    }
-
-/*changement de la police d'écriture pour le titre du bandeau principal*/
+/*bandeau principal*/
+/*police d'écriture*/
 .maison-des-illustres-title {
-        font-family: 'Georgia';
+        font-family: 'Inherit';
         text-align: center;
     }
 
+/*logo*/
 .logo {
     display: block;
-    margin: 0 auto; /* Pour centrer horizontalement */
-    max-width: 20%; /* Pour réduire la taille à 10% de la largeur de son conteneur */
+    margin: 0 auto;
+    max-width: 20%; 
     }
 
 .custom-bg-color {

@@ -4,29 +4,29 @@
 
 
 <div class="container mt-5">
-    <h1 id="header">Page des graphiques</h1> <!-- class="text-center mb-4" -->
+    <h1 id="header">Des graphiques pour en savoir plus</h1> <!-- class="text-center mb-4" -->
+    <br/>
     <div class="presentation">
-        <p>Cette page présente deux datavisualisations asynchrones adossées à notre base de données des Maisons des Illustres.</p> 
-        <p>Le <a href="#diagrammeGenres">premier graphique</a> reflète la proportion (en pourcentages) d'hommes, de femmes et de couples ou familles parmi les personnages "illustres".</p>
-        
-        <p> Le <a href="#diagrammeTypes">second graphique</a> se concentre sur la répartition (en chiffres absolus) des différents domaines intellectuels auxquels sont rattachées
+        <p>Cette page présente deux datavisualisations asynchrones adossées à notre base de données des Maisons des Illustres. Le <a href="#diagrammeGenres">premier graphique</a> reflète la proportion (en pourcentages) d'hommes, de femmes et de couples ou familles parmi les personnages "illustres". Le <a href="#diagrammeTypes">second graphique</a> se concentre sur la répartition (en chiffres absolus) des différents domaines intellectuels auxquels sont rattachées
         les Maisons de notre base.</p>
     </div>
 
     <!-- Premier graphique (Genres - Pie) -->
-    <div class="graph-container mt-4">
+    <div class="graph-container mt-4"></div>
+    <div>
         <h2 id="titre" class="text-center">Répartition des genres des Illustres</h2>
         <canvas id="diagrammeGenres" width="400" height="400"></canvas>
         <br/>
         <p class="legend">Ce graphique met bien en valeur la disparité des genres, avec notamment la sous-représentation des femmes, dont le nombre est plus petit que celui des couples ou des familles. Ces deux sections ne représentent à elles seules que 20% du corpus, là où les hommes constituent les 80 % restants. </p>
     </div>
     <!-- Deuxième graphique (Domaines - Doughnut) -->
-    <div class="graph-container mt-4">
+    <div>
         <h2 id="titre" class="text-center">Répartition des domaines des Maisons des Illustres</h2>
         <canvas id="diagrammeTypes" width="400" height="400"></canvas>
         <br/>
         <p class="legend">Ce graphique témoigne d'une relative variété des profils. Les thèmes "littérature et idées", "arts et architecture" représente plus de la moitié des domaines. Le domaine "histoire et politique" est lui aussi important. Les thèmes les moins représentés sont : "musique, théâtre et cinéma", et "science et industrie". Ceci traduit-il un choix de sélection des illustrés plutôt orienté vers l’histoire et la littérature, au détriment des productions scientifiques ou cinématographiques/musicales ?</p>
     </div>
+</div>
 </div>
 
 <script>
