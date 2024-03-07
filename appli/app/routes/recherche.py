@@ -1,9 +1,9 @@
 from ..app import app, db
-from flask import render_template, request, flash, url_for
+from flask import render_template, request
 from sqlalchemy import or_, text, func
 from ..models.formulaires import Recherche
 from ..models.data import Maisons, Personnes, Domaine, Genre
-from ..utils.transformations import nettoyage_string_to_int, clean_arg, normaliser
+from ..utils.transformations import clean_arg, normaliser
 from unidecode import unidecode
 
 
@@ -145,9 +145,8 @@ def recherche_rapide(page=1):
     resultats = None
 
     if chaine:
-        #si une chaîne de caractère est entrée par l'utilisateur, normalisation à l'aide d'une fonction définie dans les utilitaires. 
-        #je crois qu'il y a trop de 'normaliser'. supprimer et refaire des essais
-        chaine = normaliser(chaine)
+        #si une chaîne de caractère est entrée par l'utilisateur, on va chercher dans les valeurs de différents attributs ; 
+        #normalisation à l'aide d'une fonction définie dans les utilitaires
 
         #recherche de l'id des personnes dont le nom correspond à la chaîne de caractère
         #comme SQLite ne dispose pas de la fonction unaccent() (disponible dans PostgreSQL par exemple),nous avons procédé de manière très artisanale en imbiquant des 'replace' les uns dans les autres.

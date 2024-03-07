@@ -3,7 +3,6 @@ from flask import render_template, request
 from sqlalchemy import or_
 from ..models.data import Maisons, Personnes, Domaine, Genre
 from ..models.formulaires import Recherche
-from ..utils.transformations import nettoyage_string_to_int, clean_arg
 from ..utils.parse import convertir_geojson
 
 
