@@ -9,7 +9,6 @@ from ..utils.transformations import  clean_arg
 def insertion_maisons():
     distinct_regions = Maisons.get_distinct_regions()
     form = InsertionMaison()
-    #form.idWikidata.choices = [('','')] + [(personne.idWikidata, personne.idWikidata) for personne in Personnes.query.all()]
     form.nomIllustre.choices = [('','')] + [(personnes.nomIllustre, personnes.nomIllustre) for personnes in Personnes.query.order_by(Personnes.nomIllustre).all()]
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]

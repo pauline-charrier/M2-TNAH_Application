@@ -3,6 +3,23 @@ from ..utils.transformations import normaliser
 from enum import Enum
 
 class Domaine(Enum):
+    """
+    Une énumération représentant différents types de domaines.
+
+    Members
+    -------
+    TYPE1 : Domaine
+        Premier type de domaine - 'Littérature et idées'
+    TYPE2 : Domaine
+        Deuxième type de domaine - 'Sciences et industrie'
+    TYPE3 : Domaine
+        Troisième type de domaine - 'Arts et architecture'
+    TYPE4 : Domaine
+        Quatrième type de domaine - 'Histoire et politique'
+    TYPE5 : Domaine
+        Cinquième type de domaine - 'Musique, théâtre et cinéma'
+    """
+
     TYPE1 = 'Littérature et idées'
     TYPE2 = 'Sciences et industrie'
     TYPE3 = 'Arts et architecture'
@@ -11,28 +28,137 @@ class Domaine(Enum):
 
     @classmethod
     def obtenir_clef(cls, value):
+
+        """
+        méthode pout obtenir la clé associée à une valeur donnée dans l'énumération Domaine.
+
+        Parameters
+        ----------
+        value : str, required
+            La valeur dont on veut obtenir la clé.
+
+        Returns
+        -------
+        str
+            Le nom de la clé associée à la valeur, ou None si la valeur n'est pas trouvée.
+        """
+
         for member in cls:
             if member.value == value:
                 return member.name
 
     @classmethod
     def comparer_valeurs(cls, value):
+
+        """
+        Compare une valeur donnée avec les valeurs normalisées de l'énumération Domaine.
+
+        Parameters
+        ----------
+        value : str, required
+            La valeur à comparer.
+
+        Returns
+        -------
+        str
+            Le nom de la clé associée à la première valeur correspondante normalisée, ou None si aucune correspondance n'est trouvée.
+        """
+
         for member in cls:
             if normaliser(value) in normaliser(member.value):
                 return member.name
 
 class Genre(Enum):
+
+    """
+    Une énumération représentant différents genres.
+
+    Members
+    -------
+    TYPE1 : Genre
+        Premier genre - 'masculin'
+    TYPE2 : Genre
+        Deuxième genre - 'féminin'
+    TYPE3 : Genre
+        Troisième genre - 'couples/familles'
+    """
+
     TYPE1 = 'masculin'
     TYPE2 = 'féminin'
     TYPE3 = 'couples/familles'
 
     @classmethod
     def obtenir_clef(cls, value):
+
+        """
+        méthode pout obtenir la clé associée à une valeur donnée dans l'énumération Genre.
+
+        Parameters
+        ----------
+        value : str, required
+            La valeur dont on veut obtenir la clé.
+
+        Returns
+        -------
+        str
+            Le nom de la clé associée à la valeur, ou None si la valeur n'est pas trouvée.
+        """
+
         for member in cls:
             if member.value == value:
                 return member.name
 
 class Maisons(db.Model):
+
+    """
+    Classe représentant les bâtiments. 
+
+    Attributes
+    ----------
+    id : sqlalchemy.sql.schema.Column
+        Identifiant Mérimé du bâtiment labellisé. C'est la clé primaire. Cet attribut est une Column SQLALchemy.
+    denomination : sqlalchemy.sql.schema.Column
+        Nom du bâtiment
+    code_postal : sqlalchemy.sql.schema.Column
+    dpmt : sqlalchemy.sql.schema.Column
+    region : sqlalchemy.sql.schema.Column
+    adresse : sqlalchemy.sql.schema.Column
+    commune : sqlalchemy.sql.schema.Column
+    code_INSEE : sqlalchemy.sql.schema.Column
+    pays : sqlalchemy.sql.schema.Column
+        Localisation administrative du bâtiment
+    date_label : sqlalchemy.sql.schema.Column
+        date de labellisation
+    latitude : sqlalchemy.sql.schema.Column
+    longitude : sqlalchemy.sql.schema.Column
+        Coordonnées géographiques du bâtiment
+    museeFrance : sqlalchemy.sql.schema.Column
+    momunmentInscrit : sqlalchemy.sql.schema.Column
+    momunantClasse: sqlalchemy.sql.schema.Column
+        Autres labels du bâtiment
+    type : sqlalchemy.sql.schema.Column
+        Adresse mail de l'utilisateur
+    mail : sqlalchemy.sql.schema.Column
+        Domaine de génie ou thème. Une liste de valeur est définie dans la classe Enum(Domaine)
+    idWikidata : sqlalchemy.sql.schema.Column
+        Clé étrangère : identifiant Wikidata de la personne ayant vécu dans le bâtiment
+
+    Methods
+    -------
+    get_distinct_regions()
+        permet d'obtenir l'ensemble des valeurs de l'attribut "region". 
+        Cela permettra de créer facilement des listes déroulantes dans les formulaires.
+    
+    get_distinct_departement()
+        permet d'obtenir l'ensemble des valeurs de l'attribut "dpmt" (pour départements). 
+        Cela permettra de créer facilement des listes déroulantes dans les formulaires.
+    
+    get_distinct_regions()
+        permet d'obtenir l'ensemble des valeurs de l'attribut "date_label" (pour la date de labellisation).
+        Cela permettra de créer facilement des listes déroulantes dans les formulaires.
+        
+    """
+
     __tablename__ = "maisons"
     id = db.Column(db.String(500), primary_key=True)
     denomination = db.Column(db.String(45)) 
@@ -71,11 +197,35 @@ class Maisons(db.Model):
         return [date[0] for date in distinct_date_label]
     
 class Personnes(db.Model):
+
+    """
+    Une classe représentant les personnes illustres associées aux maisons.
+
+    Attributes
+    ----------
+    idWikidata : sqlalchemy.sql.schema.Column
+         identifiant Wikidata de la personne ayant vécu dans le bâtiment. Cet attribut est la clé primaire.
+    nomIllustre : sqlalchemy.sql.schema.Column
+        Nom de la personne
+    ddn : sqlalchemy.sql.schema.Column
+    ddm : sqlalchemy.sql.schema.Column
+        Dates de naissance et de mort de la personne (c'est un integer car on ne garde que l'année)
+    genre : sqlalchemy.sql.schema.Column
+        genre de la personne s'il peut être défini : Une liste de valeur est définie dans la classe Enum(Genre)
+    image : sqlalchemy.sql.schema.Column
+        une image de l'illustre personne sous la forme d'une URL
+    article : sqlalchemy.sql.schema.Column
+        URL de la page wikipedia de la personne illustre
+    maison : sqlalchemy.sql.schema.relationship
+        propriété de relation : n'existe pas en base
+
+    """
+
     __tablename__ = "personnes"
     idWikidata = db.Column(db.String(20), primary_key=True)
     nomIllustre = db.Column(db.String(45))
-    ddn = db.Column(db.Integer) #on ne garde que l'année
-    ddm = db.Column(db.Integer) #idem
+    ddn = db.Column(db.Integer) 
+    ddm = db.Column(db.Integer) 
     genre = db.Column(db.Enum(Genre))
     image = db.Column(db.String(300))
     article = db.Column(db.String(300))
@@ -85,151 +235,4 @@ class Personnes(db.Model):
         lazy = "dynamic"
     )
 
-    def siecles_vie(self):
-        annee_naissance = self.ddn
-        annee_mort = self.ddm
-        duree_vie = annee_mort-annee_naissance
-        siecle_naissance = self.ddn // 100
-        siecle_mort = self.ddm // 100
 
-        if siecle_naissance != siecle_mort:
-            if (siecle_mort*100)-annee_naissance <=30 and duree_vie >=70:
-                return siecle_mort
-            elif (siecle_mort*100)-annee_naissance <=30 and duree_vie < 70:
-                return siecle_mort, siecle_naissance
-            else:
-                return siecle_naissance
-        else:
-            return siecle_naissance
-        
-    def get_distinct_siecles(self):
-        distinct_siecles = db.session.query(Personnes.siecles_vie.distinct()).all()
-        return [siecles_vie[0] for siecles_vie in distinct_siecles]
-        
-
-'''
-
-    def __repr__(self):
-        return '<Area %r>' % (self.total) 
-
-class Boundaries(db.Model):
-    __tablename__ = "boundaries"
-
-    total = db.Column(db.String(100), primary_key=True)
-    border_countries = db.Column(db.String(1000))
-    note = db.Column(db.String(1000))
-
-    # clés étrangères
-    id = db.Column(
-        db.String(100),  
-        db.ForeignKey('country.id')
-    )
-
-    def total_int(self):
-        return nettoyage_string_to_int(self.total)
-
-    def __repr__(self):
-        return '<Boundaries %r>' % (self.total) 
-
-class Elevation(db.Model):
-    __tablename__ = "elevation"
-
-    highest_point = db.Column(db.String(100), primary_key=True)
-    lowest_point = db.Column(db.String(100))
-    mean_elevation = db.Column(db.String(100))
-    note =db.Column(db.Text)
-
-    # clés étrangères
-    id = db.Column(
-        db.String(100),  
-        db.ForeignKey('country.id')
-    )
-
-    def __repr__(self):
-        return '<Elevation %r>' % (self.highest_point)
-
-class Geography(db.Model):
-    __tablename__ = "geography"
-
-    location = db.Column(db.String(1000), primary_key=True)
-    coordinates = db.Column(db.String(100))
-    coastline = db.Column(db.String(100))
-    climate = db.Column(db.Text)
-    terrain = db.Column(db.Text)
-    irrigated_land = db.Column(db.Text)
-    fresh_water_lakes = db.Column(db.Text)
-    salted_water_lakes = db.Column(db.Text)
-    major_rivers = db.Column(db.Text)
-    major_watersheds = db.Column(db.Text)
-    major_aquifers = db.Column(db.Text)
-    population_distribution = db.Column(db.Text)
-    natural_hazards = db.Column(db.Text)
-    geography_note = db.Column(db.Text) 
-
-    # clés étrangères
-    id = db.Column(
-        db.String(100),  
-        db.ForeignKey('country.id')
-    )
-
-    def coastline_int(self):
-        return nettoyage_string_to_int(self.coastline)
-
-    def irrigated_land_int(self):
-        return nettoyage_string_to_int(self.irrigated_land)
-
-    def __repr__(self):
-        return '<Geography %r>' % (self.location)
-
-class Landuse(db.Model):
-    __tablename__ = "landuse"
-
-    landuse_id = db.Column(db.Integer, primary_key=True)
-    agricultural_land = db.Column(db.Text)
-    arable_land = db.Column(db.Text)
-    permanent_crops = db.Column(db.Text)
-    permanent_pasture = db.Column(db.Text)
-    forest = db.Column(db.Text)
-    other = db.Column(db.Text)
-
-    # clés étrangères
-    id = db.Column(
-        db.String(100),  
-        db.ForeignKey('country.id')
-    )
-
-    def __repr__(self):
-        return '<Landuse %r>' % (self.landuse_id)
-
-class Map(db.Model):
-    __tablename__ = "map"
-
-    id = db.Column(db.String(100))
-    name = db.Column(db.Text, primary_key=True)
-
-    def __repr__(self):
-        return '<Map %r>' % (self.name)
-
-class Resources(db.Model):
-    __tablename__ = "resources"
-
-    id = db.Column(db.String(100), primary_key=True)
-    name = db.Column(db.Text)
-
-    def __repr__(self):
-        return '<Resources %r>' % (self.name)
-
-    def get_resourceid(self):
-        return Resources.query.filter(Resources.name == self.name).first().id
-
-    def get_pays(self):
-        pays_par_ressource = []
-
-        for pays in Country.query.all():
-            for ressource in pays.resources:
-                if ressource == self:
-                    if pays.name not in pays_par_ressource:
-                        pays_par_ressource.append(pays.name)
-        
-        return pays_par_ressource
-'''
