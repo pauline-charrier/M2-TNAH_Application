@@ -124,11 +124,35 @@ def recherche(page_num=1):
 @app.route("/recherche_rapide")
 @app.route("/recherche_rapide/<int:page>")
 def recherche_rapide(page=1):
+    """
+    Gère la route "/recherche_rapide" pour effectuer une recherche type 'plein text' à partir de la barre de recherche du header.
+
+    Parameters
+    ----------
+    page : int, optional
+        Numéro de la page à afficher, par défaut 1.
+
+    Returns
+    -------
+    render_template
+        Un modèle HTML pour la page de résultats de recherche avec les données paginées à afficher. Les résultats sont les bâtiments pour lesquels la 
+        chaîne de caractère entrée est trouvée dans les attributs de la classe Maisons. 
+    """
+
+    # Récupère la chaîne de recherche depuis le formulaire de requête (barre de recherche)
     chaine = request.args.get("chaine", None)
+    # Initialisation de la variable resultats
     resultats = None
 
     if chaine:
+        #si une chaîne de caractère est entrée par l'utilisateur, normalisation à l'aide d'une fonction définie dans les utilitaires. 
+        #je crois qu'il y a trop de 'normaliser'. supprimer et refaire des essais
         chaine = normaliser(chaine)
+
+        #recherche de l'id des personnes dont le nom correspond à la chaîne de caractère
+        #comme SQLite ne dispose pas de la fonction unaccent() (disponible dans PostgreSQL par exemple),nous avons procédé de manière très artisanale en imbiquant des 'replace' les uns dans les autres.
+        #de cette manière, les accents les plus courant en français seront supprimés, y compris sur les majuscules. 
+        #cette étape est décisive car la fonction lower() de SQLite ne fonctionne pas sur les majuscules accentuées. 
         subquery = text("""
             SELECT a.id
             FROM maisons a
@@ -136,6 +160,7 @@ def recherche_rapide(page=1):
             """)
         personnes_ids = [row[0] for row in db.session.execute(subquery)]
 
+        #recherche l'id des maisons dont le nom correspond à la chaîne de caractère
         subquery_1 = text("""
             SELECT id
             FROM maisons 
@@ -143,8 +168,11 @@ def recherche_rapide(page=1):
             """)
         denomination_ids = [row[0] for row in db.session.execute(subquery_1)]
 
+        #une méthode de classe définie dans le modèle de donnée compare la chaîne de caractère recherchée aux valeurs de l'énumération des domaines. 
         domaines = Domaine.comparer_valeurs(chaine)
 
+        #si un ou des domaines correspondent à la chaîne de caractère : 
+        # 
         if domaines:
             resultats = Maisons.query.\
                 filter(
@@ -160,6 +188,7 @@ def recherche_rapide(page=1):
                 order_by(Maisons.denomination).\
                 paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
 
+        #pour supprimer des résultats les maisons dont le domaine thématique est None, et qui sinon ressortirait automatiquement. 
         else:
             resultats = Maisons.query.\
                 filter(
