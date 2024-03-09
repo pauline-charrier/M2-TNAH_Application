@@ -118,6 +118,20 @@ def carte():
  
 @app.route("/graphiques", methods=['GET', 'POST'])
 def graphiques():
+    """
+    Gère la route "/graphiques" pour afficher deux datavisualisations permettant l'exploitation des données de notre base.
+
+    Returns
+    -------
+    render_template : 
+        Un modèle HTML pour la page "/graphiques" ainsi que les données nécessaires à la construction et visualisation des graphiques :
+        
+        - labels_genres : Liste des catégories de genre des personnes illustres.
+        - counts_genres : Nombre d'illustres pour chaque catégorie de genre.
+        - labels_types : Liste des domaines intellectuels auxquels se rattachent les différentes maisons.
+        - counts_types : Nombre de maisons rattachées à chaque domaine intellectuel.
+        - sous_titre : Titre à afficher dans l'onglet de la page.
+    """
     # Récupérer les données pour le premier graphique (genres des personnes illustres)
     genres_count = db.session.query(Personnes.genre, db.func.count(Personnes.nomIllustre)).group_by(Personnes.genre).all()
     labels_genres = [result[0].value if result[0] is not None else 'NULL' for result in genres_count]
@@ -128,6 +142,7 @@ def graphiques():
     labels_types = [result[0].value if result[0] is not None else 'Non renseigné' for result in types_count]
     counts_types = [result[1] for result in types_count]
 
+    # Rendre le template avec les données nécessaires pour les graphiques
     return render_template('pages/graphiques.html', 
                            labels_genres=labels_genres, counts_genres=counts_genres,
                            labels_types=labels_types, counts_types=counts_types, 
