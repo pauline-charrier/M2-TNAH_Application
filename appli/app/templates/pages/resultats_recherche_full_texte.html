@@ -66,7 +66,13 @@
                 </div>
             </div>
         {% else %}
-            <!-- Script JS pour afficher le pop-up -->
+            <div class="row">
+                <div class="col-md-8">
+                <!-- Affichage d'un message "Aucun résultat trouvé" sur la page elle-même -->
+                    <div id="aucun_res" class="alert alert-warning" role="alert">
+                    Aucun résultat n'a été trouvé pour cette chaîne de caractères. <br>Veuillez effectuer une nouvelle recherche ou affiner votre requête en utilisant la <a href="{{ url_for('recherche')}}">recherche à facettes</a>.
+                    </div>
+            <!-- Script JS pour afficher le pop-up comprenant le message "Aucun résultat trouvé" -->
             <script>
                 $(document).ready(function () {
                     $('#pop_up').modal({
@@ -89,7 +95,8 @@
                     });
                 });
             </script>
-
+                
+                </div>
             <!-- Boîte de dialogue modale -->
             <div class="modal fade" id="pop_up">
                 <div class="modal-dialog">
