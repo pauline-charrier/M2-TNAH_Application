@@ -21,7 +21,7 @@
                     <div class="list-group" id="list-tab" role="tablist">
                         {% if donnees_init.prev_num %}
                             <a class="list-group-item list-group-item-action btn btn-outline-dark {% if donnees_init.page == 1 %}disabled{% endif %}" 
-                               id="list-list-prev" href="{{ url_for('recherche', page=donnees_init.prev_num) }}">
+                               id="list-list-prev" href="{{ url_for('recherche', page_num=donnees_init.prev_num) }}">
                                 &laquo; Page précédente
                             </a>
                         {% endif %}
@@ -55,7 +55,7 @@
                         </ul>
                         {% if donnees_init.next_num %}
                             <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees_init.page == donnees_init.pages %} disabled{% endif %}" 
-                               id="list-list-next" href="{{ url_for('recherche', page=donnees_init.next_num) }}">
+                               id="list-list-next" href="{{ url_for('recherche', page_num=donnees_init.next_num) }}">
                                 Page suivante &raquo;
                             </a>
                         {% endif %}
@@ -98,7 +98,7 @@
                     <div class="list-group" id="list-tab" role="tablist">
                         {%if donnees.prev_num%}
                             <a class="list-group-item list-group-item-action btn btn-outline-dark {% if donnees.page == 1 %}disabled{% endif %}" 
-                               id="list-list-prev" href="{{ url_for('recherche', page=donnees.prev_num) }}">
+                               id="list-list-prev" href="{{ url_for('recherche', page_num=donnees.prev_num) }}">
                                 &laquo; Page précédente
                             </a>
                         {%endif%}
@@ -133,7 +133,7 @@
                         </ul>
                             {%if donnees.next_num%}
                             <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
-                               id="list-list-next" href="{{ url_for('recherche', page=donnees.next_num) }}">
+                               id="list-list-next" href="{{ url_for('recherche', page_num=donnees.next_num) }}">
                                 Page suivante &raquo;
                             </a>
                             {%endif%}
