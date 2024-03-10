@@ -14,6 +14,20 @@ pb de pagination !!!!!!
 @app.route("/recherche", methods=['GET', 'POST'])
 @app.route("/recherche/<int:page_num>", methods=['GET', 'POST'])
 def recherche(page_num=1):
+    """
+    Gère la route "/recherche" pour effectuer une recherche 'par facettes' en fonction de plusieurs filtres.
+
+    Parameters
+    ----------
+    page : int, optional
+        Numéro de la page à afficher, par défaut 1.
+
+    Returns
+    -------
+    render_template
+        Un modèle HTML pour la page de résultats de recherche avec les données à afficher. Les résultats sont les bâtiments pour lesquels la 
+        chaîne de caractère entrée ou les filtres sélectionnés sont trouvés dans les attributs des classes Maisons et Personnes. 
+    """
     form = Recherche()
     distinct_regions = Maisons.get_distinct_regions()
     distinct_departements = Maisons.get_distinct_departements()

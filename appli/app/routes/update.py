@@ -8,6 +8,21 @@ from ..utils.transformations import clean_arg
 
 @app.route("/update/maisons/<string:nom_maison>", methods=['GET', 'POST'])
 def update_maisons(nom_maison):
+    """
+    Gère la route "/update/maisons/<nom_maison>" pour la mise à jour d'une maison.
+
+    Parameters
+    ----------
+    nom_maison : str
+        Le nom de la maison à mettre à jour. Elle est envoyée par l'input du bouton dans le template. 
+
+    Returns
+    -------
+    render_template or redirect
+        Si la requête est GET, renvoie le template HTML avec le formulaire pour la mise à jour d'une maison.
+        Si la requête est POST, effectue la mise à jour avec un message de confirmation. 
+    """
+
     distinct_regions = Maisons.get_distinct_regions()
     maison= Maisons.query.filter(Maisons.denomination == nom_maison).first()
     personne = Personnes.query.filter(Personnes.idWikidata == str(maison.idWikidata)).first()
@@ -111,6 +126,21 @@ def update_maisons(nom_maison):
 
 @app.route("/update/personnes/<string:nom_personne>", methods=['GET', 'POST'])
 def update_personne(nom_personne):
+    """
+    Gère la route "/update/personnes/<nom_personne>" pour la mise à jour d'une personne.
+
+    Parameters
+    ----------
+    nom_personne : str
+        Le nom de la personne à mettre à jour. Elle est envoyée par l'input du bouton dans le template. 
+
+    Returns
+    -------
+    render_template or redirect
+        Si la requête est GET, renvoie le template HTML avec le formulaire pour la mise à jour d'une personne.
+        Si la requête est POST, effectue la mise à jour avec un message de confirmation. 
+    """
+
     personne = Personnes.query.filter(Personnes.nomIllustre == nom_personne).first()
     form = UpdatePersonnes()
 
