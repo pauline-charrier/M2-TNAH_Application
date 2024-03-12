@@ -22,8 +22,8 @@
     </div>
   </div>
 </div>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<br/>
+<nav class="navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="{{url_for('maisons')}}">Catalogue des Maisons</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@
     </div>
     <div align="right">{% include "partials/formulaires/barre_de_recherche.html" %}</div>
 </nav>
-
+<br/>
 <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -76,7 +76,7 @@
     </div>
   </div>
 
-  <!-- création dd'un footer ; changer le contenu si nécessaire -->
+  <!-- création d'un footer -->
   <footer class="footer mt-5">
     <div class="container text-center">
         <p>&copy; 2024 | Maison Des Illustres. Tous droits réservés.</p>
