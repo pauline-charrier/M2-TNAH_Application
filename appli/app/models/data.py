@@ -1,6 +1,7 @@
 from ..app import app, db
 from ..utils.transformations import normaliser
 from enum import Enum
+from flask import url_for
 
 class Domaine(Enum):
     """
@@ -195,6 +196,14 @@ class Maisons(db.Model):
     def get_distinct_date_label():
         distinct_date_label = db.session.query(Maisons.date_label.distinct()).order_by(Maisons.date_label).all()
         return [date[0] for date in distinct_date_label]
+    
+    def make_popup(self):
+        url = url_for('info_maisons', nom_maisons=self.denomination)
+        adresse = self.adresse +' '+ self.code_postal +' '+ self.commune
+        icone_bootstrap = '<i class="bi bi-geo-alt"></i>'
+        return f'''<p>{self.denomination}</p>
+                <p>{icone_bootstrap} {adresse}</p>
+                <a href="{url}" class="btn btn-primary text-dark">Plus d'informations</a>'''
     
 class Personnes(db.Model):
 

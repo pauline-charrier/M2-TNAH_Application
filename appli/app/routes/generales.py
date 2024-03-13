@@ -98,7 +98,7 @@ def carte():
             {
                 'lat': maison.latitude,
                 'lon': maison.longitude,
-                'popup': maison.denomination,
+                'popup': maison.make_popup(),
                 'domaine': maison.type.value if maison.type else None, 
                 'museeFrance':maison.museeFrance, 
                 'monClasse' : maison.monumentsClasses,
