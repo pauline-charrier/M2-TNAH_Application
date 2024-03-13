@@ -46,7 +46,7 @@
                             
                                 <div class="btn-group btn-group-sm">
                                     <form action="{{ url_for('sup_maison', nom_maison=maisons.denomination) }}" method="post" class="del-component">
-                                        <button class="btn1 btn-danger" type="submit">
+                                        <button class="btn btn-danger" type="submit">
                                             <input type="hidden" value="{{ maisons.denomination }}" name="maison_a_supp">
                                             <i class="fa fa-trash"></i> Supprimer
                                         </button>
