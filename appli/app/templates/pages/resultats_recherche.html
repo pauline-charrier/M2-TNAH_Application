@@ -3,6 +3,13 @@
 {% block body %}
 
 <div class="container">
+    <div class="container">
+        <div>
+            <div style="text-align: center;">
+                <h2>Catalogue des Maisons des Illustres</h2>
+            </div>
+        </div>
+        <br>
 
     <!-- affichage en cas d'absence de résultats (lors du premier chargement de la page, ou d'absence de résultats suite à la recherche)-->
     {% if not donnees %}
@@ -13,7 +20,7 @@
             <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
                 aria-controls="collapseExample">
                 Effectuer une recherche<i class="fa-solid fa-caret-down"></i>
-        </h3>
+            </h3>
             <div class="collapse show" id="collapseExample">
                 <div class="card card-body">
                     {% include "partials/formulaires/recherche.html" %}
