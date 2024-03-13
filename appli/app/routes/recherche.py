@@ -43,13 +43,15 @@ def recherche(page_num=1):
     donnees = [] 
 
     # initialisation des données dans le cas où il n'y ait pas de requête
-    if request.method == 'GET':
+    if request.method == 'GET' :
         donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
         donnees = [] #initialisation des données de retour s'il n'y a pas de requête
         print(donnees_init.next_num)
         print(donnees_init)
+        print("\n get page :", page_num)
 
     else:
+        print("\n post page2", page_num)
         donnees_init=[]
 
         if form.validate_on_submit():
