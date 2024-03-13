@@ -2,22 +2,26 @@
 
 {% block body %}
 
-
+<!--Une div avec un identifiant "maCarte" qui sera utilisé pour afficher la carte Leaflet.-->
 <div id="maCarte" style="height: 700px;"></div>
 
-
+<!--Importe la bibliothèque Leaflet.js-->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 
+<!--Bloc de script qui initialise la carte Leaflet et ajoute des fonctionnalités-->
 <script>
+
+//initailisation de la carte Leaflet avec des coordonnées et un niveau de zoom permettant de centrer sur la métropole
     var mymap = L.map('maCarte').setView([46.603354, 1.8883335], 6);
 
+// Ajout de la couche de tuiles OpenStreetMap
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19
   }).addTo(mymap);
 
-  // Creation de l'objet geojson
+  // Récupération de l'objet geojson
   let geojson_data = {{ donnees | safe }};
 ;
 
@@ -28,25 +32,27 @@ let layers = L.geoJSON(geojson_data, {
     }
 }).addTo(mymap);
 
-//Classe gérant l'interface de filtrage
-
+//Définition d'une classe gérant l'interface de filtrage. L'interface pour le moment est vide. 
  let MyControlClass =  L.Control.extend({
 
+//position de l'interface
 options: {
   position: 'topright'
 },
 
-// Création de l'interface
-
+// Ajout de l'interface à la carte
 onAdd: function(mymap) {
 
   this.mymap = mymap;
 
   let div = L.DomUtil.create('div', 'leaflet-bar my-control');
 
+  //Dans le méthode onAdd, on commence par la création du titre (Création d’un élément HTML h3 avec modification de son contenu HTML)
   let title = L.DomUtil.create('h3', '', div);
     title.innerHTML = "Filtrer : ";
 
+    //deux divs pour filtrer les dates
+    //chacune compsée d'un label et d'un input (avec une valeur par défaut)
 		// Champ date minimal
     let divMin = L.DomUtil.create('div', '', div);
     divMin.innerHTML = "Date de naissance de la personne : <br>";
@@ -128,23 +134,32 @@ onAdd: function(mymap) {
 		// Bouton de lancement de l'action de filtrage
     var buttonFilter = L.DomUtil.create('button', 'button-class', div);
     buttonFilter.innerHTML = "Filter";
-
+    // évènement au clic qui appelle de la fonction filter qui effectuera le filtrage des données
     L.DomEvent.on(buttonFilter, 'click', function() { this.filter(parseInt(inputMin.value), parseInt(inputMax.value), inputMus.checked, inputClass.checked, inputInscr.checked, selectDomain.value, selectGenre.value); }, this);
 
     return div;
   },
 
 //filtrer les données du GeoJson
+//Pour filtrer nos données, il nous faut supprimer nos layers actuellement affichés 
+//puis recharger nos données avec la fonction filter 
+//la fonction filter sélectionne les données que l'on souhaite récupérer
 filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked, selectedDomaine, selectedGenre) {
     mymap.removeLayer(layers);
+    // Retrait des layers de la carte (données issues du GEOJSON)
 
     layers = L.geoJSON(geojson_data,
+    //rechargement des données du GEOJSON
     {
         filter: function (feature) {
+          // Filtre des données : si return false la donnée n'est pas récupérée
+          //consol.log pour la gestion des erreurs et vérifications
           console.log("Selected Domain:", selectedDomaine);
           console.log("Feature Domain:", feature.properties.domaine);
           console.log("genre sélectionne : ", selectedGenre)
           console.log("genre du feature : ", feature.properties.genre)
+          //On crée des filtres sur les dates, si des dates ont été remplies dans le formulaire on rejette les
+          //éléments dont l’année n’est pas comprise entre la date de début et la date de fin
           if (feature.properties.ddn_pers !== null) {
             if (startDate && endDate) {
                 if (endDate) {
@@ -156,6 +171,7 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
                 }
             }
         }
+        //on filtre les labels, si la case correspondant au label de l’élément n’est cochée, on ne récupère pas cet élément
             if(feature.properties.museeFrance === true && !inputMusChecked) {
              return false;
             }
@@ -166,6 +182,7 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
              return false;
             }
 
+            //on filtre le domaine et le genre, si l'élément ne correspond pas au domaine et/ou au genre sélectionné, il n'est pas ramené
             if (selectedDomaine !== "" && selectedDomaine !== feature.properties.domaine) {
               return false;
             }
@@ -176,6 +193,7 @@ filter(startDate, endDate, inputMusChecked, inputClassChecked, inputInscrChecked
 
             return true;
         }, 
+        //afficher les données filtrées sur la map, avec une popup
         onEachFeature: function (feature, layer) {
           layer.bindPopup(feature.properties.popup);
         }
