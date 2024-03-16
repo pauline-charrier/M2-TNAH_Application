@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms.validators import NumberRange, optional, DataRequired
-from wtforms import StringField, SelectField, BooleanField, IntegerField, FloatField
+from wtforms import StringField, SelectField, BooleanField, IntegerField, FloatField, HiddenField
+from wtforms.widgets import HiddenInput
 
 
 class InsertionPersonne(FlaskForm):
@@ -49,18 +50,17 @@ class UpdateMaisons(FlaskForm):
     monumentsInscrits =  BooleanField("monuments_inscrits", validators=[optional()])
     monumentsClasses =  BooleanField("monuments_classes", validators=[optional()])
     nombreSPR = IntegerField("Nombre_SPR", validators=[optional()])
-    #nombreSPR =  SelectField("Nombre_SPR", choices=[('', '')] + [(i, i) for i in range(0, 5)], validators=[optional()]) 
     type =  SelectField("type", choices=[], validators = [optional()])
     nomIllustre = SelectField("nomIllustre", choices = [optional()], validators=[optional()])
 
 
 class Recherche(FlaskForm):
+    page = HiddenField(widget=HiddenInput, default=1)
     denomination =  StringField("denomination", validators=[])
     type =  SelectField("type", choices=[], validators = [])
     region = SelectField("region", choices=[], validators=[])
     departement = SelectField("departement", choices=[])
     genre = SelectField("genre", choices=[], validators=[])
-    #periode = SelectField("periode", choices=[], validators=[])
     museeFrance =  BooleanField("musee_france", default=False)
     monumentsInscrits =  BooleanField("monuments_inscrits", default=False)
     monumentsClasses =  BooleanField("monuments_classes", default=False)

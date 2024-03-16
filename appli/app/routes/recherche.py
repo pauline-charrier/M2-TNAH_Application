@@ -45,13 +45,11 @@ def recherche(page_num=1):
     # initialisation des données dans le cas où il n'y ait pas de requête
     if request.method == 'GET' :
         donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
-        donnees = [] #initialisation des données de retour s'il n'y a pas de requête
-        print(donnees_init.next_num)
-        print(donnees_init)
-        print("\n get page :", page_num)
+        donnees = [] #initialisation des données de retour s'il n'y a pas de requête post
+
 
     else:
-        print("\n post page2", page_num)
+        print(form.page.data)
         donnees_init=[]
 
         if form.validate_on_submit():
@@ -65,6 +63,7 @@ def recherche(page_num=1):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             date_label = clean_arg(request.form.get("date_label", None))
+            page = clean_arg(request.form.get(("page")[0]))
 
             # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
             # dans les données
@@ -113,7 +112,7 @@ def recherche(page_num=1):
                 if date_label:
                     query_results = query_results.filter(Maisons.date_label == date_label)
 
-                donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+                donnees = query_results.paginate(page=int(form.page.data)+ 1, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
 
     #le .paginate ne fonctionne pas pourquoi ???????????  
 
@@ -126,6 +125,7 @@ def recherche(page_num=1):
             form.monumentsInscrits.data=monumentsInscrits
             form.departement.data = departement
             form.date_label.data = date_label
+            form.page.data = str(int(form.page.data) + 1)
 
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 

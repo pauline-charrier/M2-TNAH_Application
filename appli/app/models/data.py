@@ -157,6 +157,11 @@ class Maisons(db.Model):
     get_distinct_regions()
         permet d'obtenir l'ensemble des valeurs de l'attribut "date_label" (pour la date de labellisation).
         Cela permettra de créer facilement des listes déroulantes dans les formulaires.
+    
+    make_popup()
+        permet d'obtenir les informations à afficher dans la popup de la carte. 
+        Cela permettra d'alléger le code javascript puisque toutes ces informations sont contenues dans une seule entrée
+        du GEOJSON.
         
     """
 
@@ -198,9 +203,23 @@ class Maisons(db.Model):
         return [date[0] for date in distinct_date_label]
     
     def make_popup(self):
+
+        """
+        Méthode pour créer une popup pour une maison.
+
+        Returns
+        -------
+        str
+        Le code HTML de la popup.
+        """
+
+        # Générer l'URL pour la page d'informations sur la maison
         url = url_for('info_maisons', nom_maisons=self.denomination)
+        # Créer l'adresse complète en combinant adresse, code postal et commune
         adresse = self.adresse +' '+ self.code_postal +' '+ self.commune
+        # Icone Bootstrap pour l'adresse
         icone_bootstrap = '<i class="bi bi-geo-alt"></i>'
+        #retourner la concaténation de tous ces éléments sous la forme d'un code html
         return f'''<p>{self.denomination}</p>
                 <p>{icone_bootstrap} {adresse}</p>
                 <a href="{url}" class="btn btn-primary text-dark">Plus d'informations</a>'''

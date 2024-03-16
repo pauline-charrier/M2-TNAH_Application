@@ -133,7 +133,7 @@
                         </ul>
                             {%if donnees.next_num%}
                             <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
-                               id="list-list-next" href="{{ url_for('recherche', page_num=donnees.next_num) }}">
+                               id="list-list-next" href="{{ url_for('recherche', page_num=form.page.data) }}">
                                 Page suivante &raquo;
                             </a>
                             {%endif%}
@@ -158,6 +158,7 @@
             </div>
         </div>
     </section>
+
 
     {%endif%}
 
