@@ -112,7 +112,7 @@ class Genre(Enum):
 class Maisons(db.Model):
 
     """
-    Classe représentant les bâtiments. 
+    Classe représentant les bâtiments.
 
     Attributes
     ----------
@@ -147,27 +147,27 @@ class Maisons(db.Model):
     Methods
     -------
     get_distinct_regions()
-        permet d'obtenir l'ensemble des valeurs de l'attribut "region". 
+        permet d'obtenir l'ensemble des valeurs de l'attribut "region".
         Cela permettra de créer facilement des listes déroulantes dans les formulaires.
-    
+
     get_distinct_departement()
-        permet d'obtenir l'ensemble des valeurs de l'attribut "dpmt" (pour départements). 
+        permet d'obtenir l'ensemble des valeurs de l'attribut "dpmt" (pour départements).
         Cela permettra de créer facilement des listes déroulantes dans les formulaires.
-    
+
     get_distinct_regions()
         permet d'obtenir l'ensemble des valeurs de l'attribut "date_label" (pour la date de labellisation).
         Cela permettra de créer facilement des listes déroulantes dans les formulaires.
-    
+
     make_popup()
-        permet d'obtenir les informations à afficher dans la popup de la carte. 
+        permet d'obtenir les informations à afficher dans la popup de la carte.
         Cela permettra d'alléger le code javascript puisque toutes ces informations sont contenues dans une seule entrée
         du GEOJSON.
-        
+
     """
 
     __tablename__ = "maisons"
     id = db.Column(db.String(500), primary_key=True)
-    denomination = db.Column(db.String(45)) 
+    denomination = db.Column(db.String(45))
     code_postal = db.Column(db.String(5))
     dpmt = db.Column(db.String(45))
     region = db.Column(db.String(45))
@@ -184,24 +184,24 @@ class Maisons(db.Model):
     nombreSPR = db.Column(db.Integer, nullable=True)
     type = db.Column(db.Enum(Domaine))
     idWikidata = db.Column(
-        db.String(20),  
-        db.ForeignKey('personnes.idWikidata')) 
-    
+        db.String(20),
+        db.ForeignKey('personnes.idWikidata'))
+
     @staticmethod
     def get_distinct_regions():
         distinct_regions = db.session.query(Maisons.region.distinct()).all()
         return [region[0] for region in distinct_regions]
-    
+
     @staticmethod
     def get_distinct_departements():
         distinct_departements = db.session.query(Maisons.dpmt.distinct()).all()
         return [dp[0] for dp in distinct_departements]
-    
+
     @staticmethod
     def get_distinct_date_label():
         distinct_date_label = db.session.query(Maisons.date_label.distinct()).order_by(Maisons.date_label).all()
         return [date[0] for date in distinct_date_label]
-    
+
     def make_popup(self):
 
         """
@@ -215,15 +215,14 @@ class Maisons(db.Model):
 
         # Générer l'URL pour la page d'informations sur la maison
         url = url_for('info_maisons', nom_maisons=self.denomination)
-        # Créer l'adresse complète en combinant adresse, code postal et commune
-        adresse = self.adresse +' '+ self.code_postal +' '+ self.commune
-        # Icone Bootstrap pour l'adresse
+        adresse_parts = [part for part in [self.adresse, self.code_postal, self.commune] if part is not None]
+        adresse = ' '.join(adresse_parts) if adresse_parts else ''
         icone_bootstrap = '<i class="bi bi-geo-alt"></i>'
         #retourner la concaténation de tous ces éléments sous la forme d'un code html
         return f'''<p>{self.denomination}</p>
                 <p>{icone_bootstrap} {adresse}</p>
                 <a href="{url}" class="btn btn-primary text-dark">Plus d'informations</a>'''
-    
+
 class Personnes(db.Model):
 
     """
@@ -252,15 +251,13 @@ class Personnes(db.Model):
     __tablename__ = "personnes"
     idWikidata = db.Column(db.String(20), primary_key=True)
     nomIllustre = db.Column(db.String(45))
-    ddn = db.Column(db.Integer) 
-    ddm = db.Column(db.Integer) 
+    ddn = db.Column(db.Integer)
+    ddm = db.Column(db.Integer)
     genre = db.Column(db.Enum(Genre))
     image = db.Column(db.String(300))
     article = db.Column(db.String(300))
     maison = db.relationship(
         "Maisons",
-        backref = "maisons", 
+        backref = "maisons",
         lazy = "dynamic"
     )
-
-
