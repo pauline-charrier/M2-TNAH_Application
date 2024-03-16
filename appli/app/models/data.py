@@ -199,7 +199,8 @@ class Maisons(db.Model):
     
     def make_popup(self):
         url = url_for('info_maisons', nom_maisons=self.denomination)
-        adresse = self.adresse +' '+ self.code_postal +' '+ self.commune
+        adresse_parts = [part for part in [self.adresse, self.code_postal, self.commune] if part is not None]
+        adresse = ' '.join(adresse_parts) if adresse_parts else ''
         icone_bootstrap = '<i class="bi bi-geo-alt"></i>'
         return f'''<p>{self.denomination}</p>
                 <p>{icone_bootstrap} {adresse}</p>
