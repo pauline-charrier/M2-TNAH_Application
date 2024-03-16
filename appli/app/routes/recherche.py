@@ -50,6 +50,7 @@ def recherche(page_num=1):
 
     else:
         print(form.page.data)
+        print(form.page.data+1)
         donnees_init=[]
 
         if form.validate_on_submit():
@@ -112,7 +113,7 @@ def recherche(page_num=1):
                 if date_label:
                     query_results = query_results.filter(Maisons.date_label == date_label)
 
-                donnees = query_results.paginate(page=int(form.page.data)+ 1, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+                donnees = query_results.paginate(page=form.page.data, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
 
     #le .paginate ne fonctionne pas pourquoi ???????????  
 
@@ -125,7 +126,7 @@ def recherche(page_num=1):
             form.monumentsInscrits.data=monumentsInscrits
             form.departement.data = departement
             form.date_label.data = date_label
-            form.page.data = str(int(form.page.data) + 1)
+            form.page.data = form.page.data + 1
 
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
