@@ -75,4 +75,27 @@
         color:#010c0e;
     }
 
-    
+/*mise en page du menu*/
+ul {
+    list-style-type: none; /* Pour supprimer les puces */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-item {
+    display: inline-block; /* Pour que les éléments soient sur une seule ligne */
+    margin: 0 10px; /* Marge horizontale automatique pour centrer */
+}
+
+.nav-link {
+    text-decoration: none; /* Pour supprimer le soulignement des liens */
+    color: #000; 
+}
+
+.nav-link:hover {
+    color: #17a1b9; /* Changement de couleur du texte au survol */
+}    
