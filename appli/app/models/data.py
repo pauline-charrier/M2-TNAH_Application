@@ -215,8 +215,12 @@ class Maisons(db.Model):
 
         # Générer l'URL pour la page d'informations sur la maison
         url = url_for('info_maisons', nom_maisons=self.denomination)
-        adresse_parts = [part for part in [self.adresse, self.code_postal, self.commune] if part is not None]
+         # Créer une liste contenant les parties de l'adresse qui ne sont pas None
+        adresse_parts = [part for part in [self.adresse, self.code_postal, self.commune] if part is not None]   
+        # Créer une chaîne d'adresse en joignant les parties avec un espace
+        # Si aucune partie de l'adresse n'est disponible, attribuer une chaîne vide à adresse     
         adresse = ' '.join(adresse_parts) if adresse_parts else ''
+        # Icône Bootstrap pour l'adresse
         icone_bootstrap = '<i class="bi bi-geo-alt"></i>'
         #retourner la concaténation de tous ces éléments sous la forme d'un code html
         return f'''<p>{self.denomination}</p>
