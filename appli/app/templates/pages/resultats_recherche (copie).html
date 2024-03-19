@@ -138,7 +138,11 @@
                                 </a>
                             {% endif %}
                         {% else %}
-                            <p>Aucun résultat trouvé.</p> <!-- affichage d'un message "Aucun résultat trouvé" en cas de recherche infructueuse-->
+                            <div class="alert alert-warning text-justify" role="alert">
+                                Aucun résultat trouvé.<br><br>
+                                Vérifiez que la graphie de votre requête soit correcte ou renouvelez votre recherche en ajustant les filtres du formulaire ci-contre.
+                                <!-- affichage d'un message "Aucun résultat trouvé" en cas de recherche infructueuse-->
+                            </div>                        
                         {% endif %}
                     </div>
                 </div>
