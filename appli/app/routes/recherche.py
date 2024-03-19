@@ -123,21 +123,26 @@ def recherche(page_num=1):
             form.monumentsInscrits.data=monumentsInscrits
             form.departement.data = departement
             form.date_label.data = date_label
-            form.page_num = page_num
-            print("le form.page_num "+ str(form.page_num))
+            #form.page_num.data = page_num
+            print("le form.page_num.data ", form.page_num.data)
 
-            action = request.form.get('action')
-            if action == 'prev':
-                # Si l'action est 'prev', décrémentez le numéro de page
-                page_num -= 1
-                donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+        action = request.form.get('action')
+        if action == 'prev':
+            # Si l'action est 'prev', décrémentez le numéro de page
+            page_num -= 1
+            form.page_num.data = page_num
+            print("Nouveau numéro de page (prev):", page_num)
 
-            elif action == 'next':
-                # Si l'action est 'next', incrémentez le numéro de page
-                page_num += 1
-                donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+        if action == 'next':
+            # Si l'action est 'next', incrémentez le numéro de page
+            page_num += 1
+            form.page_num.data = page_num
+            print("Nouveau numéro de page (next):", page_num)
 
-    print("numéro de page" + str(page_num))
+            donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+            print("Page actuelle:", page_num)
+            print("form.page.data", form.page_num.data)
+
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
         donnees_init=donnees_init,
