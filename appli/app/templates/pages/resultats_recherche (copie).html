@@ -142,7 +142,39 @@
                                 Aucun résultat trouvé.<br><br>
                                 Vérifiez que la graphie de votre requête soit correcte ou renouvelez votre recherche en ajustant les filtres du formulaire ci-contre.
                                 <!-- affichage d'un message "Aucun résultat trouvé" en cas de recherche infructueuse-->
-                            </div>                        
+                            </div>
+                            <!-- Pop-up -->
+                        <div class="modal fade" id="aucunResultatModal" tabindex="-1" aria-labelledby="aucunResultatModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="aucunResultatModalLabel">Aucun résultat trouvé</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-justify">
+                                    Veuillez effectuer une nouvelle recherche en modifiant votre saisie ou en élargissant le périmètre de recherche grâce aux filtres.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <!-- JavaScript pour afficher automatiquement le pop-up en cas d'absence de résultats -->
+                        <script>
+                            // Pour afficher le pop-up automatiquement lorsque la condition est remplie
+                            $(document).ready(function() {
+                                $('#aucunResultatModal').modal('show');
+
+                            // Pour fermer le pop-up lorsqu'on clique sur la croix ou le bouton "Fermer"
+                                $('#aucunResultatModal .close, #aucunResultatModal .btn-danger').on('click', function () {
+                                        $('#aucunResultatModal').modal('hide');
+                                });
+                            });
+                        </script>
+                            
                         {% endif %}
                     </div>
                 </div>
@@ -165,6 +197,8 @@
             </div>
         </div>
     </section>
+
+</div>
 
 
     {% endif %}
