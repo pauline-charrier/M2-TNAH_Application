@@ -62,7 +62,7 @@ def recherche(page_num=1):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             date_label = clean_arg(request.form.get("date_label", None))
-            page_num = clean_arg(request.form.get(("page_num")[0]))
+            #page_num = clean_arg(request.form.get(("page_num")[0]))
 
             # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
             # dans les données
@@ -124,19 +124,18 @@ def recherche(page_num=1):
             form.departement.data = departement
             form.date_label.data = date_label
             form.page_num = page_num
+            print("le form.page_num "+ str(form.page_num))
 
-        action = request.form.get('action')
-        if action == 'prev':
-            # Si l'action est 'prev', décrémentez le numéro de page
-            page_num = int(request.form['page_num'])
-            page_num -= 1
-            donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+            action = request.form.get('action')
+            if action == 'prev':
+                # Si l'action est 'prev', décrémentez le numéro de page
+                page_num -= 1
+                donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
 
-        elif action == 'next':
-            # Si l'action est 'next', incrémentez le numéro de page
-            page_num = int(request.form['page_num'])
-            page_num += 1
-            donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
+            elif action == 'next':
+                # Si l'action est 'next', incrémentez le numéro de page
+                page_num += 1
+                donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
 
     print("numéro de page" + str(page_num))
     return render_template("pages/resultats_recherche (copie).html", 
