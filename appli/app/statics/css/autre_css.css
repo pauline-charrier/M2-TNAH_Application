@@ -71,20 +71,17 @@
         margin-right: 30px;
     }
 
-/*mise en page du menu*/
+/*mise en page du menu (liste personnes) */
 ul {
     list-style-type: none; /* Pour supprimer les puces */
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    display: flex; /* Usage de la flexbox */
+    flex-direction: column; /* Pour afficher les éléments en colonne */
 }
 
 .nav-item {
-    display: inline-block; /* Pour que les éléments soient sur une seule ligne */
-    margin: 0 10px; /* Marge horizontale automatique pour centrer */
+    margin-bottom: 10px; /* Pour insérer une marge inférieure entre les éléments */
 }
 
 .nav-link {
@@ -92,5 +89,5 @@ ul {
 }
 
 .nav-link:hover {
-    font-weight: bold; 
+    font-weight: bold; /* Mise en évidence au survol */
 }    
