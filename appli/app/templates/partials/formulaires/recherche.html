@@ -47,6 +47,24 @@
         {{ form.date_label(class_="form-control") }}
     </div>
 
+    <input type="hidden" name="page_num" value="{{ form.page_num }}">
+    
+    {%if donnees%}
+
+    <!-- Bouton de soumission de formulaire pour la page précédente -->
+    <div>{% if donnees.prev_num %}
+        <input type="hidden" name="action" value="prev">
+        <input type="submit" value="&laquo; Page précédente" class="btn btn-outline-dark">
+    {% endif %}</div>
+    
+    <!-- Bouton de soumission de formulaire pour la page suivante -->
+    <div>{% if donnees.next_num %}
+        <input type="hidden" name="action" value="next">
+        <input type="submit" value="Page suivante &raquo;" class="btn btn-outline-dark">
+    {% endif %}</div>
+
+    {%endif%}
+
     <p><input type="submit" value="Rechercher"></p>
     
 </form>
