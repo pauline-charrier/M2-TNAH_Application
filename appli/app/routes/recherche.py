@@ -38,18 +38,19 @@ def recherche(page_num=1):
     form.type.choices = [('','')] + [(domaine.value, domaine.value) for domaine in Domaine]
     form.genre.choices = [('','')] + [(genre.value, genre.value) for genre in Genre]
 
-    #A enlever si non nécessaire: 
+    #Initialisation des données 
     donnees_init = []  
     donnees = [] 
 
     # initialisation des données dans le cas où il n'y ait pas de requête
     if request.method == 'GET' :
         donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
-        donnees = [] #initialisation des données de retour s'il n'y a pas de requête post
+        donnees = [] #vider des données filtrées s'il n'y a pas de requête post
 
 
     elif request.method =='POST':
-        donnees_init=[]
+        print(request.form)
+        donnees_init=[] #vider les données initiales 
 
         if form.validate_on_submit():
             # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
@@ -62,7 +63,7 @@ def recherche(page_num=1):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             date_label = clean_arg(request.form.get("date_label", None))
-            #page_num = clean_arg(request.form.get(("page_num")[0]))
+            #page_num = request.form.get("page_num", type=int)
 
             # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
             # dans les données
@@ -123,25 +124,23 @@ def recherche(page_num=1):
             form.monumentsInscrits.data=monumentsInscrits
             form.departement.data = departement
             form.date_label.data = date_label
-            #form.page_num.data = page_num
-            print("le form.page_num.data ", form.page_num.data)
+            print("récupération du num de page", page_num)
 
-        action = request.form.get('action')
-        if action == 'prev':
-            # Si l'action est 'prev', décrémentez le numéro de page
-            page_num -= 1
-            form.page_num.data = page_num
-            print("Nouveau numéro de page (prev):", page_num)
+            action = request.form.get('action')
+            if action == 'prev':
+                # Si l'action est 'prev', décrémentez le numéro de page
+                page_num -= 1
+                #form.page_num.data = page_num
+                print("Nouveau numéro de page (prev):", page_num)
 
-        if action == 'next':
-            # Si l'action est 'next', incrémentez le numéro de page
-            page_num += 1
-            form.page_num.data = page_num
-            print("Nouveau numéro de page (next):", page_num)
+            if action == 'next':
+                # Si l'action est 'next', incrémentez le numéro de page
+                page_num += 2
+                #form.page_num.data = page_num
+                print("Nouveau numéro de page (next):", page_num)
 
             donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
             print("Page actuelle:", page_num)
-            print("form.page.data", form.page_num.data)
 
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 

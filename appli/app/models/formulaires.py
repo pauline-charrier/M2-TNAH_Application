@@ -55,7 +55,7 @@ class UpdateMaisons(FlaskForm):
 
 
 class Recherche(FlaskForm):
-    page_num = HiddenField(widget=HiddenInput, default=1)
+    #page_num = HiddenField(widget=HiddenInput, default=1)
     denomination =  StringField("denomination", validators=[])
     type =  SelectField("type", choices=[], validators = [])
     region = SelectField("region", choices=[], validators=[])
