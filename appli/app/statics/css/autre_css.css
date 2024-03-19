@@ -70,10 +70,6 @@
         margin-left: 30px;
         margin-right: 30px;
     }
-    
-.navbar-brand, .nav-link {
-        color:#010c0e;
-    }
 
 /*mise en page du menu*/
 ul {
@@ -93,9 +89,8 @@ ul {
 
 .nav-link {
     text-decoration: none; /* Pour supprimer le soulignement des liens */
-    color: #000; 
 }
 
 .nav-link:hover {
-    color: #17a1b9; /* Changement de couleur du texte au survol */
+    font-weight: bold; 
 }    
