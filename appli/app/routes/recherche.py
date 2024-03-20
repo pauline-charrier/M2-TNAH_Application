@@ -50,7 +50,7 @@ def recherche(page_num=1):
 
     elif request.method =='POST':
         print(request.form)
-        donnees_init=[] #vider les données initiales 
+        donnees_init=[] #vider les données initiales
 
         if form.validate_on_submit():
             # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
@@ -135,7 +135,7 @@ def recherche(page_num=1):
 
             if action == 'next':
                 # Si l'action est 'next', incrémentez le numéro de page
-                page_num += 2
+                page_num += 1
                 #form.page_num.data = page_num
                 print("Nouveau numéro de page (next):", page_num)
 
@@ -147,7 +147,8 @@ def recherche(page_num=1):
         donnees_init=donnees_init,
         donnees=donnees,
         form=form, 
-        page=page_num)
+        page=page_num,
+        page_num=page_num)
 
 
 
