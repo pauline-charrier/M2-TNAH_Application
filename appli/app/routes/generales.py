@@ -9,6 +9,14 @@ from ..utils.parse import convertir_geojson
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/accueil", methods=['GET', 'POST'])
 def maisons():
+    """
+    Gère la route "/accueil" ui s'ouvre aussi au démarrage de l'application.
+
+    Returns
+    -------
+    render_template
+        Un modèle HTML pour la une page d'informations générales.
+    """
 
     return render_template("pages/liste.html", 
         sous_titre="Accueil")
@@ -38,8 +46,6 @@ def info_maisons(nom_maisons):
         sous_titre=nom_maisons, 
         donnees=donnees,
         personne=personne)
-
-
 
 
 @app.route("/personnes", methods=['GET', 'POST'])

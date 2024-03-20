@@ -39,7 +39,19 @@
     
                     {% if donnees.museeFrance == 1 %}
                         <div class="info">
-                            <span>Cette maison est aussi Musée de France</span>
+                            <span>Cette maison est labellisée Musée de France</span>
+                        </div>
+                    {% endif %}
+
+                    {% if donnees.momumentInscrits == 1 %}
+                        <div class="info">
+                            <span>Cette maison est inscrite sur la liste des Monuments Historiques</span>
+                        </div>
+                    {% endif %}
+
+                    {% if donnees.monumentsClasses == 1 %}
+                        <div class="info">
+                            <span>Cette maison est classée Monument Historique</span>
                         </div>
                     {% endif %}
     
