@@ -6,8 +6,7 @@
     <title>Maisons des Illustres | {{sous_titre}}</title>
     {% include "partials/metadata.html" %}
     {% include "partials/css.html" %}
-    {% include "partials/js.html" %}
-    
+    {% include "partials/js.html" %} 
 </head>
 
 <body>
@@ -32,6 +31,18 @@
         </button>-->
         <div class="collapse navbar-collapse" id="navbarNav" style="font-size: 20px;">
             <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <div class="dropdown">
+                  <button class="btn btn-light btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;">
+                          Gestion des enregistrements
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{url_for('insertion_maisons')}}">Insérer une maison</a>
+                    <a class="dropdown-item" href="{{url_for('insertion_personnes')}}">Insérer une personne</a>
+                    <a class="dropdown-item" href="{{url_for('personnes')}}">Liste des personnes</a>
+                  </div>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('maisons')}}">Accueil</a>
               </li>
@@ -44,18 +55,6 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('graphiques')}}">Graphiques</a>
               </li>
-              <li class="nav-item active">
-                <div class="dropdown">
-                  <button class="btn btn-light btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;">
-                          Gestion des enregistrements
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{{url_for('insertion_maisons')}}">Insérer une maison</a>
-                    <a class="dropdown-item" href="{{url_for('insertion_personnes')}}">Insérer une personne</a>
-                    <a class="dropdown-item" href="{{url_for('personnes')}}">Liste des personnes</a>
-                  </div>
-                </li>
             </ul>
         </div>
     </div>
