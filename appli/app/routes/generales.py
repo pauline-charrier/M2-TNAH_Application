@@ -18,7 +18,7 @@ def maisons():
         Un modèle HTML pour la une page d'informations générales.
     """
 
-    return render_template("pages/liste.html", 
+    return render_template("pages/accueil.html", 
         sous_titre="Accueil")
 
 
