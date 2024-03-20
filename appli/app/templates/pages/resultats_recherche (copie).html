@@ -211,7 +211,7 @@
     
     // Expliquer
     document.getElementById('link_prev').addEventListener('click', function(event) {
-        event2.preventDefault(); // Empêcher le comportement par défaut du lien
+        event.preventDefault(); // Empêcher le comportement par défaut du lien
         var btnPrev = document.getElementById('btn_prev');
             btnPrev.click(); // Déclencher manuellement le clic sur le bouton suivant caché
     });
