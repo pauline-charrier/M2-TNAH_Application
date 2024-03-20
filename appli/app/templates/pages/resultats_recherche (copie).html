@@ -133,7 +133,7 @@
                             </ul>
                             {% if donnees.next_num %}
                                 <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
-                                   id="list-list-next" href="{{ url_for('recherche', page_num=donnees.next_num) }}">
+                                href="#" id="link_next" onclick="triggerNextButtonClick()">
                                     Page suivante &raquo;
                                 </a>
                             {% endif %}
@@ -162,18 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                            <!-- JavaScript pour afficher automatiquement le pop-up en cas d'absence de résultats -->
-                        <script>
-                            // Pour afficher le pop-up automatiquement lorsque la condition est remplie
-                            $(document).ready(function() {
-                                $('#aucunResultatModal').modal('show');
 
-                            // Pour fermer le pop-up lorsqu'on clique sur la croix ou le bouton "Fermer"
-                                $('#aucunResultatModal .close, #aucunResultatModal .btn-danger').on('click', function () {
-                                        $('#aucunResultatModal').modal('hide');
-                                });
-                            });
-                        </script>
                             
                         {% endif %}
                     </div>
@@ -200,6 +189,19 @@
 
 </div>
 
+<!-- JavaScript pour afficher automatiquement le pop-up en cas d'absence de résultats -->
+<script>
+    // Pour afficher le pop-up automatiquement lorsque la condition est remplie
+    $(document).ready(function() {
+        $('#aucunResultatModal').modal('show');
+
+    // Pour fermer le pop-up lorsqu'on clique sur la croix ou le bouton "Fermer"
+        $('#aucunResultatModal .close, #aucunResultatModal .btn-danger').on('click', function () {
+                $('#aucunResultatModal').modal('hide');
+        });
+    });
+
+</script>
 
     {% endif %}
 
