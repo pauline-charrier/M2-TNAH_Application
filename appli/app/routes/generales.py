@@ -10,7 +10,7 @@ from ..utils.parse import convertir_geojson
 @app.route("/accueil", methods=['GET', 'POST'])
 def maisons():
     """
-    Gère la route "/accueil" ui s'ouvre aussi au démarrage de l'application.
+    Gère la route "/accueil" qui s'ouvre aussi au démarrage de l'application.
 
     Returns
     -------

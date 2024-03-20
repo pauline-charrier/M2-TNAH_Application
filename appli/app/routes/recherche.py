@@ -28,10 +28,16 @@ def recherche(page_num=1):
         Un modèle HTML pour la page de résultats de recherche avec les données à afficher. Les résultats sont les bâtiments pour lesquels la 
         chaîne de caractère entrée ou les filtres sélectionnés sont trouvés dans les attributs des classes Maisons et Personnes. 
     """
+    
+    # Création du formulaire de recherche
     form = Recherche()
+
+    # Récupération des valeurs distinctes pour les filtres
     distinct_regions = Maisons.get_distinct_regions()
     distinct_departements = Maisons.get_distinct_departements()
     distinct_dates = Maisons.get_distinct_date_label()
+    
+    # Assignation des valeurs des filtres au formulaire
     form.region.choices = [('','')] + [(region, region) for region in distinct_regions]
     form.departement.choices = [('','')] + [(dp, dp) for dp in distinct_departements]
     form.date_label.choices = [('','')] + [(date, date) for date in distinct_dates]
@@ -42,18 +48,18 @@ def recherche(page_num=1):
     donnees_init = []  
     donnees = [] 
 
-    # initialisation des données dans le cas où il n'y ait pas de requête
+    # S'il n'y a pas de filtre, la méthode est GET et la fonction affiche le catalogue complet des bâtiments
     if request.method == 'GET' :
         donnees_init = Maisons.query.order_by(Maisons.denomination).paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"])
-        donnees = [] #vider des données filtrées s'il n'y a pas de requête post
+        donnees = [] #vider des données filtrées s'il n'y a pas de requête POST
 
-
+    # S'il y a un filtre : la méthode est POST et la fonction va filtrer les bâtiments
+    # Traitement des données soumises par le formulaire
     elif request.method =='POST':
-        print(request.form)
-        donnees_init=[] #vider les données initiales
+        donnees_init=[] #vider les données initiales (catalogue complet)
 
         if form.validate_on_submit():
-            # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
+            # récupération des éventuels données soumises via le formulaire
             denomination = clean_arg(request.form.get("denomination", None))
             region =  clean_arg(request.form.get("region", None))
             departement = clean_arg(request.form.get("departement", None))
@@ -65,13 +71,15 @@ def recherche(page_num=1):
             date_label = clean_arg(request.form.get("date_label", None))
             page_num = int(request.form.get('page_num'))
 
-            # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
-            # dans les données
+            # Vérification de la présence de valeurs dans les champs de recherche pour lancer la recherche
             if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label :
                 # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
                 # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
                 query_results = Maisons.query
+
+                # Filtrage des résultats en fonction des critères de recherche
                 if denomination:
+                    # Filte recherche du nom de la maison
                     denomination = normaliser(denomination)
                     subquery_1 = text("""
                         SELECT id
@@ -82,14 +90,18 @@ def recherche(page_num=1):
                     query_results = query_results.filter(Maisons.id.in_(comparaison_ids))
 
                 if region : 
+                    # Filtrage par région
                     query_results = query_results.filter(Maisons.region == region)
 
                 if departement:
+                    # Filtrage par département
                     query_results = query_results.filter(Maisons.dpmt == departement)
 
                 if type : 
+                    # Filtrage par type ou domaine (littérature, musique etc.)
                     query_results = query_results.filter(Maisons.type == Domaine.obtenir_clef(type))
 
+                # Filtre sur les multilabels
                 if museeFrance:
                     query_results = query_results.filter(Maisons.museeFrance == True)
                 
@@ -100,6 +112,7 @@ def recherche(page_num=1):
                     query_results = query_results.filter(Maisons.monumentsClasses == True)
                 
                 if genre:
+                    # Filtrage sur le genre de la personne
                     subquery = text("""
                         SELECT a.id
                         FROM maisons a
@@ -110,26 +123,28 @@ def recherche(page_num=1):
                     query_results = query_results.order_by(Maisons.denomination).filter(Maisons.id.in_(genre_ids))
                 
                 if date_label:
+                    # Filtrage par date de labellisation
                     query_results = query_results.filter(Maisons.date_label == date_label)
 
+                #gestion de la pagination dans le route 
+                # les boutons de pagination re-soumettent le formulaire
                 if 'prev' in request.form:
-                    # Si l'action est 'prev', décrémentez le numéro de page
+                    # Si l'action est 'prev' le numéro de page est décrémenté de 1
                     page_num -= 1
-                    #form.page_num.data = page_num
-                    print("Nouveau numéro de page (prev):", page_num)
+
 
                 elif 'next' in request.form:
-                    # Si l'action est 'next', incrémentez le numéro de page
+                    # Si l'action est 'next', le numéro de page est incrémenté de 1
                     page_num += 1
-                    #form.page_num.data = page_num
-                    print("Nouveau numéro de page (next):", page_num)
+
                 
                 elif 'rech' in request.form:
+                    # si une nouvelle recherche est lancée, le numéro de page est réaffecté à 1
                     page_num = 1
 
+                #résultats de la recherche
                 donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
  
-
             #pré-remplir le formulaire pour le prochain submit
             form.denomination.data = denomination
             form.region.data = region
@@ -141,7 +156,7 @@ def recherche(page_num=1):
             form.date_label.data = date_label
             print("récupération du num de page_num", page_num) 
 
-
+    # Rendu du modèle HTML avec les données à afficher
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
         donnees_init=donnees_init,
@@ -203,7 +218,6 @@ def recherche_rapide(page=1):
         domaines = Domaine.comparer_valeurs(chaine)
 
         #si un ou des domaines correspondent à la chaîne de caractère : 
-        # 
         if domaines:
             resultats = Maisons.query.\
                 filter(
