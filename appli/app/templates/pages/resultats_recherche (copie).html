@@ -191,33 +191,30 @@
 
 
 <script>
-    // Pour afficher la pop-up 
-    $(document).ready(function() {
-        $('#aucunResultatModal').modal('show');
+$(document).ready(function() {
+    // Pour afficher le pop-up 
+    $('#aucunResultatModal').modal('show');
 
     // Pour fermer le pop-up lorsqu'on clique sur la croix ou le bouton "Fermer"
-        $('#aucunResultatModal .close, #aucunResultatModal .btn-danger').on('click', function () {
-                $('#aucunResultatModal').modal('hide');
-        });
+    $('#aucunResultatModal .close, #aucunResultatModal .btn-danger').on('click', function () {
+        $('#aucunResultatModal').modal('hide');
     });
 
-    // Expliquer
-    document.getElementById('link_next').addEventListener('click', function(event) {
+    // Ajouter les événements aux boutons précédents et suivants
+    $('#link_next').on('click', function(event) {
         event.preventDefault(); // Empêcher le comportement par défaut du lien
         var btnNext = document.getElementById('btn_next');
-            btnNext.click(); // Déclencher manuellement le clic sur le bouton suivant caché
+        btnNext.click(); // Déclencher manuellement le clic sur le bouton suivant caché
     });
 
-    
-    // Expliquer
-    document.getElementById('link_prev').addEventListener('click', function(event) {
+    $('#link_prev').on('click', function(event) {
         event.preventDefault(); // Empêcher le comportement par défaut du lien
         var btnPrev = document.getElementById('btn_prev');
-            btnPrev.click(); // Déclencher manuellement le clic sur le bouton suivant caché
+        btnPrev.click(); // Déclencher manuellement le clic sur le bouton précédent caché
     });
+});
 
-
-
+ 
 </script>
 
     {% endif %}
