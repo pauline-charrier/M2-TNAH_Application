@@ -7,16 +7,11 @@ from ..utils.parse import convertir_geojson
 
 
 @app.route("/", methods=['GET', 'POST'])
-@app.route("/maisons", methods=['GET', 'POST'])
-@app.route("/maisons/<int:page>", methods=['GET', 'POST'])
-def maisons(page=1):
-    form=Recherche()
-    donnees = Maisons.query.order_by(Maisons.denomination).paginate(page=page, per_page=app.config["MAISONS_PER_PAGE"])
+@app.route("/accueil", methods=['GET', 'POST'])
+def maisons():
 
     return render_template("pages/liste.html", 
-        sous_titre="Liste des maisons", 
-        donnees=donnees,
-        form=form)
+        sous_titre="Accueil")
 
 
 @app.route("/maisons/<string:nom_maisons>")
