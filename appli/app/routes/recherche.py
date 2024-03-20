@@ -63,12 +63,12 @@ def recherche(page_num=1):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             date_label = clean_arg(request.form.get("date_label", None))
-            action = request.form.get('action')
+            #action = request.form.get('action')
             page_num = int(request.form.get('page_num'))
 
             # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
             # dans les données
-            if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label or action :
+            if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label :
                 # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
                 # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
                 query_results = Maisons.query
@@ -113,13 +113,13 @@ def recherche(page_num=1):
                 if date_label:
                     query_results = query_results.filter(Maisons.date_label == date_label)
 
-                if action == 'prev':
+                if 'prev' in request.form:
                     # Si l'action est 'prev', décrémentez le numéro de page
                     page_num -= 1
                     #form.page_num.data = page_num
                     print("Nouveau numéro de page (prev):", page_num)
 
-                elif action == 'next':
+                elif 'next' in request.form:
                     # Si l'action est 'next', incrémentez le numéro de page
                     page_num += 1
                     #form.page_num.data = page_num
