@@ -54,11 +54,11 @@
                                     {% endfor %}
                                 </ul>
                                 {% if donnees_init.next_num %}
-                                    <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
-                                    href="#" id="link_next" onclick="triggerNextButtonClick()">
-                                        Page suivante &raquo;
-                                    </a>
-                                {% endif %}
+                            <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees_init.page == donnees_init.pages %} disabled{% endif %}" 
+                               id="list-list-next" href="{{ url_for('recherche', page_num=donnees_init.next_num) }}">
+                                Page suivante &raquo;
+                            </a>
+                        {% endif %}
                             </div>
                         </div>
                         <!-- Fin de la colonne pour le catalogue des maisons -->
@@ -189,9 +189,9 @@
 
 </div>
 
-<!-- JavaScript pour afficher automatiquement le pop-up en cas d'absence de résultats -->
+
 <script>
-    // Pour afficher le pop-up automatiquement lorsque la condition est remplie
+    // Pour afficher la pop-up 
     $(document).ready(function() {
         $('#aucunResultatModal').modal('show');
 
@@ -211,9 +211,9 @@
     
     // Expliquer
     document.getElementById('link_prev').addEventListener('click', function(event) {
-        event.preventDefault(); // Empêcher le comportement par défaut du lien
-        var btnNext = document.getElementById('btn_prev');
-            btnNext.click(); // Déclencher manuellement le clic sur le bouton suivant caché
+        event2.preventDefault(); // Empêcher le comportement par défaut du lien
+        var btnPrev = document.getElementById('btn_prev');
+            btnPrev.click(); // Déclencher manuellement le clic sur le bouton suivant caché
     });
 
 
