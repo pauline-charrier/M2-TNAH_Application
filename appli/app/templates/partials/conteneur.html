@@ -7,6 +7,10 @@
     {% include "partials/metadata.html" %}
     {% include "partials/css.html" %}
     {% include "partials/js.html" %} 
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -24,11 +28,6 @@
 <br/>
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <!--ancien bouton "catalogue des Maisons" tout à gauche, mais enlevé-->
-        <!--<a class="navbar-brand" href="{{url_for('maisons')}}">Catalogue des Maisons (reformuler : Accueil)</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>-->
         <div class="collapse navbar-collapse" id="navbarNav" style="font-size: 20px;">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item active">
@@ -42,6 +41,7 @@
                     <a class="dropdown-item" href="{{url_for('insertion_personnes')}}">Insérer une personne</a>
                     <a class="dropdown-item" href="{{url_for('personnes')}}">Liste des personnes</a>
                   </div>
+                </div>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('maisons')}}">Accueil</a>
