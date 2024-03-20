@@ -63,11 +63,12 @@ def recherche(page_num=1):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             date_label = clean_arg(request.form.get("date_label", None))
-            #page_num = request.form.get("page_num", type=int)
+            action = request.form.get('action')
+            page_num = int(request.form.get('page_num'))
 
             # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
             # dans les données
-            if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label :
+            if denomination or region or departement or type or genre or museeFrance or monumentsClasses or monumentsInscrits or date_label or action :
                 # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
                 # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
                 query_results = Maisons.query
@@ -112,6 +113,18 @@ def recherche(page_num=1):
                 if date_label:
                     query_results = query_results.filter(Maisons.date_label == date_label)
 
+                if action == 'prev':
+                    # Si l'action est 'prev', décrémentez le numéro de page
+                    page_num -= 1
+                    #form.page_num.data = page_num
+                    print("Nouveau numéro de page (prev):", page_num)
+
+                elif action == 'next':
+                    # Si l'action est 'next', incrémentez le numéro de page
+                    page_num += 1
+                    #form.page_num.data = page_num
+                    print("Nouveau numéro de page (next):", page_num)
+
                 donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
  
 
@@ -124,23 +137,8 @@ def recherche(page_num=1):
             form.monumentsInscrits.data=monumentsInscrits
             form.departement.data = departement
             form.date_label.data = date_label
-            print("récupération du num de page", page_num)
+            print("récupération du num de page_num", page_num) 
 
-            action = request.form.get('action')
-            if action == 'prev':
-                # Si l'action est 'prev', décrémentez le numéro de page
-                page_num -= 1
-                #form.page_num.data = page_num
-                print("Nouveau numéro de page (prev):", page_num)
-
-            if action == 'next':
-                # Si l'action est 'next', incrémentez le numéro de page
-                page_num += 1
-                #form.page_num.data = page_num
-                print("Nouveau numéro de page (next):", page_num)
-
-            donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
-            print("Page actuelle:", page_num)
 
     return render_template("pages/resultats_recherche (copie).html", 
         sous_titre= "Recherche", 
