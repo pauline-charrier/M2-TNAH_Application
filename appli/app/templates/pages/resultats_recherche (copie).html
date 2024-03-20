@@ -54,8 +54,8 @@
                                     {% endfor %}
                                 </ul>
                                 {% if donnees_init.next_num %}
-                                    <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees_init.page == donnees_init.pages %} disabled{% endif %}" 
-                                       id="list-list-next" href="{{ url_for('recherche', page_num=donnees_init.next_num) }}">
+                                    <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
+                                    href="#" id="link_next" onclick="triggerNextButtonClick()">
                                         Page suivante &raquo;
                                     </a>
                                 {% endif %}
@@ -99,7 +99,7 @@
                         {% if donnees.items %} <!-- vérifie que la variable "donnees" contient des éléments -->
                             {% if donnees.prev_num %}
                                 <a class="list-group-item list-group-item-action btn btn-outline-dark {% if donnees.page == 1 %}disabled{% endif %}" 
-                                   id="list-list-prev" href="{{ url_for('recherche', page_num=donnees.prev_num) }}">
+                                href="#" id="link_prev">
                                     &laquo; Page précédente
                                 </a>
                             {% endif %}
@@ -133,7 +133,7 @@
                             </ul>
                             {% if donnees.next_num %}
                                 <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
-                                href="#" id="link_next" onclick="triggerNextButtonClick()">
+                                href="#" id="link_next">
                                     Page suivante &raquo;
                                 </a>
                             {% endif %}
@@ -200,6 +200,23 @@
                 $('#aucunResultatModal').modal('hide');
         });
     });
+
+    // Expliquer
+    document.getElementById('link_next').addEventListener('click', function(event) {
+        event.preventDefault(); // Empêcher le comportement par défaut du lien
+        var btnNext = document.getElementById('btn_next');
+            btnNext.click(); // Déclencher manuellement le clic sur le bouton suivant caché
+    });
+
+    
+    // Expliquer
+    document.getElementById('link_prev').addEventListener('click', function(event) {
+        event.preventDefault(); // Empêcher le comportement par défaut du lien
+        var btnNext = document.getElementById('btn_prev');
+            btnNext.click(); // Déclencher manuellement le clic sur le bouton suivant caché
+    });
+
+
 
 </script>
 
