@@ -53,12 +53,12 @@
 
     <!-- Bouton de soumission de formulaire pour la page précédente -->
     <div>{% if donnees.prev_num %}
-        <button type="submit" name="prev" value="prev" class="btn btn-outline-dark">&laquo; Page précédente</button>
+        <button id="btn_prev" type="submit" name="prev" value="prev" class="btn btn-outline-dark" style="display: none;">&laquo; Page précédente</button>
     {% endif %}</div>
     
     <!-- Bouton de soumission de formulaire pour la page suivante -->
     <div>{% if donnees.next_num %}
-        <button type="submit" name="next" value="next" class="btn btn-outline-dark">Page suivante &raquo;</button>
+        <button id="btn_next" type="submit" name="next" value="next" class="btn btn-outline-dark" style="display: none;">Page suivante &raquo;</button>
     {% endif %}</div>
 
 
