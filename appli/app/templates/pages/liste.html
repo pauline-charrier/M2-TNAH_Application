@@ -9,6 +9,7 @@
             <div style="text-align: center;">
                 <h1>Au cœur du patrimoine français : les maisons des illustres</h2>
             </div>
+            <br/>
             <div style="text-align: justify;">
                 <h3>Présentation du label</h3>
 
@@ -23,72 +24,7 @@
                 <p>Nous vous proposons une exploration interactive du label à travers une carte et des graphiques, tout en vous laissant la possibilité d'effectuer des recherches spécifiques sur les personnalités et leurs résidences associées via notre catalogue de recherche.</p>    
             </div>
         </div>
-        <br>
-        <div class="row">
-            <!-- Colonne pour le catalogue des maisons -->
-            <div class="col-md-6">
-                <div class="list-group" id="list-tab" role="tablist">
-                    {% if donnees.prev_num %}
-                        <a class="list-group-item list-group-item-action btn btn-outline-dark {% if donnees.page == 1 %}disabled{% endif %}" 
-                           id="list-list-prev" href="{{ url_for('maisons', page=donnees.prev_num) }}">
-                            &laquo; Page précédente
-                        </a>
-                    {% endif %}
-                    
-                    <ul class="list-group">
-                        {% for maisons in donnees.items %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a class="list-group-item list-group-item-action {% if loop.index == 1 %}active{% endif %}"
-                                   href="{{ url_for('info_maisons', nom_maisons=maisons.denomination)}}" role="tab"
-                                   aria-controls="{{maisons.denomination}}">
-                                   {{maisons.denomination}}
-                                </a>
-                            
-                                <div class="btn-group btn-group-sm">
-                                    <form action="{{ url_for('sup_maison', nom_maison=maisons.denomination) }}" method="post" class="del-component">
-                                        <button class="btn btn-danger" type="submit">
-                                            <input type="hidden" value="{{ maisons.denomination }}" name="maison_a_supp">
-                                            <i class="fa fa-trash"></i> Supprimer
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ url_for('update_maisons', nom_maison=maisons.denomination) }}">
-                                        <button class="btn btn-info" type="submit">
-                                            <i class="fa fa-pencil"></i> Modifier
-                                        </button>
-                                    </a>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    
-                    {% if donnees.next_num %}
-                        <a class="list-group-item list-group-item-action btn btn-outline-dark{% if donnees.page == donnees.pages %} disabled{% endif %}" 
-                           id="list-list-next" href="{{ url_for('maisons', page=donnees.next_num) }}">
-                            Page suivante &raquo;
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-            <!-- Fin de la colonne pour le catalogue des maisons -->
-            
-            <!-- Colonne pour le formulaire de recherche -->
-            <div class="col-md-6">
-                <div class="card">
-                    <h3 class="card-header" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        Effectuer une recherche 
-                    </h3>
-                    <div class="collapse show" id="collapseExample">
-                        <div class="card-body">
-                            {% include "partials/formulaires/recherche.html" %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Fin de la colonne pour le formulaire de recherche -->
-        </div>
-        <br/>
+        
         <div style="text-align: justify;">
             <h3>Contribuez à l'enrichissement des données</h3>
                 
