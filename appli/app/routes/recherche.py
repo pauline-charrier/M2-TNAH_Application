@@ -63,7 +63,6 @@ def recherche(page_num=1):
             monumentsInscrits =  clean_arg(request.form.get("monumentsInscrits", None))
             monumentsClasses =  clean_arg(request.form.get("monumentsClasses", None))
             date_label = clean_arg(request.form.get("date_label", None))
-            #action = request.form.get('action')
             page_num = int(request.form.get('page_num'))
 
             # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
@@ -124,6 +123,9 @@ def recherche(page_num=1):
                     page_num += 1
                     #form.page_num.data = page_num
                     print("Nouveau numéro de page (next):", page_num)
+                
+                elif 'rech' in request.form:
+                    page_num = 1
 
                 donnees = query_results.paginate(page=page_num, per_page=app.config["MAISONS_PER_PAGE"], error_out=True)
  
