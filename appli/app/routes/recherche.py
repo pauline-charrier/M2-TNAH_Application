@@ -157,7 +157,7 @@ def recherche(page_num=1):
             print("récupération du num de page_num", page_num) 
 
     # Rendu du modèle HTML avec les données à afficher
-    return render_template("pages/resultats_recherche (copie).html", 
+    return render_template("pages/resultats_recherche.html", 
         sous_titre= "Recherche", 
         donnees_init=donnees_init,
         donnees=donnees,
