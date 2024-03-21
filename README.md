@@ -76,26 +76,29 @@ Pour une utilisation ultérieure de l'application, il suffit de répéter les é
 
 ## 4. Fonctionnalités de l'application
 
-La page d'accueil affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages ainsi qu'un formulaire qui permet d'effectuer une recherche en fonction de plusieurs filtres (nom de la maison, genre de l'illustre, labels...). 
-Ce formulaire est aussi accessible depuis l'onglet "Recherche" situé dans la barre de navigation supérieure.
+Au lancement de l'application, nous arrivons sur une page d'accueil avec une présentation du label et des différents fonctionnalitées de l'application. Ces fonctionnalités sont aussi accessibles depuis la barre de navigation supérieure.
 
-*Screenshot page d'accueil*
+![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/8fddbac9-09f4-42da-a348-9a1413fa4993)
 
-Pour chaque maison, le catalogue propose un bouton "Supprimer" et un bouton "Éditer" qui permettent respectivement de supprimer la maison ou de mettre à jour les différentes informations relatives à la maison.
+Nous avons tout d'abord une rubrique "Recherche" qui affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages ainsi qu'un formulaire qui permet d'effectuer une recherche en fonction de plusieurs filtres (nom de la maison, genre de l'illustre, labels...). 
 
-*Screenshot update maison*
+![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/f232039a-beab-4c22-b8ce-1dc2845dc008)
 
-Le menu défilant situé au niveau de la barre de navigation donne accès à un catalogue des personnes illustres qui est donc différent de celui des maisons, ainsi qu'à 2 options qui permettent d'ajouter au choix une nouvelle maison ou une nouvelle personne à la base de données.
+Pour chaque maison, le catalogue propose un bouton "Supprimer" et un bouton "Modifier" qui permettent respectivement de supprimer la maison ou de mettre à jour les différentes informations relatives à la maison.
 
-*Screenshot catalogue personnes avec le menu défilant*
+![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/67cb5bd5-74ef-4b6f-80db-988dcb4b6e65)
 
-Ensuite, l'onglet "Carte" affiche une carte avec l'emplacement de toutes les maisons d'illustres avec la présence de plusieurs filtres là aussi.
+Ensuite, l'onglet "Carte" affiche une carte avec l'emplacement de toutes les maisons d'illustres et avec la présence de plusieurs filtres là aussi.
 
-*Screenshot carte*
+![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/4f33f208-7996-48a2-9ab5-1bb9b47899fa)
 
-L'onglet "graphiques" permet quant à lui d'afficher les différentes visualisations graphiques réalisées à partir des données, à savoir un graphique sur les genres les personnes illustres et sur les domaines dans lesquels ils ont brillé. 
+Le bouton "Graphiques" permet quant à lui d'afficher les différentes visualisations graphiques réalisées à partir des données, à savoir un graphique sur les genres des personnes illustres et sur les domaines dans lesquels ils ont brillé. 
 
-*Screenshot d'un graphique*
+![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/8c2ebc88-5f63-43ea-94cb-5d8ef8b03100)
+
+Le menu déroulant situé à gauche de la barre de navigation donne accès à 2 options qui permettent d'ajouter au choix une nouvelle maison ou une nouvelle personne à la base de données, ainsi qu'à un catalogue des personnes illustres qui est donc différent de celui des maisons.
+
+![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/2830e50c-fda3-424b-9ab0-e600be38da61)
 
 Enfin, la barre de recherche située à droite nous donne la possibilité d'effectuer une recherche rapide en plein texte sur l'ensemble des maisons.
 
