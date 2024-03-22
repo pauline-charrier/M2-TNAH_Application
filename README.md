@@ -22,7 +22,7 @@ Kutay SEFIL
 
 Pour une première utilisation sur Ubuntu, veuillez suivre pas à pas les instructions suivantes :
 
-1. Télécharger la base de données disponible dans ce répertoire GitHub. 
+1. Télécharger la base de données et placez-là à l'endroit adequat dans votre système de fichiers. 
 
 2. Cloner le dépôt GitHub de l'application avec la commande suivante : 
 ```bash
@@ -45,7 +45,9 @@ DEBUG=True
 SQLALCHEMY_DATABASE_URI=
 SQLALCHEMY_ECHO=False
 WTF_CSRF_ENABLE=True
+MAISONS_PER_PAGE= 10
 ```
+La variable `MAISONS_PER_PAGE` est fixée à 10 pour un affichage optimal et ergonomique des résultats.
 
 6. Installer le package "virtualenv" avec la commande suivante :
 ```bash
@@ -80,7 +82,7 @@ Au lancement de l'application, nous arrivons sur une page d'accueil avec une pr�
 
 ![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/8fddbac9-09f4-42da-a348-9a1413fa4993)
 
-Nous avons tout d'abord une rubrique "Recherche" qui affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages, ainsi qu'un formulaire qui permet d'effectuer une recherche avancée en fonction de plusieurs filtres (nom de la maison, genre de l'illustre, labels...). 
+Nous avons tout d'abord une rubrique "Recherche" qui affiche un catalogue de toutes les maisons d'illustres organisées par ordre alphabétique sur 25 pages, ainsi qu'un formulaire qui permet d'appliquer un ou plusieurs filtres sur le catalogue (nom de la maison, genre de l'illustre, labels...). 
 
 ![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/f232039a-beab-4c22-b8ce-1dc2845dc008)
 
@@ -96,11 +98,12 @@ Le bouton "Graphiques" permet quant à lui d'afficher différentes visualisation
 
 ![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/8c2ebc88-5f63-43ea-94cb-5d8ef8b03100)
 
-Le menu déroulant situé à gauche de la barre de navigation donne accès à deux options complémentaires permettant d'ajouter au choix une nouvelle maison ou une nouvelle personne à la base de données. Il donne également accès à un catalogue des personnes illustres, qui est donc distinct de celui des maisons.
+Le menu déroulant situé à gauche de la barre de navigation donne accès aux fonctionnalité de gestion de la liste des maisons des illustres présentes en base. La bonne pratique serait idéalement d'ajouter la personne liée et ses informations, avant d'ajouter le bâtiment et ses informations ; en effet le formulaire d'ajout de la maison donne accès à la liste des personnes présentes en base pour choisir celle à lier. Cependant, il est toujours possible de modifier *a posteriori* l'association maison-personne via le bouton "modifier", une fois qu'on a trouvé la maison dans le catalogue. 
+Le menu donne également accès à un catalogue des personnes illustres, qui est donc distinct de celui des maisons. Classé par ordre alphabétique, il permet d'avoir accès aux fonctionnalités de mise à jour ou de suppression des personnes. 
 
 ![image](https://github.com/gromettoclara/maisons_illustres/assets/152982679/2830e50c-fda3-424b-9ab0-e600be38da61)
 
-Enfin, la barre de recherche située à droite nous donne la possibilité d'effectuer une recherche rapide en plein texte sur l'ensemble des maisons.
+Enfin, la barre de recherche située à droite nous donne la possibilité d'effectuer une recherche rapide en plein texte sur l'ensemble des maisons et leurs informations associées.
 
 
 
