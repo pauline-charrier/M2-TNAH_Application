@@ -22,7 +22,7 @@ Kutay SEFIL
 
 Pour une première utilisation sur Ubuntu, veuillez suivre pas à pas les instructions suivantes :
 
-1. Télécharger la base de données et placez-la à l'endroit adéquat dans votre système de fichiers. 
+1. Télécharger la base de données et la placer à l'endroit adéquat dans le système de fichiers. 
 
 2. Cloner le dépôt GitHub de l'application avec la commande suivante : 
 ```bash
